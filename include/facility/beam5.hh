@@ -2,7 +2,6 @@
 #define beam5_hpp
 
 #include <G4VUserDetectorConstruction.hh>
-#include <globals.hh>
 
 namespace gneis {
 
