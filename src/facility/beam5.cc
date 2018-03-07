@@ -1,5 +1,3 @@
-#include "detector/beam5.hh"
-
 #include <G4RunManager.hh>
 #include <G4NistManager.hh>
 #include <G4Box.hh>
@@ -13,14 +11,16 @@
 #include <G4VisAttributes.hh>
 #include <G4SDManager.hh>
 
-gneis::detector::Beam5::Beam5() :
+#include "facility/beam5.hh"
+
+gneis::facility::Beam5::Beam5() :
 		G4VUserDetectorConstruction() {
 }
 
-gneis::detector::Beam5::~Beam5() {
+gneis::facility::Beam5::~Beam5() {
 }
 
-G4VPhysicalVolume* gneis::detector::Beam5::Construct() {
+G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 	// Get nist material manager
 	const auto nist = G4NistManager::Instance();
 

@@ -6,7 +6,7 @@
 
 namespace gneis {
 
-namespace detector {
+namespace facility {
 
 class Beam5: public G4VUserDetectorConstruction {
 public:
