@@ -1,4 +1,4 @@
-#include "detector/beam5.hpp"
+#include "detector/beam5.hh"
 
 #include <G4RunManager.hh>
 #include <G4NistManager.hh>

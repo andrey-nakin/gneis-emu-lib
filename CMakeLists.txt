@@ -1,22 +1,14 @@
-# $Id: CMakeLists.txt 86065 2014-11-07 08:51:15Z gcosmo $
-
 #----------------------------------------------------------------------------
 # Setup the project
+#
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(gneis-emu-lib CXX)
+project(gneis-emu-lib VERSION 0.1.0 DESCRIPTION "GNEIS Facility Emulation Library")
 set (CMAKE_CXX_STANDARD 11)
 
 #----------------------------------------------------------------------------
-# Find Geant4 package, activating all available UI and Vis drivers by default
-# You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
-# to build a batch mode only executable
+# Find Geant4 package
 #
-option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
-if(WITH_GEANT4_UIVIS)
-  find_package(Geant4 REQUIRED ui_all vis_all)
-else()
-  find_package(Geant4 REQUIRED)
-endif()
+find_package(Geant4 REQUIRED)
 
 #----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
@@ -25,28 +17,27 @@ endif()
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
 # NB: headers are included so they will show up in IDEs
 #
-file(GLOB_RECURSE sources ${PROJECT_SOURCE_DIR}/src/*.cpp)
-file(GLOB_RECURSE headers ${PROJECT_SOURCE_DIR}/include/*.hpp)
+file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cc)
+file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.hh)
 
 #----------------------------------------------------------------------------
-# Add the executable, and link it to the Geant4 libraries
+# Add and configure the library
 #
-add_library(gneis-emu-lib STATIC ${sources} ${headers})
-#target_link_libraries(gneis-emu-lib ${Geant4_LIBRARIES})
-
-# For internal Geant4 use - but has no effect if you build this
-# example standalone
-#
-#add_custom_target(B1 DEPENDS gneis-emu-001)
+add_library(gneis-emu-lib STATIC ${SOURCES} ${HEADERS})
+set_target_properties(gneis-emu-lib PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(gneis-emu-lib PROPERTIES PUBLIC_HEADER ${HEADERS})
+target_include_directories(gneis-emu-lib PRIVATE include)
+include(GNUInstallDirs)
 
 #----------------------------------------------------------------------------
-# Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
+# Install the library
 #
-#install(TARGETS gneis-emu-lib DESTINATION bin)
-
+install(TARGETS gneis-emu-lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
