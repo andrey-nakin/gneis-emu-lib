@@ -19,8 +19,12 @@ public:
 
 	virtual G4VPhysicalVolume* Construct();
 
+	G4double getAngle() const;
+	void setAngle(G4double angle);
+
 private:
 
+	G4double angle;
 	CollimatorDiameter const diameter;
 	G4VSensitiveDetector* const detector;
 
