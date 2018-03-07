@@ -18,8 +18,8 @@
 
 gneis::facility::Beam5::Beam5(CollimatorDiameter const aDiameter,
 		G4VSensitiveDetector* const aDetector) :
-		G4VUserDetectorConstruction(), angle(30.0 * deg), diameter(aDiameter), detector(
-				aDetector) {
+		G4VUserDetectorConstruction(), diameter(aDiameter), detector(aDetector), angle(
+				30.0 * deg), collimatorsHaveDetectors(true) {
 }
 
 gneis::facility::Beam5::~Beam5() {
@@ -63,9 +63,12 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 				solidC1Cut);
 		const auto logicC1 = new G4LogicalVolume(solidC1,
 				nist->FindOrBuildMaterial("G4_BRASS"), strC1);
-		const auto detC1 = new gneis::detector::BasicNeutrons("detector-C1");
-		sdMan->AddNewDetector(detC1);
-		logicC1->SetSensitiveDetector(detC1);
+		if (collimatorsHaveDetectors) {
+			const auto detC1 = new gneis::detector::BasicNeutrons(
+					"detector-C1");
+			sdMan->AddNewDetector(detC1);
+			logicC1->SetSensitiveDetector(detC1);
+		}
 	}
 
 	{
@@ -79,9 +82,12 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 				solidC2Cut);
 		const auto logicC2 = new G4LogicalVolume(solidC2,
 				nist->FindOrBuildMaterial("G4_STEEL"), strC2);
-		const auto detC2 = new gneis::detector::BasicNeutrons("detector-C2");
-		sdMan->AddNewDetector(detC2);
-		logicC2->SetSensitiveDetector(detC2);
+		if (collimatorsHaveDetectors) {
+			const auto detC2 = new gneis::detector::BasicNeutrons(
+					"detector-C2");
+			sdMan->AddNewDetector(detC2);
+			logicC2->SetSensitiveDetector(detC2);
+		}
 	}
 
 	{
@@ -91,9 +97,12 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 				300.0 * mm, 0.0 * deg, 360.0 * deg);
 		const auto logicC3 = new G4LogicalVolume(solidC3,
 				nist->FindOrBuildMaterial("G4_STEEL"), strC3);
-		const auto detC3 = new gneis::detector::BasicNeutrons("detector-C3");
-		sdMan->AddNewDetector(detC3);
-		logicC3->SetSensitiveDetector(detC3);
+		if (collimatorsHaveDetectors) {
+			const auto detC3 = new gneis::detector::BasicNeutrons(
+					"detector-C3");
+			sdMan->AddNewDetector(detC3);
+			logicC3->SetSensitiveDetector(detC3);
+		}
 	}
 
 	{
@@ -103,9 +112,12 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 				0.5 * 875.0 * mm, 0.0 * deg, 360.0 * deg);
 		const auto logicC4 = new G4LogicalVolume(solidC4,
 				nist->FindOrBuildMaterial("G4_STEEL"), strC4);
-		const auto detC4 = new gneis::detector::BasicNeutrons("detector-C4");
-		sdMan->AddNewDetector(detC4);
-		logicC4->SetSensitiveDetector(detC4);
+		if (collimatorsHaveDetectors) {
+			const auto detC4 = new gneis::detector::BasicNeutrons(
+					"detector-C4");
+			sdMan->AddNewDetector(detC4);
+			logicC4->SetSensitiveDetector(detC4);
+		}
 	}
 
 	{
@@ -118,12 +130,23 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 				360.0 * deg);	// end angle
 		const auto logicC5 = new G4LogicalVolume(solidC5,
 				nist->FindOrBuildMaterial("G4_BRASS"), strC5);
-		const auto detC5 = new gneis::detector::BasicNeutrons("detector-C5");
-		sdMan->AddNewDetector(detC5);
-		logicC5->SetSensitiveDetector(detC5);
+		if (collimatorsHaveDetectors) {
+			const auto detC5 = new gneis::detector::BasicNeutrons(
+					"detector-C5");
+			sdMan->AddNewDetector(detC5);
+			logicC5->SetSensitiveDetector(detC5);
+		}
 	}
 
 	return physWorld;
+}
+
+G4bool gneis::facility::Beam5::getCollimatorsHaveDetectors() const {
+	return collimatorsHaveDetectors;
+}
+
+void gneis::facility::Beam5::setCollimatorsHaveDetectors(G4bool const v) {
+	this->collimatorsHaveDetectors = v;
 }
 
 G4double gneis::facility::Beam5::getAngle() const {
