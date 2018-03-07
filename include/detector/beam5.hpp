@@ -4,6 +4,10 @@
 #include <G4VUserDetectorConstruction.hh>
 #include <globals.hh>
 
+namespace gneis {
+
+namespace detector {
+
 class Beam5: public G4VUserDetectorConstruction {
 public:
 
@@ -13,5 +17,9 @@ public:
 	virtual G4VPhysicalVolume* Construct();
 
 };
+
+}
+
+}
 
 #endif

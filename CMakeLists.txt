@@ -30,23 +30,23 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 # Locate sources and headers for this project
 # NB: headers are included so they will show up in IDEs
 #
-file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cpp)
-file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hpp)
+file(GLOB_RECURSE sources ${PROJECT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE headers ${PROJECT_SOURCE_DIR}/include/*.hpp)
 
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(gneis-emu-lib ${sources} ${headers})
-target_link_libraries(gneis-emu-lib ${Geant4_LIBRARIES})
+add_library(gneis-emu-lib STATIC ${sources} ${headers})
+#target_link_libraries(gneis-emu-lib ${Geant4_LIBRARIES})
 
 # For internal Geant4 use - but has no effect if you build this
 # example standalone
 #
-add_custom_target(B1 DEPENDS gneis-emu-001)
+#add_custom_target(B1 DEPENDS gneis-emu-001)
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS gneis-emu-lib DESTINATION bin)
+#install(TARGETS gneis-emu-lib DESTINATION bin)
 
 
