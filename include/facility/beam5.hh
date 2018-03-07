@@ -11,10 +11,14 @@ namespace facility {
 class Beam5: public G4VUserDetectorConstruction {
 public:
 
-	Beam5();
+	Beam5(G4VSensitiveDetector* aDetector);
 	virtual ~Beam5();
 
 	virtual G4VPhysicalVolume* Construct();
+
+private:
+
+	G4VSensitiveDetector* const detector;
 
 };
 

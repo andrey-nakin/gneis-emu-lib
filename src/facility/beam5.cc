@@ -13,8 +13,8 @@
 
 #include "facility/beam5.hh"
 
-gneis::facility::Beam5::Beam5() :
-		G4VUserDetectorConstruction() {
+gneis::facility::Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
+		G4VUserDetectorConstruction(), detector(aDetector) {
 }
 
 gneis::facility::Beam5::~Beam5() {
