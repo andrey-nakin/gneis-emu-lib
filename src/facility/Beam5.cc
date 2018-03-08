@@ -12,6 +12,7 @@
 #include <G4SystemOfUnits.hh>
 #include <G4VisAttributes.hh>
 #include <G4SDManager.hh>
+#include <G4RotationMatrix.hh>
 
 #include "facility/Beam5.hh"
 #include "facility/component/SpallationTarget.hh"
@@ -23,7 +24,7 @@
 gneis::facility::Beam5::Beam5(CollimatorDiameter const aDiameter,
 		G4VSensitiveDetector* const aDetector) :
 		G4VUserDetectorConstruction(), diameter(aDiameter), detector(aDetector), zeroPosition(
-				1.0 * m), length(36.0 * m), worldRadius(100.0 * mm), angle(
+				1.0 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
 				30.0 * deg), collimatorsHaveDetectors(true) {
 }
 
@@ -35,48 +36,44 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 	const auto nist = G4NistManager::Instance();
 
 	// Option to switch on/off checking of volumes overlaps
-	const G4bool checkOverlaps = true;
+	G4RotationMatrix* const noRotation = nullptr;
+	G4bool const single = false;
+	G4int const numOfCopies = 0;
+	G4bool const checkOverlaps = true;
 
-	const G4String nameWorld = "world";
-	const auto solidWorld = new G4Tubs(nameWorld, 0.0, worldRadius,
-			0.5 * (zeroPosition + length), 0.0 * deg, 360.0 * deg);
-
-	const auto logicWorld = new G4LogicalVolume(solidWorld,	//	reference to Solid
-			nist->FindOrBuildMaterial("G4_Galactic"),	//	world material
-			nameWorld);	//	name
+	G4String const nameWorld = "world";
+	auto const solidWorld = MakeCylinder(nameWorld, zeroPosition + length);
+	auto const logicWorld = new G4LogicalVolume(solidWorld,
+			nist->FindOrBuildMaterial("G4_Galactic"), nameWorld);
 	logicWorld->SetVisAttributes(G4VisAttributes::Invisible);
 
-	const auto physWorld = new G4PVPlacement(nullptr,      //no rotation
-			G4ThreeVector(),       //at (0,0,0)
-			logicWorld,            //its logical volume
-			nameWorld,               //its name
-			nullptr,                     //its mother  volume
-			false,                 //no boolean operation
-			0,                     //copy number
-			checkOverlaps);        //overlaps checking
+	auto const physWorld = new G4PVPlacement(noRotation, G4ThreeVector(),
+			logicWorld, nameWorld, nullptr, false, 0, checkOverlaps);
 
 	{
 		// Neutron source
-		const auto logicSpTarget = component::SpallationTarget::Instance();
-		new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 5 * cm), logicSpTarget,
-				logicSpTarget->GetName(), logicWorld, false, 0, checkOverlaps);
+		auto const logicSpTarget = component::SpallationTarget::Instance();
+		new G4PVPlacement(noRotation,
+				G4ThreeVector(0, 0, 0.5 * (zeroPosition - length)),
+				logicSpTarget, logicSpTarget->GetName(), logicWorld, single,
+				numOfCopies, checkOverlaps);
 	}
 
 	{
 		// Collimator C1
-		const auto solidC1Outer = MakeCylinder(
+		auto const solidC1Outer = MakeCylinder(
 				component::CollimatorC1::GetDefaultName(),
-				component::CollimatorC1::GetHalfLength());
-		const auto logicC1 = component::CollimatorC1::Instance(solidC1Outer);
+				component::CollimatorC1::GetLength());
+		auto const logicC1 = component::CollimatorC1::Instance(solidC1Outer);
 		PlaceCollimator(logicWorld, logicC1, 6 * m);
 	}
 
 	{
 		// Collimator C2
-		const auto solidC2Outer = MakeCylinder(
+		auto const solidC2Outer = MakeCylinder(
 				component::CollimatorC2::GetDefaultName(),
-				component::CollimatorC2::GetHalfLength());
-		const auto logicC2 = component::CollimatorC2::Instance(solidC2Outer);
+				component::CollimatorC2::GetLength());
+		auto const logicC2 = component::CollimatorC2::Instance(solidC2Outer);
 		PlaceCollimator(logicWorld, logicC2, 12 * m);
 	}
 
@@ -168,9 +165,15 @@ G4double gneis::facility::Beam5::ToDouble(CollimatorDiameter const d) {
 void gneis::facility::Beam5::PlaceComponent(G4LogicalVolume* const world,
 		G4LogicalVolume* const component, G4double const position) {
 
-	new G4PVPlacement(nullptr,
+	G4RotationMatrix* const noRotation = nullptr;
+	G4bool const single = false;
+	G4int const numOfCopies = 0;
+	G4bool const checkOverlaps = true;
+
+	new G4PVPlacement(noRotation,
 			G4ThreeVector(0, 0, 0.5 * (zeroPosition - length) + position),
-			component, component->GetName(), world, false, 0, true);
+			component, component->GetName(), world, single, numOfCopies,
+			checkOverlaps);
 }
 
 void gneis::facility::Beam5::PlaceCollimator(G4LogicalVolume* const world,
@@ -187,7 +190,7 @@ void gneis::facility::Beam5::PlaceCollimator(G4LogicalVolume* const world,
 	PlaceComponent(world, collimator, position);
 }
 
-G4VSolid* gneis::facility::Beam5::MakeCylinder(G4String const &name, G4double const halfLength) {
-	return new G4Tubs(name, 0.0, worldRadius, halfLength, 0.0 * deg,
-			360.0 * deg);
+G4VSolid* gneis::facility::Beam5::MakeCylinder(G4String const &name,
+		G4double const len) {
+	return new G4Tubs(name, 0.0, worldRadius, 0.5 * len, 0.0 * deg, 360.0 * deg);
 }
