@@ -13,8 +13,9 @@
 #include <G4VisAttributes.hh>
 #include <G4SDManager.hh>
 
-#include "facility/beam5.hh"
-#include "detector/basic-neutrons.hh"
+#include "facility/Beam5.hh"
+#include "facility/SpallationTarget.hh"
+#include "detector/BasicNeutrons.hh"
 
 gneis::facility::Beam5::Beam5(CollimatorDiameter const aDiameter,
 		G4VSensitiveDetector* const aDetector) :
