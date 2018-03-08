@@ -44,14 +44,21 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 			nameWorld);	//	name
 	logicWorld->SetVisAttributes(G4VisAttributes::Invisible);
 
-	const auto physWorld = new G4PVPlacement(0,      //no rotation
+	const auto physWorld = new G4PVPlacement(nullptr,      //no rotation
 			G4ThreeVector(),       //at (0,0,0)
 			logicWorld,            //its logical volume
 			nameWorld,               //its name
-			0,                     //its mother  volume
+			nullptr,                     //its mother  volume
 			false,                 //no boolean operation
 			0,                     //copy number
 			checkOverlaps);        //overlaps checking
+
+	{
+		// Neutron source
+		const auto logicSpTarget = SpallationTarget::Instance();
+		new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 5 * cm), logicSpTarget,
+				logicSpTarget->GetName(), logicWorld, false, 0, checkOverlaps);
+	}
 
 	{
 		// Collimator C1

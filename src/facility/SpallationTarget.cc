@@ -2,6 +2,7 @@
 #include <G4NistManager.hh>
 #include <G4Box.hh>
 #include <G4LogicalVolume.hh>
+#include <G4VisAttributes.hh>
 
 #include "facility/SpallationTarget.hh"
 
@@ -17,9 +18,14 @@ G4LogicalVolume* gneis::facility::SpallationTarget::Instance(
 		const G4String &name) {
 
 	const auto nist = G4NistManager::Instance();
+
 	const auto solid = new G4Box(name, GetHalfWidth(), GetHalfHeight(),
 			GetHalfLength());
-	return new G4LogicalVolume(solid, nist->FindOrBuildMaterial("G4_Pb"), name);
+
+	const auto logic = new G4LogicalVolume(solid, nist->FindOrBuildMaterial("G4_Pb"), name);
+	logic->SetVisAttributes(G4VisAttributes(G4Colour(0.8, 0.8, 0.8)));
+
+	return logic;
 }
 
 G4double gneis::facility::SpallationTarget::GetWidth() {
