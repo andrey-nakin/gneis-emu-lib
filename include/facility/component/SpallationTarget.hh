@@ -2,6 +2,7 @@
 #define spallation_target_hh
 
 #include <G4LogicalVolume.hh>
+#include "facility/component/BoxComponent.hh"
 
 namespace gneis {
 
@@ -13,15 +14,13 @@ namespace component {
  * Class encapsulates an information about the lead target
  * used as source of neutrons in the spallation process.
  */
-class SpallationTarget final {
+class SpallationTarget final : private BoxComponent {
 public:
 
 	/**
 	 * Disable class instantiation and assignment.
 	 */
 	SpallationTarget() = delete;
-	SpallationTarget(SpallationTarget const&) = delete;
-	SpallationTarget& operator=(SpallationTarget const&) = delete;
 
 	/**
 	 * Creates an instance of the lead target.
@@ -40,8 +39,6 @@ public:
 private:
 
 	const static G4double width, height, length;
-
-	static G4double HalfOf(G4double v);
 
 };
 

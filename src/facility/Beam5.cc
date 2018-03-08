@@ -15,6 +15,7 @@
 
 #include "facility/Beam5.hh"
 #include "facility/component/SpallationTarget.hh"
+#include "facility/component/CollimatorC1.hh"
 #include "detector/BasicNeutrons.hh"
 
 gneis::facility::Beam5::Beam5(CollimatorDiameter const aDiameter,
@@ -62,15 +63,11 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 
 	{
 		// Collimator C1
-		const G4String strC1 = "collimator-C1";
-		const auto solidC1Whole = new G4Tubs(strC1, 0.0, worldRadius,
-				200.0 * mm, 0.0 * deg, 360.0 * deg);
-		const auto solidC1Cut = new G4Box(strC1, 70.0 * mm, 90.0 * mm,
-				200.0 * m);
-		const auto solidC1 = new G4SubtractionSolid(strC1, solidC1Whole,
-				solidC1Cut);
-		const auto logicC1 = new G4LogicalVolume(solidC1,
-				nist->FindOrBuildMaterial("G4_BRASS"), strC1);
+		const auto solidC1Outer = new G4Tubs(
+				component::CollimatorC1::GetDefaultName(), 0.0, worldRadius,
+				component::CollimatorC1::GetHalfLength(), 0.0 * deg,
+				360.0 * deg);
+		const auto logicC1 = component::CollimatorC1::Instance(solidC1Outer);
 		if (collimatorsHaveDetectors) {
 			const auto detC1 = new gneis::detector::BasicNeutrons(
 					"detector-C1");

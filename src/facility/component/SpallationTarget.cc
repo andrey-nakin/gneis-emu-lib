@@ -5,6 +5,7 @@
 #include <G4VisAttributes.hh>
 
 #include "facility/component/SpallationTarget.hh"
+#include "repository/Colours.hh"
 
 const G4double gneis::facility::component::SpallationTarget::width = 200.0 * mm;
 const G4double gneis::facility::component::SpallationTarget::height = 50.0 * mm;
@@ -23,7 +24,7 @@ G4LogicalVolume* gneis::facility::component::SpallationTarget::Instance(
 			GetHalfLength());
 
 	const auto logic = new G4LogicalVolume(solid, nist->FindOrBuildMaterial("G4_Pb"), name);
-	logic->SetVisAttributes(G4VisAttributes(G4Colour(0.8, 0.8, 0.8)));
+	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Lead()));
 
 	return logic;
 }
@@ -50,8 +51,4 @@ G4double gneis::facility::component::SpallationTarget::GetHalfHeight() {
 
 G4double gneis::facility::component::SpallationTarget::GetHalfLength() {
 	return HalfOf(GetLength());
-}
-
-G4double gneis::facility::component::SpallationTarget::HalfOf(G4double const v) {
-	return 0.5 * v;
 }
