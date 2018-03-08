@@ -33,7 +33,7 @@ gneis::facility::Beam5::~Beam5() {
 
 G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 	// Get nist material manager
-	const auto nist = G4NistManager::Instance();
+	auto const nist = G4NistManager::Instance();
 
 	// Option to switch on/off checking of volumes overlaps
 	G4RotationMatrix* const noRotation = nullptr;
