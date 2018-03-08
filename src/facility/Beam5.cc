@@ -18,10 +18,13 @@
 #include "facility/component/SpallationTarget.hh"
 #include "facility/component/CollimatorC1.hh"
 #include "facility/component/CollimatorC2.hh"
+#include "facility/component/CollimatorC3.hh"
+#include "facility/component/CollimatorC4.hh"
+#include "facility/component/CollimatorC5.hh"
 #include "detector/BasicNeutrons.hh"
 #include "util/NameBuilder.hh"
 
-gneis::facility::Beam5::Beam5(CollimatorDiameter const aDiameter,
+gneis::facility::Beam5::Beam5(component::CollimatorC5::Diameter const aDiameter,
 		G4VSensitiveDetector* const aDetector) :
 		G4VUserDetectorConstruction(), diameter(aDiameter), detector(aDetector), zeroPosition(
 				1.0 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
@@ -77,56 +80,33 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 		PlaceCollimator(logicWorld, logicC2, 12 * m);
 	}
 
-	/*
+	{
+		// Collimator C3
+		auto const solidC3Outer = MakeCylinder(
+				component::CollimatorC3::GetDefaultName(),
+				component::CollimatorC3::GetLength());
+		auto const logicC3 = component::CollimatorC3::Instance(solidC3Outer);
+		PlaceCollimator(logicWorld, logicC3, 23 * m);
+	}
 
-	 {
-	 // Collimator C3
-	 const G4String strC3 = "collimator-C3";
-	 const auto solidC3 = new G4Tubs(strC3, 60.0 * mm, worldRadius,
-	 300.0 * mm, 0.0 * deg, 360.0 * deg);
-	 const auto logicC3 = new G4LogicalVolume(solidC3,
-	 nist->FindOrBuildMaterial("G4_STEEL"), strC3);
-	 if (collimatorsHaveDetectors) {
-	 const auto detC3 = new gneis::detector::BasicNeutrons(
-	 "detector-C3");
-	 sdMan->AddNewDetector(detC3);
-	 logicC3->SetSensitiveDetector(detC3);
-	 }
-	 }
+	{
+		// Collimator C4
+		auto const solidC4Outer = MakeCylinder(
+				component::CollimatorC4::GetDefaultName(),
+				component::CollimatorC4::GetLength());
+		auto const logicC4 = component::CollimatorC4::Instance(solidC4Outer);
+		PlaceCollimator(logicWorld, logicC4, 29 * m);
+	}
 
-	 {
-	 // Collimator C4
-	 const G4String strC4 = "collimator-C4";
-	 const auto solidC4 = new G4Tubs(strC4, 60.0 * mm, worldRadius,
-	 0.5 * 875.0 * mm, 0.0 * deg, 360.0 * deg);
-	 const auto logicC4 = new G4LogicalVolume(solidC4,
-	 nist->FindOrBuildMaterial("G4_STEEL"), strC4);
-	 if (collimatorsHaveDetectors) {
-	 const auto detC4 = new gneis::detector::BasicNeutrons(
-	 "detector-C4");
-	 sdMan->AddNewDetector(detC4);
-	 logicC4->SetSensitiveDetector(detC4);
-	 }
-	 }
-
-	 {
-	 // Collimator C5
-	 const G4String strC5 = "collimator-C5";
-	 const auto solidC5 = new G4Tubs(strC5, 0.5 * toDouble(diameter), // min radius
-	 worldRadius,	// max radius
-	 500.0 * mm,	// length
-	 0.0 * deg,	// start angle
-	 360.0 * deg);	// end angle
-	 const auto logicC5 = new G4LogicalVolume(solidC5,
-	 nist->FindOrBuildMaterial("G4_BRASS"), strC5);
-	 if (collimatorsHaveDetectors) {
-	 const auto detC5 = new gneis::detector::BasicNeutrons(
-	 "detector-C5");
-	 sdMan->AddNewDetector(detC5);
-	 logicC5->SetSensitiveDetector(detC5);
-	 }
-	 }
-	 */
+	{
+		// Collimator C5
+		auto const solidC5Outer = MakeCylinder(
+				component::CollimatorC5::GetDefaultName(),
+				component::CollimatorC5::GetLength());
+		auto const logicC5 = component::CollimatorC5::Instance(solidC5Outer,
+				diameter);
+		PlaceCollimator(logicWorld, logicC5, 35 * m);
+	}
 
 	return physWorld;
 }
@@ -145,21 +125,6 @@ G4double gneis::facility::Beam5::getAngle() const {
 
 void gneis::facility::Beam5::setAngle(G4double const aAngle) {
 	this->angle = aAngle;
-}
-
-G4double gneis::facility::Beam5::ToDouble(CollimatorDiameter const d) {
-	switch (d) {
-	case CollimatorDiameter::D50:
-		return 50.0 * mm;
-
-	case CollimatorDiameter::D75:
-		return 75.0 * mm;
-
-	case CollimatorDiameter::D100:
-		return 100.0 * mm;
-	}
-
-	return 0.0;
 }
 
 void gneis::facility::Beam5::PlaceComponent(G4LogicalVolume* const world,
