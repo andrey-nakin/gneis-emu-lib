@@ -11,9 +11,9 @@ namespace facility {
 class Beam5: public G4VUserDetectorConstruction {
 public:
 
-	typedef enum {
+	enum class CollimatorDiameter {
 		D50, D75, D100
-	} CollimatorDiameter;
+	};
 
 	Beam5(CollimatorDiameter aDiameter, G4VSensitiveDetector* aDetector);
 	virtual ~Beam5();

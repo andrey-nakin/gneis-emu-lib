@@ -149,13 +149,13 @@ void gneis::facility::Beam5::setAngle(G4double const aAngle) {
 
 G4double gneis::facility::Beam5::ToDouble(CollimatorDiameter const d) {
 	switch (d) {
-	case D50:
+	case CollimatorDiameter::D50:
 		return 50.0 * mm;
 
-	case D75:
+	case CollimatorDiameter::D75:
 		return 75.0 * mm;
 
-	case D100:
+	case CollimatorDiameter::D100:
 		return 100.0 * mm;
 	}
 
