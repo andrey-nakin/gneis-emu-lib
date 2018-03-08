@@ -14,7 +14,7 @@
 #include <G4SDManager.hh>
 
 #include "facility/Beam5.hh"
-#include "facility/SpallationTarget.hh"
+#include "facility/component/SpallationTarget.hh"
 #include "detector/BasicNeutrons.hh"
 
 gneis::facility::Beam5::Beam5(CollimatorDiameter const aDiameter,
@@ -55,7 +55,7 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 
 	{
 		// Neutron source
-		const auto logicSpTarget = SpallationTarget::Instance();
+		const auto logicSpTarget = component::SpallationTarget::Instance();
 		new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 5 * cm), logicSpTarget,
 				logicSpTarget->GetName(), logicWorld, false, 0, checkOverlaps);
 	}

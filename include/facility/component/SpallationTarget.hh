@@ -7,6 +7,8 @@ namespace gneis {
 
 namespace facility {
 
+namespace component {
+
 /**
  * Class encapsulates an information about the lead target
  * used as source of neutrons in the spallation process.
@@ -42,6 +44,8 @@ private:
 	static G4double HalfOf(G4double v);
 
 };
+
+}
 
 }
 
