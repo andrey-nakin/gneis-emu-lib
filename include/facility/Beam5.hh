@@ -2,6 +2,7 @@
 #define beam5_hpp
 
 #include <G4VUserDetectorConstruction.hh>
+#include <G4LogicalVolume.hh>
 
 namespace gneis {
 
@@ -29,10 +30,17 @@ private:
 
 	CollimatorDiameter const diameter;
 	G4VSensitiveDetector* const detector;
-	G4double angle;
+	G4double zeroPosition, length, worldRadius, angle;
 	G4bool collimatorsHaveDetectors;
 
-	static G4double toDouble(CollimatorDiameter d);
+	static G4double ToDouble(CollimatorDiameter d);
+
+	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,
+			G4double position);
+	void PlaceCollimator(G4LogicalVolume *world, G4LogicalVolume *collimator,
+			G4double position);
+
+	G4VSolid* MakeCylinder(G4String const &name, G4double halfLength);
 
 };
 

@@ -6,13 +6,14 @@
 
 #include "facility/component/SpallationTarget.hh"
 #include "repository/Colours.hh"
+#include "util/NameBuilder.hh"
 
 const G4double gneis::facility::component::SpallationTarget::width = 200.0 * mm;
 const G4double gneis::facility::component::SpallationTarget::height = 50.0 * mm;
 const G4double gneis::facility::component::SpallationTarget::length = 400.0 * mm;
 
 G4LogicalVolume* gneis::facility::component::SpallationTarget::Instance() {
-	return Instance("lead-target");
+	return Instance(util::NameBuilder::Make("Target", "Lead"));
 }
 
 G4LogicalVolume* gneis::facility::component::SpallationTarget::Instance(

@@ -7,6 +7,7 @@
 
 #include "facility/component/CollimatorC1.hh"
 #include "repository/Colours.hh"
+#include "util/NameBuilder.hh"
 
 const G4double gneis::facility::component::CollimatorC1::width = 140 * mm;
 const G4double gneis::facility::component::CollimatorC1::height = 180 * mm;
@@ -34,7 +35,7 @@ G4LogicalVolume* gneis::facility::component::CollimatorC1::Instance(
 }
 
 G4String gneis::facility::component::CollimatorC1::GetDefaultName() {
-	return "collimator-C1";
+	return util::NameBuilder::Make("Collimator", "C1");
 }
 
 G4double gneis::facility::component::CollimatorC1::GetLength() {
