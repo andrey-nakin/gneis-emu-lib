@@ -62,6 +62,7 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 				numOfCopies, checkOverlaps);
 	}
 
+	if (false) {
 	{
 		// Collimator C1
 		auto const logicC1 = component::CollimatorC1::AsCylinder(worldRadius);
@@ -92,6 +93,7 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 				diameter);
 		PlaceCollimator(logicWorld, logicC5, 35 * m);
 	}
+	}
 
 	if (detector) {
 		// Target
@@ -105,7 +107,7 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 		sdMan->AddNewDetector(detector);
 		logicTarget->SetSensitiveDetector(detector);
 
-		PlaceComponent(logicWorld, logicTarget, 36 * m - 10 * mm);
+		PlaceComponent(logicWorld, logicTarget, 4.5 * m - 10 * mm);
 	}
 
 	return physWorld;

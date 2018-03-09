@@ -21,6 +21,11 @@ G4bool gneis::detector::BasicNeutrons::ProcessHits(G4Step* const aStep,
 
 	const auto dp = aStep->GetTrack()->GetDynamicParticle();
 
+	G4cout << "detector " << GetName()
+			<< "\t" << dp->GetParticleDefinition()->GetParticleName()
+			<< "\t" << dp->GetTotalEnergy() / MeV
+			<< '\n';
+
 	if (dp->GetParticleDefinition()->GetParticleName() == "neutron") {
 		energies.push_back(dp->GetKineticEnergy());
 		momenta.push_back(dp->GetMomentum());
@@ -31,8 +36,9 @@ G4bool gneis::detector::BasicNeutrons::ProcessHits(G4Step* const aStep,
 }
 
 void gneis::detector::BasicNeutrons::flush() {
-	std::ofstream file("neutrons.txt");
-	file << "# Energy (eV)\tMomentum X\tMomentum Y\tMomentum Z\n";
+	G4String fileName = GetName() + ".txt";
+	std::ofstream file(fileName);
+	file << "# Energy (MeV)\tMomentum X\tMomentum Y\tMomentum Z\n";
 
 	auto ei = energies.begin(), last = energies.end();
 	auto mi = momenta.begin();
