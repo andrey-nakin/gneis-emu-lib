@@ -27,7 +27,7 @@
 gneis::facility::Beam5::Beam5(component::CollimatorC5::Diameter const aDiameter,
 		G4VSensitiveDetector* const aDetector) :
 		G4VUserDetectorConstruction(), diameter(aDiameter), detector(aDetector), zeroPosition(
-				1.0 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
+				0.5 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
 				30.0 * deg), collimatorsHaveDetectors(true) {
 }
 
@@ -51,7 +51,7 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 	logicWorld->SetVisAttributes(G4VisAttributes::Invisible);
 
 	auto const physWorld = new G4PVPlacement(noRotation, G4ThreeVector(),
-			logicWorld, nameWorld, nullptr, false, 0, checkOverlaps);
+			logicWorld, nameWorld, nullptr, single, numOfCopies, checkOverlaps);
 
 	{
 		// Neutron source
