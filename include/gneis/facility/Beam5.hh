@@ -3,7 +3,7 @@
 
 #include <G4VUserDetectorConstruction.hh>
 #include <G4LogicalVolume.hh>
-#include "facility/component/CollimatorC5.hh"
+#include "gneis/facility/component/CollimatorC5.hh"
 
 namespace gneis {
 

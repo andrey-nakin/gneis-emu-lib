@@ -5,6 +5,12 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 project(gneis-emu-lib VERSION 0.1.0 DESCRIPTION "GNEIS Facility Emulation Library")
 set (CMAKE_CXX_STANDARD 11)
 
+set(GNEISEMULIB_MAJOR_VERSION 0)
+set(GNEISEMULIB_MINOR_VERSION 1)
+set(GNEISEMULIB_PATCH_VERSION 0)
+set(GNEISEMULIB_VERSION
+  ${GNEISEMULIB_MAJOR_VERSION}.${GNEISEMULIB_MINOR_VERSION}.${GNEISEMULIB_PATCH_VERSION})
+
 #----------------------------------------------------------------------------
 # Find Geant4 package
 #
@@ -32,6 +38,13 @@ set_target_properties(gneis-emu-lib PROPERTIES VERSION ${PROJECT_VERSION})
 #set_target_properties(gneis-emu-lib PROPERTIES PUBLIC_HEADER ${HEADERS})
 target_include_directories(gneis-emu-lib PRIVATE include)
 include(GNUInstallDirs)
+
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")
+
+configure_file(cmake/gneis-emu-lib-config.cmake.in
+  "${PROJECT_BINARY_DIR}/gneis-emu-lib-config.cmake" @ONLY)
+configure_file(cmake/gneis-emu-lib-config-version.cmake.in
+  "${PROJECT_BINARY_DIR}/gneis-emu-lib-config-version.cmake" @ONLY)
 
 #----------------------------------------------------------------------------
 # Install the library

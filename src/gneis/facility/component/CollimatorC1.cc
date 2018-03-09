@@ -5,9 +5,9 @@
 #include <G4VisAttributes.hh>
 #include <G4SubtractionSolid.hh>
 
-#include "facility/component/CollimatorC1.hh"
-#include "repository/Colours.hh"
-#include "util/NameBuilder.hh"
+#include "gneis/facility/component/CollimatorC1.hh"
+#include "gneis/repository/Colours.hh"
+#include "gneis/util/NameBuilder.hh"
 
 const G4double gneis::facility::component::CollimatorC1::width = 140 * mm;
 const G4double gneis::facility::component::CollimatorC1::height = 180 * mm;

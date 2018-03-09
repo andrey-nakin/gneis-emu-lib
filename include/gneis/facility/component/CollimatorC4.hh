@@ -1,9 +1,9 @@
-#ifndef CollimatorC2_hh
-#define CollimatorC2_hh
+#ifndef CollimatorC4_hh
+#define CollimatorC4_hh
 
 #include <G4LogicalVolume.hh>
 #include <G4VSolid.hh>
-#include "facility/component/BoxComponent.hh"
+#include "BoxComponent.hh"
 
 namespace gneis {
 
@@ -12,15 +12,15 @@ namespace facility {
 namespace component {
 
 /**
- * Second collimator on beams #1 - #5
+ * Fourth collimator on beams #1 - #5
  */
-class CollimatorC2 final : private BoxComponent {
+class CollimatorC4 final : private BoxComponent {
 public:
 
 	/**
 	 * Disable class instantiation.
 	 */
-	CollimatorC2() = delete;
+	CollimatorC4() = delete;
 
 	/**
 	 * Creates an instance of the lead target.
@@ -35,7 +35,7 @@ public:
 
 private:
 
-	const static G4double width, height, length;
+	const static G4double diameter, length;
 
 };
 
@@ -45,4 +45,4 @@ private:
 
 }
 
-#endif	//	CollimatorC2_hh
+#endif	//	CollimatorC4_hh

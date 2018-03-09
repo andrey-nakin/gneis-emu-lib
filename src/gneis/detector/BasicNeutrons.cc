@@ -1,6 +1,6 @@
 #include <fstream>
 #include <G4SystemOfUnits.hh>
-#include "detector/BasicNeutrons.hh"
+#include "gneis/detector/BasicNeutrons.hh"
 
 gneis::detector::BasicNeutrons::BasicNeutrons() :
 		G4VSensitiveDetector("BasicNeutrons") {

@@ -1,4 +1,4 @@
-#include "repository/Colours.hh"
+#include "gneis/repository/Colours.hh"
 
 G4Colour gneis::repository::Colours::Lead() {
 	return FromRGB(159, 157, 153);

@@ -3,7 +3,7 @@
 #include <G4UIExecutive.hh>
 #include <Randomize.hh>
 
-#include "runner/BasicRunner.hh"
+#include "gneis/runner/BasicRunner.hh"
 
 gneis::runner::BasicRunner::BasicRunner() {
 

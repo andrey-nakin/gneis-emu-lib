@@ -5,9 +5,9 @@
 #include <G4SubtractionSolid.hh>
 #include <G4Tubs.hh>
 
-#include "facility/component/CollimatorC5.hh"
-#include "repository/Colours.hh"
-#include "util/NameBuilder.hh"
+#include "gneis/facility/component/CollimatorC5.hh"
+#include "gneis/repository/Colours.hh"
+#include "gneis/util/NameBuilder.hh"
 
 const G4double gneis::facility::component::CollimatorC5::length = 1000 * mm;
 

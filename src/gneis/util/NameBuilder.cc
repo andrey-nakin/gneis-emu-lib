@@ -1,4 +1,4 @@
-#include "util/NameBuilder.hh"
+#include "gneis/util/NameBuilder.hh"
 
 G4String gneis::util::NameBuilder::Make(const char *parent, const char *child) {
 	return Make(G4String(parent), child);

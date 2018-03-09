@@ -14,15 +14,15 @@
 #include <G4SDManager.hh>
 #include <G4RotationMatrix.hh>
 
-#include "facility/Beam5.hh"
-#include "facility/component/SpallationTarget.hh"
-#include "facility/component/CollimatorC1.hh"
-#include "facility/component/CollimatorC2.hh"
-#include "facility/component/CollimatorC3.hh"
-#include "facility/component/CollimatorC4.hh"
-#include "facility/component/CollimatorC5.hh"
-#include "detector/BasicNeutrons.hh"
-#include "util/NameBuilder.hh"
+#include "gneis/facility/Beam5.hh"
+#include "gneis/facility/component/SpallationTarget.hh"
+#include "gneis/facility/component/CollimatorC1.hh"
+#include "gneis/facility/component/CollimatorC2.hh"
+#include "gneis/facility/component/CollimatorC3.hh"
+#include "gneis/facility/component/CollimatorC4.hh"
+#include "gneis/facility/component/CollimatorC5.hh"
+#include "gneis/detector/BasicNeutrons.hh"
+#include "gneis/util/NameBuilder.hh"
 
 gneis::facility::Beam5::Beam5(component::CollimatorC5::Diameter const aDiameter,
 		G4VSensitiveDetector* const aDetector) :

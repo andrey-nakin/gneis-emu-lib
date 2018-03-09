@@ -2,7 +2,7 @@
 #define spallation_target_hh
 
 #include <G4LogicalVolume.hh>
-#include "facility/component/BoxComponent.hh"
+#include "BoxComponent.hh"
 
 namespace gneis {
 

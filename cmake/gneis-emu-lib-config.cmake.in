@@ -1,0 +1,9 @@
+get_filename_component(GNEISEMULIB_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(GNEISEMULIB_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+ 
+#if(NOT TARGET foo AND NOT FooBar_BINARY_DIR)
+#  include("${GNEISEMULIB_CMAKE_DIR}/FooBarTargets.cmake")
+#endif()
+ 
+set(GNEISEMULIB_LIBRARIES gneis-emu-lib)
+

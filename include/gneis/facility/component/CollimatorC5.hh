@@ -3,7 +3,7 @@
 
 #include <G4LogicalVolume.hh>
 #include <G4VSolid.hh>
-#include "facility/component/BoxComponent.hh"
+#include "BoxComponent.hh"
 
 namespace gneis {
 

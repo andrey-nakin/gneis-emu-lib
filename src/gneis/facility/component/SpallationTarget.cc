@@ -4,9 +4,9 @@
 #include <G4LogicalVolume.hh>
 #include <G4VisAttributes.hh>
 
-#include "facility/component/SpallationTarget.hh"
-#include "repository/Colours.hh"
-#include "util/NameBuilder.hh"
+#include "gneis/facility/component/SpallationTarget.hh"
+#include "gneis/repository/Colours.hh"
+#include "gneis/util/NameBuilder.hh"
 
 const G4double gneis::facility::component::SpallationTarget::width = 200.0 * mm;
 const G4double gneis::facility::component::SpallationTarget::height = 50.0 * mm;
