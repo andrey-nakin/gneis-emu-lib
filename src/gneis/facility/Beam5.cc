@@ -93,6 +93,21 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 		PlaceCollimator(logicWorld, logicC5, 35 * m);
 	}
 
+	if (detector) {
+		// Target
+		G4String const name = "Target";
+		const auto solidTarget = new G4Box(name, 50 * mm, 50 * mm, 5 * mm);
+		const auto logicTarget = new G4LogicalVolume(solidTarget,
+				nist->FindOrBuildMaterial("G4_Galactic"), name);
+		logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Red()));
+
+		const auto sdMan = G4SDManager::GetSDMpointer();
+		sdMan->AddNewDetector(detector);
+		logicTarget->SetSensitiveDetector(detector);
+
+		PlaceComponent(logicWorld, logicTarget, 36 * m - 10 * mm);
+	}
+
 	return physWorld;
 }
 

@@ -13,7 +13,7 @@ const G4double gneis::facility::component::SpallationTarget::height = 50.0 * mm;
 const G4double gneis::facility::component::SpallationTarget::length = 400.0 * mm;
 
 G4LogicalVolume* gneis::facility::component::SpallationTarget::Instance() {
-	return Instance(util::NameBuilder::Make("Target", "Lead"));
+	return Instance(util::NameBuilder::Make("Target", "Spallation"));
 }
 
 G4LogicalVolume* gneis::facility::component::SpallationTarget::Instance(
