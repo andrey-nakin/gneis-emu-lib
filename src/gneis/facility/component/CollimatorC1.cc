@@ -13,6 +13,20 @@ const G4double gneis::facility::component::CollimatorC1::width = 140 * mm;
 const G4double gneis::facility::component::CollimatorC1::height = 180 * mm;
 const G4double gneis::facility::component::CollimatorC1::length = 400 * mm;
 
+G4LogicalVolume* gneis::facility::component::CollimatorC1::AsCylinder(
+		G4double const outerRadius) {
+
+	return AsCylinder(GetDefaultName(), outerRadius);
+}
+
+G4LogicalVolume* gneis::facility::component::CollimatorC1::AsCylinder(
+		const G4String &name, G4double const outerRadius) {
+
+	return Instance(name,
+			MakeCylinder(util::NameBuilder::Make(name, "Outer"), GetLength(),
+					outerRadius));
+}
+
 G4LogicalVolume* gneis::facility::component::CollimatorC1::Instance(
 		G4VSolid *outer) {
 
@@ -24,9 +38,10 @@ G4LogicalVolume* gneis::facility::component::CollimatorC1::Instance(
 
 	const auto nist = G4NistManager::Instance();
 
-	const auto aperture = new G4Box(name, HalfOf(width), HalfOf(height),
-			HalfOf(length));
-	const auto solid = new G4SubtractionSolid(name, outer, aperture);
+	const auto aperture = new G4Box(util::NameBuilder::Make(name, "Aperture"),
+			GetHalfWidth(), GetHalfHeight(), GetHalfLength() + 1 * mm);
+	const auto solid = new G4SubtractionSolid(
+			util::NameBuilder::Make(name, "WithAperture"), outer, aperture);
 	const auto logic = new G4LogicalVolume(solid,
 			nist->FindOrBuildMaterial("G4_BRASS"), name);
 	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Brass()));
@@ -36,6 +51,22 @@ G4LogicalVolume* gneis::facility::component::CollimatorC1::Instance(
 
 G4String gneis::facility::component::CollimatorC1::GetDefaultName() {
 	return util::NameBuilder::Make("Collimator", "C1");
+}
+
+G4double gneis::facility::component::CollimatorC1::GetWidth() {
+	return width;
+}
+
+G4double gneis::facility::component::CollimatorC1::GetHalfWidth() {
+	return HalfOf(GetWidth());
+}
+
+G4double gneis::facility::component::CollimatorC1::GetHeight() {
+	return height;
+}
+
+G4double gneis::facility::component::CollimatorC1::GetHalfHeight() {
+	return HalfOf(GetHeight());
 }
 
 G4double gneis::facility::component::CollimatorC1::GetLength() {

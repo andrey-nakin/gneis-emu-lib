@@ -44,7 +44,7 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 	G4int const numOfCopies = 0;
 	G4bool const checkOverlaps = true;
 
-	G4String const nameWorld = "world";
+	G4String const nameWorld = "World";
 	auto const solidWorld = MakeCylinder(nameWorld, zeroPosition + length);
 	auto const logicWorld = new G4LogicalVolume(solidWorld,
 			nist->FindOrBuildMaterial("G4_Galactic"), nameWorld);
@@ -64,46 +64,31 @@ G4VPhysicalVolume* gneis::facility::Beam5::Construct() {
 
 	{
 		// Collimator C1
-		auto const solidC1Outer = MakeCylinder(
-				component::CollimatorC1::GetDefaultName(),
-				component::CollimatorC1::GetLength());
-		auto const logicC1 = component::CollimatorC1::Instance(solidC1Outer);
+		auto const logicC1 = component::CollimatorC1::AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC1, 6 * m);
 	}
 
 	{
 		// Collimator C2
-		auto const solidC2Outer = MakeCylinder(
-				component::CollimatorC2::GetDefaultName(),
-				component::CollimatorC2::GetLength());
-		auto const logicC2 = component::CollimatorC2::Instance(solidC2Outer);
+		auto const logicC2 = component::CollimatorC2::AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC2, 12 * m);
 	}
 
 	{
 		// Collimator C3
-		auto const solidC3Outer = MakeCylinder(
-				component::CollimatorC3::GetDefaultName(),
-				component::CollimatorC3::GetLength());
-		auto const logicC3 = component::CollimatorC3::Instance(solidC3Outer);
+		auto const logicC3 = component::CollimatorC3::AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC3, 23 * m);
 	}
 
 	{
 		// Collimator C4
-		auto const solidC4Outer = MakeCylinder(
-				component::CollimatorC4::GetDefaultName(),
-				component::CollimatorC4::GetLength());
-		auto const logicC4 = component::CollimatorC4::Instance(solidC4Outer);
+		auto const logicC4 = component::CollimatorC4::AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC4, 29 * m);
 	}
 
 	{
 		// Collimator C5
-		auto const solidC5Outer = MakeCylinder(
-				component::CollimatorC5::GetDefaultName(),
-				component::CollimatorC5::GetLength());
-		auto const logicC5 = component::CollimatorC5::Instance(solidC5Outer,
+		auto const logicC5 = component::CollimatorC5::AsCylinder(worldRadius,
 				diameter);
 		PlaceCollimator(logicWorld, logicC5, 35 * m);
 	}

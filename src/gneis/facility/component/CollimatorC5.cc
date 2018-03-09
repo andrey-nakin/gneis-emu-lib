@@ -11,6 +11,20 @@
 
 const G4double gneis::facility::component::CollimatorC5::length = 1000 * mm;
 
+G4LogicalVolume* gneis::facility::component::CollimatorC5::AsCylinder(
+		G4double const outerRadius, Diameter const diameter) {
+
+	return AsCylinder(GetDefaultName(), outerRadius, diameter);
+}
+
+G4LogicalVolume* gneis::facility::component::CollimatorC5::AsCylinder(
+		const G4String &name, G4double const outerRadius,
+		Diameter const diameter) {
+
+	return MakeLogical(
+			MakeCylinder(name, GetLength(), outerRadius, ToDouble(diameter)));
+}
+
 G4LogicalVolume* gneis::facility::component::CollimatorC5::Instance(
 		G4VSolid* const outer, Diameter const diameter) {
 
@@ -20,15 +34,10 @@ G4LogicalVolume* gneis::facility::component::CollimatorC5::Instance(
 G4LogicalVolume* gneis::facility::component::CollimatorC5::Instance(
 		const G4String &name, G4VSolid* const outer, Diameter const diameter) {
 
-	const auto nist = G4NistManager::Instance();
-
-	const auto aperture = new G4Tubs(name, 0.0, HalfOf(ToDouble(diameter)), HalfOf(GetLength()), 0.0 * deg, 360.0 * deg);
+	const auto aperture = new G4Tubs(name, 0.0, HalfOf(ToDouble(diameter)),
+			HalfOf(GetLength()), 0.0 * deg, 360.0 * deg);
 	const auto solid = new G4SubtractionSolid(name, outer, aperture);
-	const auto logic = new G4LogicalVolume(solid,
-			nist->FindOrBuildMaterial("G4_BRASS"), name);
-	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Brass()));
-
-	return logic;
+	return MakeLogical(solid);
 }
 
 G4String gneis::facility::component::CollimatorC5::GetDefaultName() {
@@ -56,4 +65,16 @@ G4double gneis::facility::component::CollimatorC5::ToDouble(Diameter const d) {
 	}
 
 	return 0.0;
+}
+
+G4LogicalVolume* gneis::facility::component::CollimatorC5::MakeLogical(
+		G4VSolid * const solid) {
+
+	const auto nist = G4NistManager::Instance();
+
+	const auto logic = new G4LogicalVolume(solid,
+			nist->FindOrBuildMaterial("G4_BRASS"), solid->GetName());
+	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Brass()));
+
+	return logic;
 }

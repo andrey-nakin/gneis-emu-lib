@@ -25,10 +25,19 @@ public:
 	/**
 	 * Creates an instance of the lead target.
 	 */
+	static G4LogicalVolume* AsCylinder(G4double outerRadius);
+	static G4LogicalVolume* AsCylinder(const G4String &name, G4double outerRadius);
+
 	static G4LogicalVolume* Instance(G4VSolid *outer);
 	static G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer);
 
 	static G4String GetDefaultName();
+
+	static G4double GetWidth();
+	static G4double GetHalfWidth();
+
+	static G4double GetHeight();
+	static G4double GetHalfHeight();
 
 	static G4double GetLength();
 	static G4double GetHalfLength();

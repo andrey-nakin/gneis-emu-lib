@@ -22,8 +22,8 @@ int gneis::runner::BasicRunner::run(int const argc, const char* const argv[],
 
 	closure(runManager);
 
-	G4VisExecutive visManager("Quiet");
-	visManager.Initialize();
+	auto const visManager = new G4VisExecutive("Quiet");
+	visManager->Initialize();
 
 	auto uiManager = G4UImanager::GetUIpointer();
 
