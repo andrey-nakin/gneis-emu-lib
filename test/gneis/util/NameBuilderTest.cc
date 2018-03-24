@@ -1,4 +1,3 @@
-#include <sstream>
 #include <gtest/gtest.h>
 #include "gneis/util/NameBuilder.hh"
 
