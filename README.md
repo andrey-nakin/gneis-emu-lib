@@ -6,6 +6,7 @@ GNEIS facility emulation library based on [Geant4](http://geant4.web.cern.ch/gea
 * C++11 compiler or higher
 * CMake 3.1 or higher
 * Geant4 10.4 or higher
+* Google Test 1.7 or higher
 
 ## Prerequisites
 

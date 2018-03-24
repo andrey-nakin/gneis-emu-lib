@@ -2,8 +2,9 @@
 # Setup the project
 #
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-set (CMAKE_CXX_STANDARD 11)
 project(GNEISEMULIB LANGUAGES CXX VERSION 0.2.0 DESCRIPTION "GNEIS Facility Emulation Library")
+
+set (CMAKE_CXX_STANDARD 11)
 add_definitions(
   -DGNEISEMULIB_VERSION_MAJOR=${GNEISEMULIB_VERSION_MAJOR}
   -DGNEISEMULIB_VERSION_MINOR=${GNEISEMULIB_VERSION_MINOR}
@@ -43,6 +44,12 @@ configure_file(cmake/gneis-emu-lib-config.cmake.in
   "${PROJECT_BINARY_DIR}/gneis-emu-lib-config.cmake" @ONLY)
 configure_file(cmake/gneis-emu-lib-config-version.cmake.in
   "${PROJECT_BINARY_DIR}/gneis-emu-lib-config-version.cmake" @ONLY)
+
+#----------------------------------------------------------------------------
+# Configure tests
+#
+enable_testing()
+add_subdirectory(test)
 
 #----------------------------------------------------------------------------
 # Install the library
