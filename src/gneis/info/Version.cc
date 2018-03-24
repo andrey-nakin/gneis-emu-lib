@@ -5,18 +5,18 @@
 const std::vector<int> gneis::info::Version::Get() {
 	std::vector<int> version;
 
-#ifdef	GNEISEMULIB_MAJOR_VERSION
-	version.push_back(GNEISEMULIB_MAJOR_VERSION);
+#ifdef	GNEISEMULIB_VERSION_MAJOR
+	version.push_back(GNEISEMULIB_VERSION_MAJOR);
 #else
 	version.push_back(-1);
 #endif
-#ifdef	GNEISEMULIB_MINOR_VERSION
-	version.push_back(GNEISEMULIB_MINOR_VERSION);
+#ifdef	GNEISEMULIB_VERSION_MINOR
+	version.push_back(GNEISEMULIB_VERSION_MINOR);
 #else
 	version.push_back(-1);
 #endif
-#ifdef	GNEISEMULIB_PATCH_VERSION
-	version.push_back(GNEISEMULIB_PATCH_VERSION);
+#ifdef	GNEISEMULIB_VERSION_PATCH
+	version.push_back(GNEISEMULIB_VERSION_PATCH);
 #else
 	version.push_back(-1);
 #endif
