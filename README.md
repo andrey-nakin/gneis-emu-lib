@@ -13,7 +13,7 @@ GNEIS facility emulation library based on [Geant4](http://geant4.web.cern.ch/gea
 
 ## Building
 
-1. Go to your working directory, for example `~/workspace`.
+1. Go to your working directory, for example `~/workspace` (all directory names are arbitrary).
 
 2. Create `gneis-emu-lib` subdirectory within the working directory.
 
