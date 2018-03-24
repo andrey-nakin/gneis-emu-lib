@@ -20,6 +20,7 @@ find_package(Geant4 REQUIRED)
 #
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include(GNUInstallDirs)
 
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
@@ -31,11 +32,10 @@ file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add and configure the library
 #
-add_library(gneis-emu-lib STATIC ${SOURCES} ${HEADERS})
-set_target_properties(gneis-emu-lib PROPERTIES VERSION ${PROJECT_VERSION})
-#set_target_properties(gneis-emu-lib PROPERTIES PUBLIC_HEADER ${HEADERS})
-target_include_directories(gneis-emu-lib PRIVATE include)
-include(GNUInstallDirs)
+add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME gneisemu)
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")
 
@@ -47,7 +47,7 @@ configure_file(cmake/gneis-emu-lib-config-version.cmake.in
 #----------------------------------------------------------------------------
 # Install the library
 #
-install(TARGETS gneis-emu-lib
+install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
