@@ -5,7 +5,7 @@ GNEIS facility emulation library based on geant4 toolkit.
 
 * C++11 compiler or higher
 * CMake 3.1 or higher
-* Geant4 10.0 or higher
+* Geant4 10.4 or higher
 
 ## Prerequisites
 
