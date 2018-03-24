@@ -1,5 +1,5 @@
 # gneis-emu-lib
-GNEIS facility emulation library based on geant4 toolkit.
+GNEIS facility emulation library based on [Geant4](http://geant4.web.cern.ch/geant4/) toolkit.
 
 ## Requirements
 
