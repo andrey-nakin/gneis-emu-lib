@@ -29,7 +29,7 @@ GNEIS facility emulation library based on geant4 toolkit.
 cmake ~/workspace/gneis-emu-lib
 ```
 
-If you need to install the library into your profile-specific directory rather than system directory, then set `CMAKE_INSTALL_PREFIX` system property for `cmake` as follows:
+6.1. If you need to install the library into your profile-specific directory rather than system directory, then set `CMAKE_INSTALL_PREFIX` system property for `cmake` as follows:
 
 ```bash
 cmake -DCMAKE_INSTALL_PREFIX=~ ~/workspace/gneis-emu-lib
