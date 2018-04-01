@@ -1,0 +1,5 @@
+get_filename_component(GneisEmuLib_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(GneisEmuLib_INCLUDE_DIRS "@CMAKE_INSTALL_INCLUDEDIR@")
+set(GneisEmuLib_LIBRARY_DIRS "@CMAKE_INSTALL_LIBDIR@")
+set(GneisEmuLib_LIBRARIES gneisemu)
+

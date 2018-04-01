@@ -2,13 +2,14 @@
 # Setup the project
 #
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(GNEISEMULIB LANGUAGES CXX VERSION 0.2.0 DESCRIPTION "GNEIS Facility Emulation Library")
+project(GneisEmuLib VERSION 0.2.0 LANGUAGES CXX DESCRIPTION "GNEIS Facility Emulation Library")
 
+include(GNUInstallDirs)
 set (CMAKE_CXX_STANDARD 11)
 add_definitions(
-  -DGNEISEMULIB_VERSION_MAJOR=${GNEISEMULIB_VERSION_MAJOR}
-  -DGNEISEMULIB_VERSION_MINOR=${GNEISEMULIB_VERSION_MINOR}
-  -DGNEISEMULIB_VERSION_PATCH=${GNEISEMULIB_VERSION_PATCH})
+  -DGNEISEMULIB_VERSION_MAJOR=${GneisEmuLib_VERSION_MAJOR}
+  -DGNEISEMULIB_VERSION_MINOR=${GneisEmuLib_VERSION_MINOR}
+  -DGNEISEMULIB_VERSION_PATCH=${GneisEmuLib_VERSION_PATCH})
 
 #----------------------------------------------------------------------------
 # Find Geant4 package
@@ -36,14 +37,16 @@ file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.hh)
 add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME gneisemu)
-target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_include_directories(${PROJECT_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+    PRIVATE src)
+#set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")
 
-set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")
-
-configure_file(cmake/gneis-emu-lib-config.cmake.in
-  "${PROJECT_BINARY_DIR}/gneis-emu-lib-config.cmake" @ONLY)
-configure_file(cmake/gneis-emu-lib-config-version.cmake.in
-  "${PROJECT_BINARY_DIR}/gneis-emu-lib-config-version.cmake" @ONLY)
+#configure_file(cmake/${PROJECT_NAME}Config.cmake.in
+#  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" @ONLY)
+#configure_file(cmake/${PROJECT_NAME}ConfigVersion.cmake.in
+#  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" @ONLY)
 
 #----------------------------------------------------------------------------
 # Configure tests
@@ -54,9 +57,12 @@ add_subdirectory(test)
 #----------------------------------------------------------------------------
 # Install the library
 #
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/gneis DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(EXPORT ${PROJECT_NAME}Config DESTINATION share/${PROJECT_NAME}/cmake)
+export(TARGETS ${PROJECT_NAME} FILE ${PROJECT_NAME}Config.cmake)
 

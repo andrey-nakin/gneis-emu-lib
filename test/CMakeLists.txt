@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(GNEISEMULIBTEST LANGUAGES CXX)
+project(GneisEmuLibTest LANGUAGES CXX)
 
 include(FindGTest)
 find_package(GTest REQUIRED)
@@ -10,7 +10,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME gneisemutest)
 
 target_link_libraries(${PROJECT_NAME} GTest::GTest GTest::Main)
-target_link_libraries(${PROJECT_NAME} GNEISEMULIB)
+target_link_libraries(${PROJECT_NAME} GneisEmuLib)
 
 add_test(
   NAME ${PROJECT_NAME}

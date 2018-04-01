@@ -2,6 +2,13 @@
 #include <gtest/gtest.h>
 #include "gneis/info/Version.hh"
 
+TEST(gneis_info_Version, Defines)
+{
+	EXPECT_TRUE(GNEISEMULIB_VERSION_MAJOR >= 0);
+	EXPECT_TRUE(GNEISEMULIB_VERSION_MINOR >= 0);
+	EXPECT_TRUE(GNEISEMULIB_VERSION_PATCH >= 0);
+}
+
 TEST(gneis_info_Version, Get)
 {
 	const std::vector<int> ver = gneis::info::Version::Get();
@@ -26,28 +33,22 @@ TEST(gneis_info_Version, GetAsString)
 
 TEST(gneis_info_Version, Matches)
 {
-	EXPECT_EQ(
-			true,
+	EXPECT_TRUE(
 			gneis::info::Version::Matches(GNEISEMULIB_VERSION_MAJOR, GNEISEMULIB_VERSION_MINOR, GNEISEMULIB_VERSION_PATCH)
 	);
-	EXPECT_EQ(
-			true,
+	EXPECT_TRUE(
 			gneis::info::Version::Matches(GNEISEMULIB_VERSION_MAJOR, GNEISEMULIB_VERSION_MINOR)
 	);
-	EXPECT_EQ(
-			true,
+	EXPECT_TRUE(
 			gneis::info::Version::Matches(GNEISEMULIB_VERSION_MAJOR)
 	);
-	EXPECT_EQ(
-			false,
+	EXPECT_FALSE(
 			gneis::info::Version::Matches(GNEISEMULIB_VERSION_MAJOR + 1, GNEISEMULIB_VERSION_MINOR, GNEISEMULIB_VERSION_PATCH)
 	);
-	EXPECT_EQ(
-			false,
+	EXPECT_FALSE(
 			gneis::info::Version::Matches(GNEISEMULIB_VERSION_MAJOR, GNEISEMULIB_VERSION_MINOR + 1, GNEISEMULIB_VERSION_PATCH)
 	);
-	EXPECT_EQ(
-			false,
+	EXPECT_FALSE(
 			gneis::info::Version::Matches(GNEISEMULIB_VERSION_MAJOR, GNEISEMULIB_VERSION_MINOR, GNEISEMULIB_VERSION_PATCH + 1)
 	);
 }
