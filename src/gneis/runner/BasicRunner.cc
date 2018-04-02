@@ -37,6 +37,7 @@ int gneis::runner::BasicRunner::Run(
 		uiManager->ApplyCommand(command + fileName);
 	} else {
 #ifdef	G4VIS_USE
+#ifndef	GNEISEMULIB_NO_VIS
 		auto const visManager = new G4VisExecutive("Quiet");
 		visManager->Initialize();
 
@@ -47,6 +48,7 @@ int gneis::runner::BasicRunner::Run(
 		uiManager->ApplyCommand("/control/execute vis.mac");
 		ui->SessionStart();
 		delete ui;
+#endif
 #endif	//	G4VIS_USE
 	}
 
