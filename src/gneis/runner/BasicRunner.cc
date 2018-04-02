@@ -37,7 +37,7 @@ int gneis::runner::BasicRunner::Run(
 		const G4String fileName = argv[1];
 		uiManager->ApplyCommand(command + fileName);
 	} else {
-		// no arguments passed to executable
+		// no arguments passed to executable - run in visual mode
 		auto ui = new G4UIExecutive(argc, const_cast<char**>(argv));
 		closure(runManager);
 		uiManager->ApplyCommand("/run/initialize");
@@ -52,6 +52,6 @@ int gneis::runner::BasicRunner::Run(
 long gneis::runner::BasicRunner::SystemTime() {
 	using namespace std::chrono;
 	auto const now = time_point_cast < milliseconds > (system_clock::now());
-	auto value = now.time_since_epoch();
+	auto const value = now.time_since_epoch();
 	return value.count();
 }
