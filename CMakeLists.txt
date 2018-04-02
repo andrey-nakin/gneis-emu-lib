@@ -19,7 +19,7 @@ if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
 else()
   find_package(Geant4 REQUIRED)
-  add_definitions(-DGNEISEMULIB_NO_VIS}
+  add_definitions(-DGNEISEMULIB_NO_VIS)
 endif()
 
 #----------------------------------------------------------------------------
