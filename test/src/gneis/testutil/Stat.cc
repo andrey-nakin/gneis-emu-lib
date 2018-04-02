@@ -4,7 +4,7 @@
 #include "gneis/testutil/Stat.hh"
 
 gneis::testutil::Stat::Stat() :
-		count(0), sum(0.0), sum2(0.0), maxValue(0.0) {
+		count(0), sum(0.0), sum2(0.0), minValue(0.0), maxValue(0.0) {
 
 }
 
@@ -53,8 +53,8 @@ bool gneis::testutil::Stat::Is(G4double const value) const {
 	auto const ConfLevel999Quantile = 3.29;
 
 	auto const mean = GetMean();
-	auto const sampleStd = GetMeanStd();
+	auto const meanStd = GetMeanStd();
 
-	return value > mean - sampleStd * ConfLevel999Quantile
-			&& value < mean + sampleStd * ConfLevel999Quantile;
+	return value > mean - meanStd * ConfLevel999Quantile
+			&& value < mean + meanStd * ConfLevel999Quantile;
 }
