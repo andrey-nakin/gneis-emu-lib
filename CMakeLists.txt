@@ -41,12 +41,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
     PRIVATE src)
-#set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")
-
-#configure_file(cmake/${PROJECT_NAME}Config.cmake.in
-#  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" @ONLY)
-#configure_file(cmake/${PROJECT_NAME}ConfigVersion.cmake.in
-#  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" @ONLY)
 
 #----------------------------------------------------------------------------
 # Configure tests
