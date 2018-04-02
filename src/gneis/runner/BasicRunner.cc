@@ -4,7 +4,9 @@
 #include <G4UIExecutive.hh>
 #include <Randomize.hh>
 #ifdef G4VIS_USE
+#ifndef	GNEISEMULIB_NO_VIS
 #include <G4VisExecutive.hh>
+#endif
 #endif	//	G4VIS_USE
 
 #include "gneis/runner/BasicRunner.hh"
