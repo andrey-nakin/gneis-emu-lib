@@ -4,6 +4,8 @@
 #include <G4VUserPrimaryGeneratorAction.hh>
 #include <G4ParticleGun.hh>
 
+#include <gtest/gtest_prod.h>
+
 namespace gneis {
 
 namespace generator {
@@ -21,7 +23,12 @@ public:
 
 private:
 
+	FRIEND_TEST(Spallation, GeneratePosition);
+
+	G4double diameter;
 	G4ParticleGun* particleGun;
+
+	G4ThreeVector GeneratePosition() const;
 
 };
 
