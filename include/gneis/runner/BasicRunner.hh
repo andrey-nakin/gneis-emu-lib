@@ -14,16 +14,20 @@ namespace runner {
 class BasicRunner {
 public:
 
-	BasicRunner();
+	BasicRunner(int argc, char* argv[]);
 	virtual ~BasicRunner();
 
 	BasicRunner(BasicRunner const&) = delete;
 	BasicRunner& operator=(BasicRunner const&) = delete;
 
-	int run(int argc, const char* const argv[],
-			std::function<void(G4RunManager&)> closure);
+	int Run(std::function<void(G4RunManager&)> closure);
 
 private:
+
+	int const argc;
+	char const* const* const argv;
+
+	static long SystemTime();
 
 };
 

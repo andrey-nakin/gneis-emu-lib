@@ -1,3 +1,5 @@
+#include <chrono>
+
 #include <G4VisExecutive.hh>
 #include <G4UImanager.hh>
 #include <G4UIExecutive.hh>
@@ -5,7 +7,8 @@
 
 #include "gneis/runner/BasicRunner.hh"
 
-gneis::runner::BasicRunner::BasicRunner() {
+gneis::runner::BasicRunner::BasicRunner(int argc_, char* argv_[]) :
+		argc(argc_), argv(argv_) {
 
 }
 
@@ -13,12 +16,13 @@ gneis::runner::BasicRunner::~BasicRunner() {
 
 }
 
-int gneis::runner::BasicRunner::run(int const argc, const char* const argv[],
+int gneis::runner::BasicRunner::Run(
 		std::function<void(G4RunManager&)> closure) {
 
 	G4RunManager runManager;
 
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
+	G4Random::setTheSeed(SystemTime());
 
 	closure(runManager);
 
@@ -35,8 +39,18 @@ int gneis::runner::BasicRunner::run(int const argc, const char* const argv[],
 	} else {
 		// no arguments passed to executable
 		auto ui = new G4UIExecutive(argc, const_cast<char**>(argv));
+		uiManager->ApplyCommand("/run/initialize");
+		uiManager->ApplyCommand("/control/execute vis.mac");
 		ui->SessionStart();
+		delete ui;
 	}
 
 	return 0;
+}
+
+long gneis::runner::BasicRunner::SystemTime() {
+	using namespace std::chrono;
+	auto const now = time_point_cast < milliseconds > (system_clock::now());
+	auto value = now.time_since_epoch();
+	return value.count();
 }
