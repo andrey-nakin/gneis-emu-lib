@@ -23,6 +23,6 @@ gneis::generator::Spallation::~Spallation() {
 	delete particleGun;
 }
 
-void gneis::generator::Spallation::GeneratePrimaries(G4Event* anEvent) {
+void gneis::generator::Spallation::GeneratePrimaries(G4Event* const anEvent) {
 	particleGun->GeneratePrimaryVertex(anEvent);
 }
