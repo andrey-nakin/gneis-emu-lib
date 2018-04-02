@@ -24,9 +24,6 @@ int gneis::runner::BasicRunner::Run(
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
 	G4Random::setTheSeed(SystemTime());
 
-	auto const visManager = new G4VisExecutive("Quiet");
-	visManager->Initialize();
-
 	auto uiManager = G4UImanager::GetUIpointer();
 
 	if (argc > 1) {
@@ -37,6 +34,9 @@ int gneis::runner::BasicRunner::Run(
 		const G4String fileName = argv[1];
 		uiManager->ApplyCommand(command + fileName);
 	} else {
+		auto const visManager = new G4VisExecutive("Quiet");
+		visManager->Initialize();
+
 		// no arguments passed to executable - run in visual mode
 		auto ui = new G4UIExecutive(argc, const_cast<char**>(argv));
 		closure(runManager);
