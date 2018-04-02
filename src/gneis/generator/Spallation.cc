@@ -8,7 +8,7 @@
 #include "gneis/generator/Spallation.hh"
 
 gneis::generator::Spallation::Spallation() :
-		diameter(5.0 * cm) {
+		diameter(4.0 * cm) {
 
 	G4int const n_particle = 1;
 	particleGun = new G4ParticleGun(n_particle);

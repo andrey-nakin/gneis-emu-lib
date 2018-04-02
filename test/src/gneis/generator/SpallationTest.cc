@@ -30,17 +30,17 @@ TEST(Spallation, GeneratePosition)
 				}
 
 				EXPECT_TRUE(x.Is(0.0 * cm));
-				EXPECT_TRUE(x.GetMin() > -2.5 * cm);
-				EXPECT_TRUE(x.GetMax() < 2.5 * cm);
-				EXPECT_TRUE(x.GetStd() > 1.2 * cm);
+				EXPECT_TRUE(x.GetMin() > -2 * cm);
+				EXPECT_TRUE(x.GetMax() < 2 * cm);
+				EXPECT_TRUE(x.GetStd() > 0.99 * cm);
 
 				EXPECT_TRUE(y.Is(0.0 * cm));
-				EXPECT_TRUE(y.GetMin() > -2.5 * cm);
-				EXPECT_TRUE(y.GetMax() < 2.5 * cm);
-				EXPECT_TRUE(y.GetStd() > 1.2 * cm);
+				EXPECT_TRUE(y.GetMin() > -2 * cm);
+				EXPECT_TRUE(y.GetMax() < 2 * cm);
+				EXPECT_TRUE(y.GetStd() > 0.99 * cm);
 
-				EXPECT_TRUE(r.GetMax() < 2.5 * cm);
-				EXPECT_TRUE(r.GetStd() > 0.5 * cm);
+				EXPECT_TRUE(r.GetMax() < 2 * cm);
+				EXPECT_TRUE(r.GetStd() > 0.47 * cm);
 			});
 }
 
