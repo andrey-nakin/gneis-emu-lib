@@ -1,9 +1,11 @@
 #include <chrono>
 
-#include <G4VisExecutive.hh>
 #include <G4UImanager.hh>
 #include <G4UIExecutive.hh>
 #include <Randomize.hh>
+#ifdef G4VIS_USE
+#include <G4VisExecutive.hh>
+#endif	//	G4VIS_USE
 
 #include "gneis/runner/BasicRunner.hh"
 
