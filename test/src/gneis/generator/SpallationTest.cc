@@ -17,7 +17,6 @@ namespace generator {
 TEST(Spallation, GeneratePosition)
 {
 	gneis::testutil::Geant4Runner::Run([]() {
-				using namespace gneis::generator;
 				using namespace gneis::testutil;
 
 				Spallation spallation;
