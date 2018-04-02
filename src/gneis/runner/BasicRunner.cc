@@ -24,14 +24,14 @@ int gneis::runner::BasicRunner::Run(
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
 	G4Random::setTheSeed(SystemTime());
 
-	closure(runManager);
-
 	auto const visManager = new G4VisExecutive("Quiet");
 	visManager->Initialize();
 
 	auto uiManager = G4UImanager::GetUIpointer();
 
 	if (argc > 1) {
+		closure(runManager);
+
 		// first argument is a script file name
 		const G4String command = "/control/execute ";
 		const G4String fileName = argv[1];
@@ -39,6 +39,7 @@ int gneis::runner::BasicRunner::Run(
 	} else {
 		// no arguments passed to executable
 		auto ui = new G4UIExecutive(argc, const_cast<char**>(argv));
+		closure(runManager);
 		uiManager->ApplyCommand("/run/initialize");
 		uiManager->ApplyCommand("/control/execute vis.mac");
 		ui->SessionStart();

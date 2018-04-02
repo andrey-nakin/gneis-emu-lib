@@ -14,7 +14,7 @@ add_definitions(
 #----------------------------------------------------------------------------
 # Find Geant4 package
 #
-find_package(Geant4 REQUIRED)
+find_package(Geant4 REQUIRED ui_all vis_all)
 
 #----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
