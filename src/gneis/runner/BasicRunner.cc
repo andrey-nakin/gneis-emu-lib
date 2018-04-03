@@ -11,8 +11,8 @@
 
 #include "gneis/runner/BasicRunner.hh"
 
-gneis::runner::BasicRunner::BasicRunner(int argc_, char* argv_[]) :
-		argc(argc_), argv(argv_) {
+gneis::runner::BasicRunner::BasicRunner(int argc, char* argv[]) :
+		parser(argc, argv) {
 
 }
 
@@ -23,19 +23,24 @@ gneis::runner::BasicRunner::~BasicRunner() {
 int gneis::runner::BasicRunner::Run(
 		std::function<void(G4RunManager&)> closure) {
 
+	if (parser.GetReturnCode()) {
+		return parser.GetReturnCode();
+	}
+
 	G4RunManager runManager;
 
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
-	G4Random::setTheSeed(SystemTime());
+	G4Random::setTheSeed(
+			parser.GetRandomSeed() ? parser.GetRandomSeed() : SystemTime());
 
 	auto uiManager = G4UImanager::GetUIpointer();
 
-	if (argc > 1) {
+	if (parser.GetArgc() > 1) {
 		closure(runManager);
 
 		// first argument is a script file name
 		const G4String command = "/control/execute ";
-		const G4String fileName = argv[1];
+		const G4String fileName = parser.GetArgv()[1];
 		uiManager->ApplyCommand(command + fileName);
 	} else {
 #ifdef	G4VIS_USE
@@ -44,7 +49,7 @@ int gneis::runner::BasicRunner::Run(
 		visManager->Initialize();
 
 		// no arguments passed to executable - run in visual mode
-		auto ui = new G4UIExecutive(argc, const_cast<char**>(argv));
+		auto ui = new G4UIExecutive(parser.GetArgc(), parser.GetArgv());
 		closure(runManager);
 		uiManager->ApplyCommand("/run/initialize");
 		uiManager->ApplyCommand("/control/execute vis.mac");

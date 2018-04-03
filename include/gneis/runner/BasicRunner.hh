@@ -1,8 +1,10 @@
-#ifndef basic_runner_hh
-#define basic_runner_hh
+#ifndef gneis_runner_BasicRunner_hh
+#define gneis_runner_BasicRunner_hh
 
 #include <functional>
 #include <G4RunManager.hh>
+
+#include "gneis/runner/CommandLineParser.hh"
 
 namespace gneis {
 
@@ -24,8 +26,7 @@ public:
 
 private:
 
-	int const argc;
-	char const* const* const argv;
+	CommandLineParser const parser;
 
 	static long SystemTime();
 
@@ -35,4 +36,4 @@ private:
 
 }
 
-#endif	//	basic_runner_hh
+#endif	//	gneis_runner_BasicRunner_hh
