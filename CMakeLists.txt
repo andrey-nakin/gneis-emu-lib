@@ -28,6 +28,7 @@ endif()
 #
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/private-include)
 include(GNUInstallDirs)
 
 #----------------------------------------------------------------------------
@@ -36,11 +37,12 @@ include(GNUInstallDirs)
 #
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.hh)
+file(GLOB_RECURSE PRIVATE_HEADERS ${PROJECT_SOURCE_DIR}/private-include/*.hh)
 
 #----------------------------------------------------------------------------
 # Add and configure the library
 #
-add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${PRIVATE_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME isnpemu)
 target_include_directories(${PROJECT_NAME} PUBLIC

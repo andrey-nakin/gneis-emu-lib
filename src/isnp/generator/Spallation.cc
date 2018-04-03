@@ -6,9 +6,10 @@
 #include <Randomize.hh>
 
 #include "isnp/generator/Spallation.hh"
+#include "isnp/generator/SpallationMessenger.hh"
 
 isnp::generator::Spallation::Spallation() :
-		diameter(4.0 * cm) {
+		diameter(4.0 * cm), messenger(new SpallationMessenger(this)) {
 
 	G4int const n_particle = 1;
 	particleGun = new G4ParticleGun(n_particle);
