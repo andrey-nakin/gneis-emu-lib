@@ -1,5 +1,5 @@
 # isnp-emu-lib
-ISNP facility emulation library based on [Geant4](http://geant4.web.cern.ch/geant4/) toolkit.
+ISNP facility emulation library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
 
 ## Requirements
 
