@@ -1,9 +1,10 @@
 #include <fstream>
 #include <G4SystemOfUnits.hh>
 #include "gneis/detector/Basic.hh"
+#include "gneis/util/FileNameBuilder.hh"
 
 gneis::detector::Basic::Basic() :
-		G4VSensitiveDetector("Basic") {
+		G4VSensitiveDetector("detector") {
 
 }
 
@@ -40,8 +41,7 @@ G4bool gneis::detector::Basic::ProcessHits(G4Step* const aStep,
 }
 
 void gneis::detector::Basic::flush() {
-	G4String fileName = GetName() + ".txt";
-	std::ofstream file(fileName);
+	std::ofstream file(gneis::util::FileNameBuilder::Make(GetName(), ".txt"));
 	file << "# Type\tEnergy (MeV)\tMomentum X\tMomentum Y\tMomentum Z\n";
 
 	auto ei = std::begin(energies), last = std::end(energies);

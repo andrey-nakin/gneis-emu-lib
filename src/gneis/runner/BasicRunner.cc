@@ -10,6 +10,7 @@
 #endif	//	G4VIS_USE
 
 #include "gneis/runner/BasicRunner.hh"
+#include "gneis/util/FileNameBuilder.hh"
 
 gneis::runner::BasicRunner::BasicRunner(int argc, char* argv[]) :
 		parser(argc, argv) {
@@ -26,6 +27,8 @@ int gneis::runner::BasicRunner::Run(
 	if (parser.GetReturnCode()) {
 		return parser.GetReturnCode();
 	}
+
+	gneis::util::FileNameBuilder::SetCommonSuffix(parser.GetFileSuffix());
 
 	G4RunManager runManager;
 

@@ -10,7 +10,7 @@ namespace runner {
 /**
  * Class parses command line and retrieves commonly used parameters
  */
-class CommandLineParser {
+class CommandLineParser final {
 public:
 
 	CommandLineParser(int argc, char* argv[], bool silent = false);
