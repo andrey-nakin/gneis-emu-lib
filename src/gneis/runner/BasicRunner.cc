@@ -31,7 +31,8 @@ int gneis::runner::BasicRunner::Run(
 
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
 	G4Random::setTheSeed(
-			parser.GetRandomSeed() ? parser.GetRandomSeed() : SystemTime());
+			parser.GetRandomSeed() >= 0 ?
+					parser.GetRandomSeed() : SystemTime());
 
 	auto uiManager = G4UImanager::GetUIpointer();
 

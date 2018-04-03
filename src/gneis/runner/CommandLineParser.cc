@@ -7,7 +7,7 @@
 
 gneis::runner::CommandLineParser::CommandLineParser(int argc_, char* argv_[],
 		bool const silent) :
-		returnCode(0), randomSeed(0), fileSuffix(""), parsedArgc(0), parsedArgv(
+		returnCode(0), randomSeed(-1L), fileSuffix(""), parsedArgc(0), parsedArgv(
 				nullptr) {
 	Parse(argc_, argv_, silent);
 }
