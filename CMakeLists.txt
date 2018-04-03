@@ -2,14 +2,14 @@
 # Setup the project
 #
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(GneisEmuLib VERSION 0.2.0 LANGUAGES CXX DESCRIPTION "GNEIS Facility Emulation Library")
+project(IsnpEmuLib VERSION 0.2.0 LANGUAGES CXX DESCRIPTION "ISNP Facility Emulation Library")
 
 include(GNUInstallDirs)
 set (CMAKE_CXX_STANDARD 11)
 add_definitions(
-  -DGNEISEMULIB_VERSION_MAJOR=${GneisEmuLib_VERSION_MAJOR}
-  -DGNEISEMULIB_VERSION_MINOR=${GneisEmuLib_VERSION_MINOR}
-  -DGNEISEMULIB_VERSION_PATCH=${GneisEmuLib_VERSION_PATCH})
+  -DISNPEMULIB_VERSION_MAJOR=${IsnpEmuLib_VERSION_MAJOR}
+  -DISNPEMULIB_VERSION_MINOR=${IsnpEmuLib_VERSION_MINOR}
+  -DISNPEMULIB_VERSION_PATCH=${IsnpEmuLib_VERSION_PATCH})
 
 #----------------------------------------------------------------------------
 # Find Geant4 package
@@ -19,7 +19,7 @@ if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
 else()
   find_package(Geant4 REQUIRED)
-  add_definitions(-DGNEISEMULIB_NO_VIS)
+  add_definitions(-DISNPEMULIB_NO_VIS)
 endif()
 
 #----------------------------------------------------------------------------
@@ -42,7 +42,7 @@ file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.hh)
 #
 add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME gneisemu)
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME isnpemu)
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>

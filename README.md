@@ -1,5 +1,5 @@
-# gneis-emu-lib
-GNEIS facility emulation library based on [Geant4](http://geant4.web.cern.ch/geant4/) toolkit.
+# isnp-emu-lib
+ISNP facility emulation library based on [Geant4](http://geant4.web.cern.ch/geant4/) toolkit.
 
 ## Requirements
 
@@ -16,24 +16,24 @@ GNEIS facility emulation library based on [Geant4](http://geant4.web.cern.ch/gea
 
 1. Go to your working directory, for example `~/workspace` (all directory names are arbitrary).
 
-2. Create `gneis-emu-lib` subdirectory within the working directory.
+2. Create `isnp-emu-lib` subdirectory within the working directory.
 
-3. Download content of `gneis-emu-lib` repository into `~/workspace/gneis-emu-lib`:
+3. Download content of `isnp-emu-lib` repository into `~/workspace/isnp-emu-lib`.
 
-4. Create `gneis-emu-lib-build` subdirectory within the working directory.
+4. Create `isnp-emu-lib-build` subdirectory within the working directory.
 
-5. Enter `~/workspace/gneis-emu-lib-build` directory.
+5. Enter `~/workspace/isnp-emu-lib-build` directory.
 
 6. Run `cmake`:
 
 ```bash
-cmake ~/workspace/gneis-emu-lib
+cmake ~/workspace/isnp-emu-lib
 ```
 
 6.1. If you need to install the library into your profile-specific directory rather than system directory, then set `CMAKE_INSTALL_PREFIX` system property for `cmake` as follows:
 
 ```bash
-cmake -DCMAKE_INSTALL_PREFIX=~ ~/workspace/gneis-emu-lib
+cmake -DCMAKE_INSTALL_PREFIX=~ ~/workspace/isnp-emu-lib
 ```
 
 7. Build and install library:

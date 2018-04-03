@@ -1,0 +1,49 @@
+#include <cmath>
+
+#include <G4RunManager.hh>
+#include <QGSP_INCLXX_HP.hh>
+#include <G4SystemOfUnits.hh>
+
+#include <gtest/gtest.h>
+
+#include <isnp/generator/Spallation.hh>
+#include "isnp/testutil/Geant4Runner.hh"
+#include "isnp/testutil/Stat.hh"
+
+namespace isnp {
+
+namespace generator {
+
+TEST(Spallation, GeneratePosition)
+{
+	isnp::testutil::Geant4Runner::Run([]() {
+				using namespace isnp::testutil;
+
+				Spallation spallation;
+				Stat x, y, r;
+
+				for (int i = 0; i < 1000000; i++) {
+					auto const pos = spallation.GeneratePosition();
+					x += pos.getX();
+					y += pos.getY();
+					r += std::sqrt(pos.getX() * pos.getX() + pos.getY() * pos.getY());
+				}
+
+				EXPECT_TRUE(x.Is(0.0 * cm));
+				EXPECT_TRUE(x.GetMin() > -2 * cm);
+				EXPECT_TRUE(x.GetMax() < 2 * cm);
+				EXPECT_TRUE(x.GetStd() > 0.99 * cm);
+
+				EXPECT_TRUE(y.Is(0.0 * cm));
+				EXPECT_TRUE(y.GetMin() > -2 * cm);
+				EXPECT_TRUE(y.GetMax() < 2 * cm);
+				EXPECT_TRUE(y.GetStd() > 0.99 * cm);
+
+				EXPECT_TRUE(r.GetMax() < 2 * cm);
+				EXPECT_TRUE(r.GetStd() > 0.47 * cm);
+			});
+}
+
+}
+
+}
