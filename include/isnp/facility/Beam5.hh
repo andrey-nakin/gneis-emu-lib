@@ -3,7 +3,6 @@
 
 #include <G4VUserDetectorConstruction.hh>
 #include <G4LogicalVolume.hh>
-#include "isnp/facility/component/CollimatorC5.hh"
 
 namespace isnp {
 
@@ -12,7 +11,7 @@ namespace facility {
 class Beam5: public G4VUserDetectorConstruction {
 public:
 
-	Beam5(component::CollimatorC5::Diameter aDiameter, G4VSensitiveDetector* aDetector);
+	Beam5(G4VSensitiveDetector* aDetector);
 	virtual ~Beam5();
 
 	virtual G4VPhysicalVolume* Construct();
@@ -25,10 +24,10 @@ public:
 
 private:
 
-	component::CollimatorC5::Diameter const diameter;
 	G4VSensitiveDetector* const detector;
 	G4double zeroPosition, length, worldRadius, angle;
 	G4bool collimatorsHaveDetectors;
+	G4double diameter;
 
 	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,
 			G4double position);

@@ -24,11 +24,10 @@
 #include "isnp/detector/BasicNeutrons.hh"
 #include "isnp/util/NameBuilder.hh"
 
-isnp::facility::Beam5::Beam5(component::CollimatorC5::Diameter const aDiameter,
-		G4VSensitiveDetector* const aDetector) :
-		G4VUserDetectorConstruction(), diameter(aDiameter), detector(aDetector), zeroPosition(
+isnp::facility::Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
+		G4VUserDetectorConstruction(), detector(aDetector), zeroPosition(
 				0.5 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
-				30.0 * deg), collimatorsHaveDetectors(true) {
+				30.0 * deg), collimatorsHaveDetectors(true), diameter(100 * mm) {
 }
 
 isnp::facility::Beam5::~Beam5() {
@@ -63,36 +62,40 @@ G4VPhysicalVolume* isnp::facility::Beam5::Construct() {
 	}
 
 	if (false) {
-	{
-		// Collimator C1
-		auto const logicC1 = component::CollimatorC1::AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC1, 6 * m);
-	}
+		{
+			// Collimator C1
+			auto const logicC1 = component::CollimatorC1::AsCylinder(
+					worldRadius);
+			PlaceCollimator(logicWorld, logicC1, 6 * m);
+		}
 
-	{
-		// Collimator C2
-		auto const logicC2 = component::CollimatorC2::AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC2, 12 * m);
-	}
+		{
+			// Collimator C2
+			auto const logicC2 = component::CollimatorC2::AsCylinder(
+					worldRadius);
+			PlaceCollimator(logicWorld, logicC2, 12 * m);
+		}
 
-	{
-		// Collimator C3
-		auto const logicC3 = component::CollimatorC3::AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC3, 23 * m);
-	}
+		{
+			// Collimator C3
+			auto const logicC3 = component::CollimatorC3::AsCylinder(
+					worldRadius);
+			PlaceCollimator(logicWorld, logicC3, 23 * m);
+		}
 
-	{
-		// Collimator C4
-		auto const logicC4 = component::CollimatorC4::AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC4, 29 * m);
-	}
+		{
+			// Collimator C4
+			auto const logicC4 = component::CollimatorC4::AsCylinder(
+					worldRadius);
+			PlaceCollimator(logicWorld, logicC4, 29 * m);
+		}
 
-	{
-		// Collimator C5
-		auto const logicC5 = component::CollimatorC5::AsCylinder(worldRadius,
-				diameter);
-		PlaceCollimator(logicWorld, logicC5, 35 * m);
-	}
+		{
+			// Collimator C5
+			auto const logicC5 = component::CollimatorC5::AsCylinder(
+					worldRadius, diameter);
+			PlaceCollimator(logicWorld, logicC5, 35 * m);
+		}
 	}
 
 	if (detector) {

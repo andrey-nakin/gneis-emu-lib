@@ -12,29 +12,29 @@
 const G4double isnp::facility::component::CollimatorC5::length = 1000 * mm;
 
 G4LogicalVolume* isnp::facility::component::CollimatorC5::AsCylinder(
-		G4double const outerRadius, Diameter const diameter) {
+		G4double const outerRadius, G4double const diameter) {
 
 	return AsCylinder(GetDefaultName(), outerRadius, diameter);
 }
 
 G4LogicalVolume* isnp::facility::component::CollimatorC5::AsCylinder(
 		const G4String &name, G4double const outerRadius,
-		Diameter const diameter) {
+		G4double const diameter) {
 
 	return MakeLogical(
-			MakeCylinder(name, GetLength(), outerRadius, ToDouble(diameter)));
+			MakeCylinder(name, GetLength(), outerRadius, diameter));
 }
 
 G4LogicalVolume* isnp::facility::component::CollimatorC5::Instance(
-		G4VSolid* const outer, Diameter const diameter) {
+		G4VSolid* const outer, G4double const diameter) {
 
 	return Instance(GetDefaultName(), outer, diameter);
 }
 
 G4LogicalVolume* isnp::facility::component::CollimatorC5::Instance(
-		const G4String &name, G4VSolid* const outer, Diameter const diameter) {
+		const G4String &name, G4VSolid* const outer, G4double const diameter) {
 
-	const auto aperture = new G4Tubs(name, 0.0, HalfOf(ToDouble(diameter)),
+	const auto aperture = new G4Tubs(name, 0.0, HalfOf(diameter),
 			HalfOf(GetLength()), 0.0 * deg, 360.0 * deg);
 	const auto solid = new G4SubtractionSolid(name, outer, aperture);
 	return MakeLogical(solid);
@@ -50,21 +50,6 @@ G4double isnp::facility::component::CollimatorC5::GetLength() {
 
 G4double isnp::facility::component::CollimatorC5::GetHalfLength() {
 	return HalfOf(GetLength());
-}
-
-G4double isnp::facility::component::CollimatorC5::ToDouble(Diameter const d) {
-	switch (d) {
-	case Diameter::D50:
-		return 50.0 * mm;
-
-	case Diameter::D75:
-		return 75.0 * mm;
-
-	case Diameter::D100:
-		return 100.0 * mm;
-	}
-
-	return 0.0;
 }
 
 G4LogicalVolume* isnp::facility::component::CollimatorC5::MakeLogical(

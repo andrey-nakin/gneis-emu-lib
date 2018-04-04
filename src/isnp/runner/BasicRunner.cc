@@ -10,10 +10,11 @@
 #endif	//	G4VIS_USE
 
 #include "isnp/runner/BasicRunner.hh"
+#include "isnp/runner/CommandLineParser.hh"
 #include "isnp/util/FileNameBuilder.hh"
 
 isnp::runner::BasicRunner::BasicRunner(int argc, char* argv[]) :
-		parser(argc, argv) {
+		parser(std::make_unique < CommandLineParser > (argc, argv)) {
 
 }
 
@@ -23,25 +24,25 @@ isnp::runner::BasicRunner::~BasicRunner() {
 
 int isnp::runner::BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 
-	if (parser.GetReturnCode()) {
-		return parser.GetReturnCode();
+	if (parser->GetReturnCode()) {
+		return parser->GetReturnCode();
 	}
 
-	isnp::util::FileNameBuilder::SetCommonSuffix(parser.GetFileSuffix());
+	isnp::util::FileNameBuilder::SetCommonSuffix(parser->GetFileSuffix());
 
 	G4RunManager runManager;
 
 	G4Random::setTheSeed(
-			parser.IsRandomSeedSet() ? parser.GetRandomSeed() : SystemTime());
+			parser->IsRandomSeedSet() ? parser->GetRandomSeed() : SystemTime());
 
 	auto uiManager = G4UImanager::GetUIpointer();
 
-	if (parser.GetArgc() > 1) {
+	if (parser->GetArgc() > 1) {
 		closure(runManager);
 
 		// first argument is a script file name
 		const G4String command = "/control/execute ";
-		const G4String fileName = parser.GetArgv()[1];
+		const G4String fileName = parser->GetArgv()[1];
 		uiManager->ApplyCommand(command + fileName);
 	} else {
 #ifdef	G4VIS_USE
@@ -50,7 +51,7 @@ int isnp::runner::BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 		visManager->Initialize();
 
 		// no arguments passed to executable - run in visual mode
-		auto ui = new G4UIExecutive(parser.GetArgc(), parser.GetArgv());
+		auto ui = new G4UIExecutive(parser->GetArgc(), parser->GetArgv());
 		closure(runManager);
 		uiManager->ApplyCommand("/run/initialize");
 		uiManager->ApplyCommand("/control/execute vis.mac");
