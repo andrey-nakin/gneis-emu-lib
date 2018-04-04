@@ -18,7 +18,7 @@ public:
 
 	SpallationMessenger(Spallation& spallation);
 
-    void SetNewValue(G4UIcommand*, G4String) override;
+	void SetNewValue(G4UIcommand*, G4String) override;
 
 private:
 
