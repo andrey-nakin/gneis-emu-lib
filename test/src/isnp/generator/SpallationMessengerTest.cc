@@ -17,7 +17,7 @@ TEST(SpallationMessenger, SetDiameter)
 {
 
 	Spallation spallation;
-	auto uiManager = G4UImanager::GetUIpointer();
+	auto const uiManager = G4UImanager::GetUIpointer();
 
 	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetDiameter());
 	uiManager->ApplyCommand("/isnp/gun/diameter 50 mm");
