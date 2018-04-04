@@ -14,7 +14,7 @@ namespace generator {
 
 Spallation::Spallation() :
 		particleGun(MakeGun()), messenger(
-				std::make_unique < SpallationMessenger > (this)), diameter(
+				std::make_unique < SpallationMessenger > (*this)), diameter(
 				4.0 * cm) {
 }
 
