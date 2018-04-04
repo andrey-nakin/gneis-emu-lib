@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 project(IsnpEmuLib VERSION 0.2.0 LANGUAGES CXX DESCRIPTION "ISNP Facility Emulation Library")
 
 include(GNUInstallDirs)
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 add_definitions(
   -DISNPEMULIB_VERSION_MAJOR=${IsnpEmuLib_VERSION_MAJOR}
   -DISNPEMULIB_VERSION_MINOR=${IsnpEmuLib_VERSION_MINOR}

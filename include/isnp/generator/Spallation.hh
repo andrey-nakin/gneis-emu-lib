@@ -25,15 +25,25 @@ public:
 
 	void GeneratePrimaries(G4Event*);
 
+	G4double GetDiameter() const {
+		return diameter;
+	}
+
+	void SetDiameter(G4double const v) {
+		diameter = v;
+	}
+
 private:
 
 	FRIEND_TEST(Spallation, GeneratePosition);
 
-	G4double diameter;
-	G4ParticleGun* particleGun;
+	std::unique_ptr<G4ParticleGun> const particleGun;
 	std::unique_ptr<SpallationMessenger> const messenger;
+	G4double diameter;
 
 	G4ThreeVector GeneratePosition() const;
+
+	static std::unique_ptr<G4ParticleGun> MakeGun();
 
 };
 
