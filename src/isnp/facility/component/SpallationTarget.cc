@@ -8,15 +8,21 @@
 #include "isnp/repository/Colours.hh"
 #include "isnp/util/NameBuilder.hh"
 
-const G4double isnp::facility::component::SpallationTarget::width = 200.0 * mm;
-const G4double isnp::facility::component::SpallationTarget::height = 50.0 * mm;
-const G4double isnp::facility::component::SpallationTarget::length = 400.0 * mm;
+namespace isnp {
 
-G4LogicalVolume* isnp::facility::component::SpallationTarget::Instance() {
-	return Instance(util::NameBuilder::Make("Target", "Spallation"));
+namespace facility {
+
+namespace component {
+
+const G4double SpallationTarget::width = 200.0 * mm;
+const G4double SpallationTarget::height = 50.0 * mm;
+const G4double SpallationTarget::length = 400.0 * mm;
+
+G4LogicalVolume* SpallationTarget::Instance() {
+	return Instance(util::NameBuilder::Make("Spallation", "Target"));
 }
 
-G4LogicalVolume* isnp::facility::component::SpallationTarget::Instance(
+G4LogicalVolume* SpallationTarget::Instance(
 		const G4String &name) {
 
 	const auto nist = G4NistManager::Instance();
@@ -30,26 +36,32 @@ G4LogicalVolume* isnp::facility::component::SpallationTarget::Instance(
 	return logic;
 }
 
-G4double isnp::facility::component::SpallationTarget::GetWidth() {
+G4double SpallationTarget::GetWidth() {
 	return width;
 }
 
-G4double isnp::facility::component::SpallationTarget::GetHeight() {
+G4double SpallationTarget::GetHeight() {
 	return height;
 }
 
-G4double isnp::facility::component::SpallationTarget::GetLength() {
+G4double SpallationTarget::GetLength() {
 	return length;
 }
 
-G4double isnp::facility::component::SpallationTarget::GetHalfWidth() {
+G4double SpallationTarget::GetHalfWidth() {
 	return HalfOf(GetWidth());
 }
 
-G4double isnp::facility::component::SpallationTarget::GetHalfHeight() {
+G4double SpallationTarget::GetHalfHeight() {
 	return HalfOf(GetHeight());
 }
 
-G4double isnp::facility::component::SpallationTarget::GetHalfLength() {
+G4double SpallationTarget::GetHalfLength() {
 	return HalfOf(GetLength());
+}
+
+}
+
+}
+
 }
