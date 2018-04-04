@@ -42,7 +42,7 @@ public:
 TEST(CommandLineParser, Nothing) {
 	CommandLineParser const parser = Helper::Instance("");
 	EXPECT_EQ(0, parser.GetReturnCode());
-	EXPECT_EQ(-1L, parser.GetRandomSeed());
+	EXPECT_FALSE(parser.IsRandomSeedSet());
 	EXPECT_EQ("", parser.GetFileSuffix());
 	EXPECT_EQ(1, parser.GetArgc());
 	EXPECT_STREQ("/path/to/executable", parser.GetArgv()[0]);
@@ -51,7 +51,7 @@ TEST(CommandLineParser, Nothing) {
 TEST(CommandLineParser, NoOptions) {
 	CommandLineParser const parser = Helper::Instance("filename1 filename2");
 	EXPECT_EQ(0, parser.GetReturnCode());
-	EXPECT_EQ(-1L, parser.GetRandomSeed());
+	EXPECT_FALSE(parser.IsRandomSeedSet());
 	EXPECT_EQ("", parser.GetFileSuffix());
 	EXPECT_EQ(3, parser.GetArgc());
 	EXPECT_STREQ("/path/to/executable", parser.GetArgv()[0]);
@@ -75,6 +75,7 @@ TEST(CommandLineParser, Help) {
 TEST(CommandLineParser, AllOptions) {
 	CommandLineParser const parser = Helper::Instance("-r 12345 -s 55 filename1 filename2");
 	EXPECT_EQ(0, parser.GetReturnCode());
+	EXPECT_TRUE(parser.IsRandomSeedSet());
 	EXPECT_EQ(12345L, parser.GetRandomSeed());
 	EXPECT_EQ("55", parser.GetFileSuffix());
 	EXPECT_EQ(3, parser.GetArgc());

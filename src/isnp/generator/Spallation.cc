@@ -13,7 +13,8 @@ namespace isnp {
 namespace generator {
 
 Spallation::Spallation() :
-		particleGun(MakeGun()), messenger(new SpallationMessenger(this)), diameter(
+		particleGun(MakeGun()), messenger(
+				std::make_unique < SpallationMessenger > (this)), diameter(
 				4.0 * cm) {
 }
 

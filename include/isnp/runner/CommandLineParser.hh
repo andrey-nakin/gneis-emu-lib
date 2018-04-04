@@ -23,6 +23,10 @@ public:
 		return returnCode;
 	}
 
+	bool IsRandomSeedSet() const {
+		return randomSeedSet;
+	}
+
 	long GetRandomSeed() const {
 		return randomSeed;
 	}
@@ -42,6 +46,7 @@ public:
 private:
 
 	int returnCode;
+	bool randomSeedSet;
 	long randomSeed;
 	G4String fileSuffix;
 	int parsedArgc;

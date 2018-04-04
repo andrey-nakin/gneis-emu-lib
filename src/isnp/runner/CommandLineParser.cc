@@ -7,7 +7,7 @@
 
 isnp::runner::CommandLineParser::CommandLineParser(int argc_, char* argv_[],
 		bool const silent) :
-		returnCode(0), randomSeed(-1L), fileSuffix(""), parsedArgc(0), parsedArgv(
+		returnCode(0), randomSeedSet(false), randomSeed(-1L), fileSuffix(""), parsedArgc(0), parsedArgv(
 				nullptr) {
 	Parse(argc_, argv_, silent);
 }
@@ -38,6 +38,7 @@ void isnp::runner::CommandLineParser::Parse(int argc, char* argv[],
 		switch (res) {
 		case 'r':
 			randomSeed = std::stol(::optarg);
+			randomSeedSet = true;
 			break;
 
 		case 's':

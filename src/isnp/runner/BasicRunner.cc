@@ -21,8 +21,7 @@ isnp::runner::BasicRunner::~BasicRunner() {
 
 }
 
-int isnp::runner::BasicRunner::Run(
-		std::function<void(G4RunManager&)> closure) {
+int isnp::runner::BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 
 	if (parser.GetReturnCode()) {
 		return parser.GetReturnCode();
@@ -32,10 +31,8 @@ int isnp::runner::BasicRunner::Run(
 
 	G4RunManager runManager;
 
-	G4Random::setTheEngine(new CLHEP::RanecuEngine);
 	G4Random::setTheSeed(
-			parser.GetRandomSeed() >= 0 ?
-					parser.GetRandomSeed() : SystemTime());
+			parser.IsRandomSeedSet() ? parser.GetRandomSeed() : SystemTime());
 
 	auto uiManager = G4UImanager::GetUIpointer();
 
