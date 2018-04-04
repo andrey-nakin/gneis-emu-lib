@@ -1,10 +1,12 @@
+#include <G4UnitsTable.hh>
+
 #include "isnp/generator/SpallationMessenger.hh"
 
 namespace isnp {
 
 namespace generator {
 
-#define DIR "/isnp/gun"
+#define DIR "/isnp/gun/"
 
 static std::unique_ptr<G4UIdirectory> MakeDirectory() {
 
@@ -18,11 +20,13 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDiameter(
 		SpallationMessenger* const inst) {
 
 	auto result = std::make_unique < G4UIcmdWithADoubleAndUnit
-			> (DIR "/diameter", inst);
+			> (DIR "diameter", inst);
 	result->SetGuidance("Set a diameter of the beam");
 	result->SetParameterName("diameter", false);
-	result->SetUnitCategory("Length");
-	result->AvailableForStates(G4State_Idle);
+	result->SetUnitCategory(G4UnitDefinition::GetCategory("mm"));
+	result->AvailableForStates(G4State_PreInit, G4State_Init, G4State_Idle,
+			G4State_GeomClosed, G4State_EventProc);
+
 	return result;
 
 }

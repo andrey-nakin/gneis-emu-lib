@@ -24,16 +24,21 @@
 #include "isnp/detector/BasicNeutrons.hh"
 #include "isnp/util/NameBuilder.hh"
 
-isnp::facility::Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
+namespace isnp {
+
+namespace facility {
+
+Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
 		G4VUserDetectorConstruction(), detector(aDetector), zeroPosition(
 				0.5 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
 				30.0 * deg), collimatorsHaveDetectors(true), diameter(100 * mm) {
 }
 
-isnp::facility::Beam5::~Beam5() {
+Beam5::~Beam5() {
 }
 
-G4VPhysicalVolume* isnp::facility::Beam5::Construct() {
+G4VPhysicalVolume* Beam5::Construct() {
+
 	// Get nist material manager
 	auto const nist = G4NistManager::Instance();
 
@@ -114,25 +119,34 @@ G4VPhysicalVolume* isnp::facility::Beam5::Construct() {
 	}
 
 	return physWorld;
+
 }
 
-G4bool isnp::facility::Beam5::getCollimatorsHaveDetectors() const {
+G4bool Beam5::getCollimatorsHaveDetectors() const {
+
 	return collimatorsHaveDetectors;
+
 }
 
-void isnp::facility::Beam5::setCollimatorsHaveDetectors(G4bool const v) {
+void Beam5::setCollimatorsHaveDetectors(G4bool const v) {
+
 	this->collimatorsHaveDetectors = v;
+
 }
 
-G4double isnp::facility::Beam5::getAngle() const {
+G4double Beam5::getAngle() const {
+
 	return angle;
+
 }
 
-void isnp::facility::Beam5::setAngle(G4double const aAngle) {
+void Beam5::setAngle(G4double const aAngle) {
+
 	this->angle = aAngle;
+
 }
 
-void isnp::facility::Beam5::PlaceComponent(G4LogicalVolume* const world,
+void Beam5::PlaceComponent(G4LogicalVolume* const world,
 		G4LogicalVolume* const component, G4double const position) {
 
 	G4RotationMatrix* const noRotation = nullptr;
@@ -144,9 +158,10 @@ void isnp::facility::Beam5::PlaceComponent(G4LogicalVolume* const world,
 			G4ThreeVector(0, 0, 0.5 * (zeroPosition - length) + position),
 			component, component->GetName(), world, single, numOfCopies,
 			checkOverlaps);
+
 }
 
-void isnp::facility::Beam5::PlaceCollimator(G4LogicalVolume* const world,
+void Beam5::PlaceCollimator(G4LogicalVolume* const world,
 		G4LogicalVolume* const collimator, G4double const position) {
 
 	if (collimatorsHaveDetectors) {
@@ -158,9 +173,15 @@ void isnp::facility::Beam5::PlaceCollimator(G4LogicalVolume* const world,
 	}
 
 	PlaceComponent(world, collimator, position);
+
 }
 
-G4VSolid* isnp::facility::Beam5::MakeCylinder(G4String const &name,
-		G4double const len) {
+G4VSolid* Beam5::MakeCylinder(G4String const &name, G4double const len) {
+
 	return new G4Tubs(name, 0.0, worldRadius, 0.5 * len, 0.0 * deg, 360.0 * deg);
+
+}
+
+}
+
 }
