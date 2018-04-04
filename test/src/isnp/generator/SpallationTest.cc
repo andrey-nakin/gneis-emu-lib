@@ -55,6 +55,18 @@ TEST(Spallation, GeneratePosition)
 
 }
 
+TEST(Spallation, ZeroDiameter)
+{
+
+	Spallation spallation;
+	spallation.SetDiameter(0.0);
+
+	auto const pos = spallation.GeneratePosition();
+	EXPECT_DOUBLE_EQ(0.0, pos.getX());
+	EXPECT_DOUBLE_EQ(0.0, pos.getY());
+
+}
+
 }
 
 }

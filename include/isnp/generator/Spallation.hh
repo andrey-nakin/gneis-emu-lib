@@ -36,6 +36,7 @@ public:
 private:
 
 	FRIEND_TEST(Spallation, GeneratePosition);
+	FRIEND_TEST(Spallation, ZeroDiameter);
 
 	std::unique_ptr<G4ParticleGun> const particleGun;
 	std::unique_ptr<SpallationMessenger> const messenger;

@@ -27,6 +27,10 @@ void Spallation::GeneratePrimaries(G4Event* const anEvent) {
 }
 
 G4ThreeVector Spallation::GeneratePosition() const {
+	if (diameter < 1.0 * angstrom) {
+		return G4ThreeVector(0.0, 0.0, -18.25 * m);
+	}
+
 	G4double const maxValue = diameter / 2;
 	G4double const minValue = -maxValue;
 	G4double const maxValue2 = maxValue * maxValue;
