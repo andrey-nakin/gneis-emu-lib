@@ -21,7 +21,7 @@
 #include "isnp/facility/component/CollimatorC3.hh"
 #include "isnp/facility/component/CollimatorC4.hh"
 #include "isnp/facility/component/CollimatorC5.hh"
-#include "isnp/detector/BasicNeutrons.hh"
+#include "isnp/detector/Basic.hh"
 #include "isnp/util/NameBuilder.hh"
 
 namespace isnp {
@@ -171,7 +171,7 @@ void Beam5::PlaceCollimator(G4LogicalVolume* const world,
 
 	if (collimatorsHaveDetectors) {
 		const auto sdMan = G4SDManager::GetSDMpointer();
-		const auto det = new isnp::detector::BasicNeutrons(
+		const auto det = new isnp::detector::Basic(
 				util::NameBuilder::Make(collimator->GetName(), "Detector"));
 		sdMan->AddNewDetector(det);
 		collimator->SetSensitiveDetector(det);
