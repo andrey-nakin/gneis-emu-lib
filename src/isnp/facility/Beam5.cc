@@ -99,12 +99,13 @@ G4VPhysicalVolume* Beam5::Construct() {
 			PlaceCollimator(logicWorld, logicC4, 29 * m);
 		}
 
-		{
-			// Collimator C5
-			auto const logicC5 = component::CollimatorC5::AsCylinder(
-					worldRadius, diameter);
-			PlaceCollimator(logicWorld, logicC5, 35 * m);
-		}
+	}
+
+	{
+		// Collimator C5
+		auto const logicC5 = component::CollimatorC5::AsCylinder(worldRadius,
+				diameter);
+		PlaceCollimator(logicWorld, logicC5, 35 * m);
 	}
 
 	if (detector) {
@@ -119,7 +120,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		sdMan->AddNewDetector(detector);
 		logicTarget->SetSensitiveDetector(detector);
 
-		PlaceComponent(logicWorld, logicTarget, 4.5 * m - 10 * mm);
+		PlaceComponent(logicWorld, logicTarget, 36 * m - 10 * mm);
 	}
 
 	return physWorld;
