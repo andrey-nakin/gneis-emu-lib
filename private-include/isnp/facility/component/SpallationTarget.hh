@@ -1,6 +1,7 @@
 #ifndef spallation_target_hh
 #define spallation_target_hh
 
+#include <G4Transform3D.hh>
 #include <G4LogicalVolume.hh>
 #include "BoxComponent.hh"
 
@@ -36,9 +37,22 @@ public:
 	static G4double GetHalfHeight();
 	static G4double GetHalfLength();
 
+	static G4Transform3D GetTransform() {
+		return transform;
+	}
+
+	static void SetTransform(G4Transform3D const& t) {
+		transform = t;
+	}
+
+	static void SetTransform(G4Transform3D && t) {
+		transform = t;
+	}
+
 private:
 
 	const static G4double width, height, length;
+	static G4Transform3D transform;
 
 };
 

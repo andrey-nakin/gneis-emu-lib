@@ -17,6 +17,7 @@ namespace component {
 const G4double SpallationTarget::width = 200.0 * mm;
 const G4double SpallationTarget::height = 50.0 * mm;
 const G4double SpallationTarget::length = 400.0 * mm;
+G4Transform3D SpallationTarget::transform;
 
 G4LogicalVolume* SpallationTarget::Instance() {
 	return Instance(util::NameBuilder::Make("Spallation", "Target"));

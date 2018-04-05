@@ -3,6 +3,7 @@
 
 #include <G4VUserPrimaryGeneratorAction.hh>
 #include <G4ParticleGun.hh>
+#include <G4Transform3D.hh>
 
 #include <memory>
 
@@ -35,14 +36,17 @@ public:
 
 private:
 
-	FRIEND_TEST(Spallation, GeneratePosition);
+	FRIEND_TEST(Spallation, GeneratePositionStatistics);
 	FRIEND_TEST(Spallation, ZeroDiameter);
+	FRIEND_TEST(Spallation, GeneratePosition);
+	FRIEND_TEST(Spallation, GenerateDirection);
 
 	std::unique_ptr<G4ParticleGun> const particleGun;
 	std::unique_ptr<SpallationMessenger> const messenger;
 	G4double diameter;
 
-	G4ThreeVector GeneratePosition() const;
+	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
+	G4ThreeVector GeneratePosition(G4Transform3D const&) const;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
 

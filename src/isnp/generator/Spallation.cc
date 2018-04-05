@@ -7,6 +7,7 @@
 
 #include "isnp/generator/Spallation.hh"
 #include "isnp/generator/SpallationMessenger.hh"
+#include "isnp/facility/component/SpallationTarget.hh"
 
 namespace isnp {
 
@@ -22,26 +23,57 @@ Spallation::~Spallation() {
 }
 
 void Spallation::GeneratePrimaries(G4Event* const anEvent) {
-	particleGun->SetParticlePosition(GeneratePosition());
+
+	using namespace facility::component;
+	G4Transform3D const transform = SpallationTarget::GetTransform();
+
+	particleGun->SetParticlePosition(GeneratePosition(transform));
+	particleGun->SetParticleMomentumDirection(GenerateDirection(transform));
 	particleGun->GeneratePrimaryVertex(anEvent);
+
 }
 
-G4ThreeVector Spallation::GeneratePosition() const {
+G4ThreeVector Spallation::GenerateDirection(
+		G4Transform3D const& transform) const {
+
+	G4ThreeVector direction = G4ThreeVector(0., 0., 1.);
+	direction.transform(transform.getRotation());
+	return direction;
+
+}
+
+G4ThreeVector Spallation::GeneratePosition(
+		G4Transform3D const& transform) const {
+
+	using namespace facility::component;
+
+	G4ThreeVector position;
+
 	if (diameter < 1.0 * angstrom) {
-		return G4ThreeVector(0.0, 0.0, -18.25 * m);
+
+		position = G4ThreeVector(0.0, 0.0, -SpallationTarget::GetHalfLength());
+
+	} else {
+
+		G4double const maxValue = diameter / 2;
+		G4double const minValue = -maxValue;
+		G4double const maxValue2 = maxValue * maxValue;
+		G4double x, y;
+
+		do {
+			x = CLHEP::RandFlat::shoot(minValue, maxValue);
+			y = CLHEP::RandFlat::shoot(minValue, maxValue);
+		} while (x * x + y * y >= maxValue2);
+
+		position = G4ThreeVector(x, y, -SpallationTarget::GetHalfLength());
+
 	}
 
-	G4double const maxValue = diameter / 2;
-	G4double const minValue = -maxValue;
-	G4double const maxValue2 = maxValue * maxValue;
-	G4double x, y;
+	position.transform(transform.getRotation());
+	position += transform.getTranslation();
 
-	do {
-		x = CLHEP::RandFlat::shoot(minValue, maxValue);
-		y = CLHEP::RandFlat::shoot(minValue, maxValue);
-	} while (x * x + y * y >= maxValue2);
+	return position;
 
-	return G4ThreeVector(x, y, -18.25 * m);
 }
 
 std::unique_ptr<G4ParticleGun> Spallation::MakeGun() {
@@ -50,7 +82,7 @@ std::unique_ptr<G4ParticleGun> Spallation::MakeGun() {
 	auto gun = std::make_unique < G4ParticleGun > (particleDefinition);
 
 	gun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
-	gun->SetParticlePosition(G4ThreeVector(0, 0, -18.25 * m));
+	gun->SetParticlePosition(G4ThreeVector(0., 0., 0.));
 	gun->SetParticleEnergy(1.0 * GeV);
 
 	return gun;
