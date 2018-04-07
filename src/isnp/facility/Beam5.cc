@@ -31,7 +31,7 @@ namespace facility {
 Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
 		G4VUserDetectorConstruction(), detector(aDetector), zeroPosition(
 				0.5 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
-				30.0 * deg), collimatorsHaveDetectors(true), diameter(100 * mm) {
+				30.0 * deg), collimatorsHaveDetectors(false), diameter(100 * mm) {
 }
 
 Beam5::~Beam5() {
