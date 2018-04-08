@@ -16,7 +16,7 @@ namespace generator {
 Spallation::Spallation() :
 		particleGun(MakeGun()), messenger(
 				std::make_unique < SpallationMessenger > (*this)), diameter(
-				4.0 * cm) {
+				4.0 * cm), counter(0), verbose(1) {
 }
 
 Spallation::~Spallation() {
@@ -30,6 +30,16 @@ void Spallation::GeneratePrimaries(G4Event* const anEvent) {
 	particleGun->SetParticlePosition(GeneratePosition(transform));
 	particleGun->SetParticleMomentumDirection(GenerateDirection(transform));
 	particleGun->GeneratePrimaryVertex(anEvent);
+
+	if (verbose > 0) {
+		G4cout << "Spallation: generating #" << ++counter << " particle\n";
+		if (verbose > 1) {
+			G4cout << "Spallation position: "
+					<< particleGun->GetParticlePosition() << "\n";
+			G4cout << "Spallation direction: "
+					<< particleGun->GetParticleMomentumDirection() << "\n";
+		}
+	}
 
 }
 

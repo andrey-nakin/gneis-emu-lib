@@ -34,16 +34,23 @@ public:
 		diameter = v;
 	}
 
+	G4int GetVerbose() const {
+		return verbose;
+	}
+
+	void SetVerbose(G4int const v) {
+		verbose = v;
+	}
+
 private:
 
-	FRIEND_TEST(Spallation, GeneratePositionStatistics);
-	FRIEND_TEST(Spallation, ZeroDiameter);
-	FRIEND_TEST(Spallation, GeneratePosition);
-	FRIEND_TEST(Spallation, GenerateDirection);
+	FRIEND_TEST(Spallation, GeneratePositionStatistics);FRIEND_TEST(Spallation, ZeroDiameter);FRIEND_TEST(Spallation, GeneratePosition);FRIEND_TEST(Spallation, GenerateDirection);
 
 	std::unique_ptr<G4ParticleGun> const particleGun;
 	std::unique_ptr<SpallationMessenger> const messenger;
 	G4double diameter;
+	unsigned counter;
+	G4int verbose;
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;
