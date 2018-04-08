@@ -1,5 +1,5 @@
-#ifndef beam5_hpp
-#define beam5_hpp
+#ifndef isnp_facility_Beam5_hpp
+#define isnp_facility_Beam5_hpp
 
 #include <memory>
 #include <G4VUserDetectorConstruction.hh>
@@ -19,8 +19,8 @@ public:
 
 	virtual G4VPhysicalVolume* Construct();
 
-	G4bool getCollimatorsHaveDetectors() const;
-	void setCollimatorsHaveDetectors(G4bool v);
+	G4bool GetCollimatorsHaveDetectors() const;
+	void SetCollimatorsHaveDetectors(G4bool v);
 
 	G4double GetAngle() const;
 	void SetAngle(G4double angle);
@@ -65,4 +65,4 @@ private:
 
 }
 
-#endif
+#endif	//	isnp_facility_Beam5_hpp

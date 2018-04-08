@@ -126,13 +126,13 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 }
 
-G4bool Beam5::getCollimatorsHaveDetectors() const {
+G4bool Beam5::GetCollimatorsHaveDetectors() const {
 
 	return collimatorsHaveDetectors;
 
 }
 
-void Beam5::setCollimatorsHaveDetectors(G4bool const v) {
+void Beam5::SetCollimatorsHaveDetectors(G4bool const v) {
 
 	this->collimatorsHaveDetectors = v;
 
