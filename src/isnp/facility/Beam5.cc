@@ -15,6 +15,7 @@
 #include <G4RotationMatrix.hh>
 
 #include "isnp/facility/Beam5.hh"
+#include "isnp/facility/Beam5Messenger.hh"
 #include "isnp/facility/component/SpallationTarget.hh"
 #include "isnp/facility/component/CollimatorC1.hh"
 #include "isnp/facility/component/CollimatorC2.hh"
@@ -29,9 +30,12 @@ namespace isnp {
 namespace facility {
 
 Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
-		G4VUserDetectorConstruction(), detector(aDetector), zeroPosition(
-				0.5 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
-				30.0 * deg), collimatorsHaveDetectors(false), diameter(100 * mm) {
+		G4VUserDetectorConstruction(), messenger(
+				std::make_unique < Beam5Messenger > (*this)), detector(
+				aDetector), zeroPosition(0.5 * m), length(36.0 * m), worldRadius(
+				200.0 * mm), angle(30.0 * deg), collimatorsHaveDetectors(false), diameter(
+				100 * mm), haveCollimator1(false), haveCollimator2(false), haveCollimator3(
+				false), haveCollimator4(false), haveCollimator5(true) {
 }
 
 Beam5::~Beam5() {
@@ -70,38 +74,33 @@ G4VPhysicalVolume* Beam5::Construct() {
 				logicWorld, single, numOfCopies, checkOverlaps);
 	}
 
-	if (false) {
-		{
-			// Collimator C1
-			auto const logicC1 = component::CollimatorC1::AsCylinder(
-					worldRadius);
-			PlaceCollimator(logicWorld, logicC1, 6 * m);
-		}
-
-		{
-			// Collimator C2
-			auto const logicC2 = component::CollimatorC2::AsCylinder(
-					worldRadius);
-			PlaceCollimator(logicWorld, logicC2, 12 * m);
-		}
-
-		{
-			// Collimator C3
-			auto const logicC3 = component::CollimatorC3::AsCylinder(
-					worldRadius);
-			PlaceCollimator(logicWorld, logicC3, 23 * m);
-		}
-
-		{
-			// Collimator C4
-			auto const logicC4 = component::CollimatorC4::AsCylinder(
-					worldRadius);
-			PlaceCollimator(logicWorld, logicC4, 29 * m);
-		}
-
+	if (haveCollimator1) {
+		// Collimator C1
+		auto const logicC1 = component::CollimatorC1::AsCylinder(worldRadius);
+		PlaceCollimator(logicWorld, logicC1, 6 * m);
 	}
 
-	{
+	if (haveCollimator2) {
+		// Collimator C2
+		auto const logicC2 = component::CollimatorC2::AsCylinder(worldRadius);
+		PlaceCollimator(logicWorld, logicC2, 12 * m);
+	}
+
+	if (haveCollimator3) {
+		// Collimator C3
+		auto const logicC3 = component::CollimatorC3::AsCylinder(worldRadius);
+		PlaceCollimator(logicWorld, logicC3, 23 * m);
+	}
+
+	if (haveCollimator4) {
+		// Collimator C4
+		auto const logicC4 = component::CollimatorC4::AsCylinder(worldRadius);
+		PlaceCollimator(logicWorld, logicC4, 29 * m);
+	}
+
+	if (haveCollimator5) {
+		G4cout << "Creating collimator #5 with diameter " << diameter / mm
+				<< "mm \n";
 		// Collimator C5
 		auto const logicC5 = component::CollimatorC5::AsCylinder(worldRadius,
 				diameter);
@@ -139,16 +138,68 @@ void Beam5::setCollimatorsHaveDetectors(G4bool const v) {
 
 }
 
-G4double Beam5::getAngle() const {
+G4double Beam5::GetAngle() const {
 
 	return angle;
 
 }
 
-void Beam5::setAngle(G4double const aAngle) {
+void Beam5::SetAngle(G4double const aAngle) {
 
 	this->angle = aAngle;
 
+}
+
+G4double Beam5::GetDiameter() const {
+
+	return diameter;
+
+}
+
+void Beam5::SetDiameter(G4double const aDiameter) {
+
+	this->diameter = aDiameter;
+
+}
+
+G4bool Beam5::GetHaveCollimator1() const {
+	return haveCollimator1;
+}
+
+void Beam5::SetHaveCollimator1(G4bool const haveC1) {
+	this->haveCollimator1 = haveC1;
+}
+
+G4bool Beam5::GetHaveCollimator2() const {
+	return haveCollimator2;
+}
+
+void Beam5::SetHaveCollimator2(G4bool const haveC2) {
+	this->haveCollimator2 = haveC2;
+}
+
+G4bool Beam5::GetHaveCollimator3() const {
+	return haveCollimator3;
+}
+
+void Beam5::SetHaveCollimator3(G4bool const haveC3) {
+	this->haveCollimator3 = haveC3;
+}
+
+G4bool Beam5::GetHaveCollimator4() const {
+	return haveCollimator4;
+}
+
+void Beam5::SetHaveCollimator4(G4bool const haveC4) {
+	this->haveCollimator4 = haveC4;
+}
+
+G4bool Beam5::GetHaveCollimator5() const {
+	return haveCollimator5;
+}
+
+void Beam5::SetHaveCollimator5(G4bool const haveC5) {
+	this->haveCollimator5 = haveC5;
 }
 
 void Beam5::PlaceComponent(G4LogicalVolume* const world,
