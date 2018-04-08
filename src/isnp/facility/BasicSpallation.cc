@@ -1,0 +1,158 @@
+#include <G4SystemOfUnits.hh>
+#include <G4Tubs.hh>
+#include <G4Box.hh>
+#include <G4NistManager.hh>
+#include <G4VisAttributes.hh>
+#include <G4PVPlacement.hh>
+#include <G4SDManager.hh>
+
+#include "isnp/facility/BasicSpallation.hh"
+#include "isnp/facility/BasicSpallationMessenger.hh"
+#include "isnp/facility/component/SpallationTarget.hh"
+
+namespace isnp {
+
+namespace facility {
+
+BasicSpallation::BasicSpallation(G4VSensitiveDetector* const aDetector) :
+		detector(aDetector), messenger(
+				std::make_unique < BasicSpallationMessenger > (*this)), worldRadius(
+				400.0 * mm), horizontalAngle(30.0 * deg), verticalAngle(
+				0.0 * deg), distance(1.0 * m), detectorWidth(10 * cm), detectorHeight(
+				10 * cm), detectorLength(1.0 * cm), verbose(0) {
+
+}
+
+BasicSpallation::~BasicSpallation() {
+
+}
+
+G4VPhysicalVolume* BasicSpallation::Construct() {
+
+	// Get nist material manager
+	auto const nist = G4NistManager::Instance();
+
+	// Option to switch on/off checking of volumes overlaps
+	G4RotationMatrix* const noRotation = nullptr;
+	G4bool const single = false;
+	G4int const numOfCopies = 0;
+	G4bool const checkOverlaps = true;
+
+	G4String const nameWorld = "World";
+	auto const solidWorld = new G4Tubs(nameWorld, 0.0, worldRadius,
+			GetDistance() + GetDetectorLength(), 0.0 * deg, 360.0 * deg);
+	auto const logicWorld = new G4LogicalVolume(solidWorld,
+			nist->FindOrBuildMaterial("G4_Galactic"), nameWorld);
+	logicWorld->SetVisAttributes(G4VisAttributes::Invisible);
+
+	auto const physWorld = new G4PVPlacement(noRotation, G4ThreeVector(),
+			logicWorld, nameWorld, nullptr, single, numOfCopies, checkOverlaps);
+
+	{
+		// Neutron source
+		auto const logicSpTarget = component::SpallationTarget::Instance();
+		G4RotationMatrix rotm = G4RotationMatrix();
+		rotm.rotateY(GetHorizontalAngle());
+		rotm.rotateX(GetVerticalAngle());
+		G4Transform3D const transform = G4Transform3D(rotm,
+				G4ThreeVector(0, 0, 0));
+		component::SpallationTarget::SetTransform(transform);
+		new G4PVPlacement(transform, logicSpTarget, logicSpTarget->GetName(),
+				logicWorld, single, numOfCopies, checkOverlaps);
+	}
+
+	if (detector) {
+		if (verbose >= 1) {
+			G4cout << "Beam5: creating detector, width="
+					<< GetDetectorWidth() / mm << " mm, height="
+					<< GetDetectorHeight() / mm << " mm, length="
+					<< GetDetectorLength() / mm << " mm" << "\n";
+		}
+
+		// Target
+		G4String const name = "Target";
+		const auto solidTarget = new G4Box(name, HalfOf(GetDetectorWidth()),
+				HalfOf(GetDetectorHeight()), HalfOf(GetDetectorLength()));
+		const auto logicTarget = new G4LogicalVolume(solidTarget,
+				nist->FindOrBuildMaterial("G4_Galactic"), name);
+		logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Red()));
+
+		const auto sdMan = G4SDManager::GetSDMpointer();
+		sdMan->AddNewDetector(detector);
+		logicTarget->SetSensitiveDetector(detector);
+
+		new G4PVPlacement(noRotation,
+				G4ThreeVector(0, 0, GetDistance() + HalfOf(GetDetectorLength())),
+				logicTarget, logicTarget->GetName(), logicWorld, single,
+				numOfCopies, checkOverlaps);
+	}
+
+	return physWorld;
+
+}
+
+G4double BasicSpallation::GetHorizontalAngle() const {
+	return horizontalAngle;
+}
+
+void BasicSpallation::SetHorizontalAngle(G4double const anAngle) {
+	horizontalAngle = anAngle;
+}
+
+G4double BasicSpallation::GetVerticalAngle() const {
+	return verticalAngle;
+}
+
+void BasicSpallation::SetVerticalAngle(G4double const anAngle) {
+	verticalAngle = anAngle;
+}
+
+G4double BasicSpallation::GetDistance() const {
+	return distance;
+}
+
+void BasicSpallation::SetDistance(G4double const aDistance) {
+	distance = aDistance;
+}
+
+G4double BasicSpallation::GetDetectorWidth() const {
+	return detectorWidth;
+}
+
+void BasicSpallation::SetDetectorWidth(G4double const aWidth) {
+	detectorWidth = aWidth;
+}
+
+G4double BasicSpallation::GetDetectorHeight() const {
+	return detectorHeight;
+}
+
+void BasicSpallation::SetDetectorHeight(G4double const aHeight) {
+	detectorHeight = aHeight;
+}
+
+G4double BasicSpallation::GetDetectorLength() const {
+	return detectorLength;
+}
+
+void BasicSpallation::SetDetectorLength(G4double const aLength) {
+	detectorLength = aLength;
+}
+
+G4int BasicSpallation::GetVerbose() const {
+	return verbose;
+}
+
+void BasicSpallation::SetVerbose(G4int aVerbose) {
+	verbose = aVerbose;
+}
+
+G4double BasicSpallation::HalfOf(G4double const v) {
+
+	return 0.5 * v;
+
+}
+
+}
+
+}
