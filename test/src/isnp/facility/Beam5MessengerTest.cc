@@ -93,6 +93,20 @@ TEST(Beam5Messenger, SetHaveCollimator5)
 
 }
 
+TEST(Beam5Messenger, SetVerbose)
+{
+
+	Beam5 facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_EQ(0, facility.GetVerbose());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/beam5/verbose 1"));
+	EXPECT_EQ(1, facility.GetVerbose());
+	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/beam5/verbose -1"));
+	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/beam5/verbose 4"));
+
+}
+
 }
 
 }

@@ -35,7 +35,8 @@ Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
 				aDetector), zeroPosition(0.5 * m), length(36.0 * m), worldRadius(
 				200.0 * mm), angle(30.0 * deg), collimatorsHaveDetectors(false), diameter(
 				100 * mm), haveCollimator1(false), haveCollimator2(false), haveCollimator3(
-				false), haveCollimator4(false), haveCollimator5(true) {
+				false), haveCollimator4(false), haveCollimator5(true), verbose(
+				0) {
 }
 
 Beam5::~Beam5() {
@@ -75,39 +76,57 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator1) {
-		// Collimator C1
+		if (verbose >= 1) {
+			G4cout << "Beam5: creating collimator #1\n";
+		}
+
 		auto const logicC1 = component::CollimatorC1::AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC1, 6 * m);
 	}
 
 	if (haveCollimator2) {
-		// Collimator C2
+		if (verbose >= 1) {
+			G4cout << "Beam5: creating collimator #2\n";
+		}
+
 		auto const logicC2 = component::CollimatorC2::AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC2, 12 * m);
 	}
 
 	if (haveCollimator3) {
-		// Collimator C3
+		if (verbose >= 1) {
+			G4cout << "Beam5: creating collimator #3\n";
+		}
+
 		auto const logicC3 = component::CollimatorC3::AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC3, 23 * m);
 	}
 
 	if (haveCollimator4) {
-		// Collimator C4
+		if (verbose >= 1) {
+			G4cout << "Beam5: creating collimator #4\n";
+		}
+
 		auto const logicC4 = component::CollimatorC4::AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC4, 29 * m);
 	}
 
 	if (haveCollimator5) {
-		G4cout << "Creating collimator #5 with diameter " << diameter / mm
-				<< "mm \n";
-		// Collimator C5
+		if (verbose >= 1) {
+			G4cout << "Beam5: creating collimator #5 with diameter "
+					<< diameter / mm << " mm \n";
+		}
+
 		auto const logicC5 = component::CollimatorC5::AsCylinder(worldRadius,
 				diameter);
 		PlaceCollimator(logicWorld, logicC5, 35 * m);
 	}
 
 	if (detector) {
+		if (verbose >= 1) {
+			G4cout << "Beam5: creating detector\n";
+		}
+
 		// Target
 		G4String const name = "Target";
 		const auto solidTarget = new G4Box(name, 50 * mm, 50 * mm, 5 * mm);
@@ -200,6 +219,14 @@ G4bool Beam5::GetHaveCollimator5() const {
 
 void Beam5::SetHaveCollimator5(G4bool const haveC5) {
 	this->haveCollimator5 = haveC5;
+}
+
+G4int Beam5::GetVerbose() const {
+	return verbose;
+}
+
+void Beam5::SetVerbose(G4int const aVerbose) {
+	verbose = aVerbose;
 }
 
 void Beam5::PlaceComponent(G4LogicalVolume* const world,

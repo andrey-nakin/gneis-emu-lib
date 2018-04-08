@@ -11,6 +11,7 @@
 
 class G4UIcmdWithADoubleAndUnit;
 class G4UIcmdWithABool;
+class G4UIcmdWithAnInteger;
 
 namespace isnp {
 
@@ -32,6 +33,7 @@ private:
 	std::unique_ptr<G4UIcmdWithABool> const haveCollimator1Cmd,
 			haveCollimator2Cmd, haveCollimator3Cmd, haveCollimator4Cmd,
 			haveCollimator5Cmd;
+	std::unique_ptr<G4UIcmdWithAnInteger> const verboseCmd;
 
 };
 

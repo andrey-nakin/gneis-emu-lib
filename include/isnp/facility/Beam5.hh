@@ -43,6 +43,9 @@ public:
 	G4bool GetHaveCollimator5() const;
 	void SetHaveCollimator5(G4bool haveC5);
 
+	G4int GetVerbose() const;
+	void SetVerbose(G4int aVerbose);
+
 private:
 
 	std::unique_ptr<Beam5Messenger> const messenger;
@@ -50,7 +53,9 @@ private:
 	G4double zeroPosition, length, worldRadius, angle;
 	G4bool collimatorsHaveDetectors;
 	G4double diameter;
-	G4bool haveCollimator1, haveCollimator2, haveCollimator3, haveCollimator4, haveCollimator5;
+	G4bool haveCollimator1, haveCollimator2, haveCollimator3, haveCollimator4,
+			haveCollimator5;
+	G4int verbose;
 
 	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,
 			G4double position);

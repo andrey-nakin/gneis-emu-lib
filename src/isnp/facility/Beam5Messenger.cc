@@ -4,6 +4,7 @@
 #include <G4UnitsTable.hh>
 #include <G4UIcmdWithADoubleAndUnit.hh>
 #include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithAnInteger.hh"
 
 #include "isnp/facility/Beam5Messenger.hh"
 
@@ -69,6 +70,23 @@ static std::unique_ptr<G4UIcmdWithABool> MakeHaveCollimator(
 
 }
 
+static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerbose(
+		Beam5Messenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithAnInteger
+			> (DIR "verbose", inst);
+	result->SetGuidance("Set the Verbose level of ISNP beam #5.");
+	result->SetGuidance(" 0 : Silent (default)");
+	result->SetGuidance(" 1 : Display warning messages");
+	result->SetGuidance(" 2 : Display more");
+	result->SetParameterName("level", true);
+	result->SetDefaultValue(0);
+	result->SetRange("level >=0 && level <=3");
+
+	return result;
+
+}
+
 Beam5Messenger::Beam5Messenger(Beam5& facility_) :
 		facility(facility_), directory(MakeDirectory()), diameterCmd(
 				MakeDiameter(this)), angleCmd(MakeAngle(this)), haveCollimator1Cmd(
@@ -76,7 +94,7 @@ Beam5Messenger::Beam5Messenger(Beam5& facility_) :
 				MakeHaveCollimator(this, 2)), haveCollimator3Cmd(
 				MakeHaveCollimator(this, 3)), haveCollimator4Cmd(
 				MakeHaveCollimator(this, 4)), haveCollimator5Cmd(
-				MakeHaveCollimator(this, 5)) {
+				MakeHaveCollimator(this, 5)), verboseCmd(MakeVerbose(this)) {
 
 }
 
@@ -106,6 +124,8 @@ void Beam5Messenger::SetNewValue(G4UIcommand* const command,
 	} else if (command == haveCollimator5Cmd.get()) {
 		facility.SetHaveCollimator5(
 				haveCollimator5Cmd->GetNewBoolValue(newValue));
+	} else if (command == verboseCmd.get()) {
+		facility.SetVerbose(verboseCmd->GetNewIntValue(newValue));
 	}
 
 }
