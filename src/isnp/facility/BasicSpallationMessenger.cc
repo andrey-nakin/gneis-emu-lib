@@ -55,6 +55,7 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDistance(
 	result->SetParameterName("distance", false);
 	result->SetUnitCategory(G4UnitDefinition::GetCategory("m"));
 	result->AvailableForStates(G4State_PreInit);
+	result->SetRange("distance >0");
 
 	return result;
 
@@ -69,6 +70,7 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDetectorWidth(
 	result->SetParameterName("width", false);
 	result->SetUnitCategory(G4UnitDefinition::GetCategory("m"));
 	result->AvailableForStates(G4State_PreInit);
+	result->SetRange("width >0");
 
 	return result;
 
@@ -83,6 +85,7 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDetectorHeight(
 	result->SetParameterName("height", false);
 	result->SetUnitCategory(G4UnitDefinition::GetCategory("m"));
 	result->AvailableForStates(G4State_PreInit);
+	result->SetRange("height >0");
 
 	return result;
 
@@ -97,6 +100,7 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDetectorLength(
 	result->SetParameterName("length", false);
 	result->SetUnitCategory(G4UnitDefinition::GetCategory("m"));
 	result->AvailableForStates(G4State_PreInit);
+	result->SetRange("length >0");
 
 	return result;
 

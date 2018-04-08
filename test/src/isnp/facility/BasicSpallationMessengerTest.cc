@@ -42,6 +42,7 @@ TEST(BasicSpallationMessenger, SetDistance)
 	EXPECT_DOUBLE_EQ(1 * m, facility.GetDistance());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/distance 3 m"));
 	EXPECT_DOUBLE_EQ(3 * m, facility.GetDistance());
+	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/basicSpallation/distance 0 m"));
 
 }
 
@@ -54,6 +55,7 @@ TEST(BasicSpallationMessenger, SetDetectorWidth)
 	EXPECT_DOUBLE_EQ(10 * cm, facility.GetDetectorWidth());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/detectorWidth 20 cm"));
 	EXPECT_DOUBLE_EQ(20 * cm, facility.GetDetectorWidth());
+	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/basicSpallation/detectorWidth 0 cm"));
 
 }
 
@@ -66,6 +68,7 @@ TEST(BasicSpallationMessenger, SetDetectorHeight)
 	EXPECT_DOUBLE_EQ(10 * cm, facility.GetDetectorHeight());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/detectorHeight 20 cm"));
 	EXPECT_DOUBLE_EQ(20 * cm, facility.GetDetectorHeight());
+	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/basicSpallation/detectorHeight 0 cm"));
 
 }
 
@@ -78,6 +81,7 @@ TEST(BasicSpallationMessenger, SetDetectorLength)
 	EXPECT_DOUBLE_EQ(1 * cm, facility.GetDetectorLength());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/detectorLength 2 cm"));
 	EXPECT_DOUBLE_EQ(2 * cm, facility.GetDetectorLength());
+	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/basicSpallation/detectorLength 0 cm"));
 
 }
 
