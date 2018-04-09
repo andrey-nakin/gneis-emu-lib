@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <G4SystemOfUnits.hh>
 #include <G4Tubs.hh>
 #include <G4Box.hh>
@@ -14,8 +16,8 @@ namespace isnp {
 
 namespace facility {
 
-static G4double Square(G4double const v) {
-	return v * v;
+static G4double Square(G4double const x) {
+	return std::pow(x, 2);
 }
 
 BasicSpallation::BasicSpallation(G4VSensitiveDetector* const aDetector) :
@@ -53,6 +55,11 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 								+ Square(SpallationTarget::GetHalfLength()));
 	}
 
+	if (verboseLevel >= 1) {
+		G4cout << "BasicSpallation: create world as a cylinder of "
+				<< worldRadius / mm << " mm radius.\n";
+	}
+
 	G4String const nameWorld = "World";
 	auto const solidWorld = new G4Tubs(nameWorld, 0.0, worldRadius,
 			GetDistance() + GetDetectorLength(), 0.0 * deg, 360.0 * deg);
@@ -78,7 +85,7 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 	if (detector) {
 		if (verboseLevel >= 1) {
-			G4cout << "Beam5: creating detector, width="
+			G4cout << "BasicSpallation: creating detector, width="
 					<< GetDetectorWidth() / mm << " mm, height="
 					<< GetDetectorHeight() / mm << " mm, length="
 					<< GetDetectorLength() / mm << " mm" << "\n";
