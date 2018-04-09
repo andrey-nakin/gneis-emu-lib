@@ -14,12 +14,16 @@ namespace isnp {
 
 namespace facility {
 
+static G4double Square(G4double const v) {
+	return v * v;
+}
+
 BasicSpallation::BasicSpallation(G4VSensitiveDetector* const aDetector) :
 		detector(aDetector), messenger(
 				std::make_unique < BasicSpallationMessenger > (*this)), worldRadius(
-				400.0 * mm), horizontalAngle(30.0 * deg), verticalAngle(
-				0.0 * deg), distance(1.0 * m), detectorWidth(10 * cm), detectorHeight(
-				10 * cm), detectorLength(1.0 * cm), verboseLevel(0) {
+				0.0), horizontalAngle(30.0 * deg), verticalAngle(0.0 * deg), distance(
+				1.0 * m), detectorWidth(10 * cm), detectorHeight(10 * cm), detectorLength(
+				1.0 * cm), verboseLevel(0) {
 
 }
 
@@ -29,6 +33,8 @@ BasicSpallation::~BasicSpallation() {
 
 G4VPhysicalVolume* BasicSpallation::Construct() {
 
+	using namespace component;
+
 	// Get nist material manager
 	auto const nist = G4NistManager::Instance();
 
@@ -37,6 +43,14 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 	G4bool const single = false;
 	G4int const numOfCopies = 0;
 	G4bool const checkOverlaps = true;
+
+	if (worldRadius < 1 * mm) {
+		// auto-calculate
+		worldRadius = std::sqrt(
+				Square(SpallationTarget::GetHalfWidth())
+						+ Square(SpallationTarget::GetHalfHeight())
+						+ Square(SpallationTarget::GetHalfLength()));
+	}
 
 	G4String const nameWorld = "World";
 	auto const solidWorld = new G4Tubs(nameWorld, 0.0, worldRadius,
@@ -50,7 +64,7 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 	{
 		// Neutron source
-		auto const logicSpTarget = component::SpallationTarget::Instance();
+		auto const logicSpTarget = SpallationTarget::Instance();
 		G4RotationMatrix rotm = G4RotationMatrix();
 		rotm.rotateY(GetHorizontalAngle());
 		rotm.rotateX(GetVerticalAngle());
@@ -82,7 +96,8 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 		logicTarget->SetSensitiveDetector(detector);
 
 		new G4PVPlacement(noRotation,
-				G4ThreeVector(0, 0, GetDistance() + HalfOf(GetDetectorLength())),
+				G4ThreeVector(0, 0,
+						GetDistance() + HalfOf(GetDetectorLength())),
 				logicTarget, logicTarget->GetName(), logicWorld, single,
 				numOfCopies, checkOverlaps);
 	}
