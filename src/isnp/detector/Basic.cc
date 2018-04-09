@@ -35,6 +35,7 @@ G4bool isnp::detector::Basic::ProcessHits(G4Step* const aStep,
 	}
 
 	energies.push_back(dp->GetTotalEnergy());
+	kineticEnergies.push_back(dp->GetKineticEnergy());
 	momenta.push_back(dp->GetMomentumDirection());
 	positions.push_back(aStep->GetPreStepPoint()->GetPosition());
 
@@ -44,17 +45,19 @@ G4bool isnp::detector::Basic::ProcessHits(G4Step* const aStep,
 
 void isnp::detector::Basic::flush() {
 	std::ofstream file(isnp::util::FileNameBuilder::Make(GetName(), ".txt"));
-	file << "# Type\tEnergy (MeV)\tMomentum X\tMomentum Y\tMomentum Z\n";
+	file
+			<< "Type\tTotalEnergy\tKineticEnergy\tDirectionX\tDirectionY\tDirectionZ\tPositionX\tPositionY\tPositionZ\n";
 
 	auto ei = std::begin(energies), last = std::end(energies);
+	auto ki = std::begin(kineticEnergies);
 	auto mi = std::begin(momenta);
 	auto ni = std::begin(names);
 	auto pi = std::begin(positions);
 
-	for (; ei != last; ++ei, ++mi, ++ni, ++pi) {
+	for (; ei != last; ++ei, ++ki, ++mi, ++ni, ++pi) {
 		file << nameMap[*ni]
 
-		<< '\t' << *ei / MeV
+		<< '\t' << *ei / MeV << '\t' << *ki / MeV
 
 		<< '\t' << mi->getX() << '\t' << mi->getY() << '\t' << mi->getZ()
 

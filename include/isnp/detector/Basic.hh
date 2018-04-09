@@ -27,7 +27,7 @@ private:
 	std::map<key_type, G4String> nameMap;
 	std::map<G4String, key_type> keyMap;
 	std::vector<key_type> names;
-	std::vector<double> energies;
+	std::vector<double> energies, kineticEnergies;
 	std::vector<G4ThreeVector> momenta, positions;
 
 	void flush();

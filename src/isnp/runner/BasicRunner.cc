@@ -48,12 +48,12 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 			runManager.SetUserInitialization(pl);
 		}
 	}
+	ValidateSettings(runManager);
 
 	auto uiManager = G4UImanager::GetUIpointer();
 
 	if (parser->GetArgc() > 1) {
 		closure(runManager);
-		ValidateSettings(runManager);
 
 		// first argument is a script file name
 		const G4String command = "/control/execute ";
@@ -69,7 +69,6 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 		auto ui = new G4UIExecutive(parser->GetArgc(), parser->GetArgv());
 
 		closure(runManager);
-		ValidateSettings(runManager);
 
 		uiManager->ApplyCommand("/run/initialize");
 		uiManager->ApplyCommand("/control/execute vis.mac");
