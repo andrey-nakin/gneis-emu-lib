@@ -20,7 +20,8 @@ isnp::detector::Basic::~Basic() {
 G4bool isnp::detector::Basic::ProcessHits(G4Step* const aStep,
 		G4TouchableHistory* const /* ROhist */) {
 
-	const auto dp = aStep->GetTrack()->GetDynamicParticle();
+	const auto track = aStep->GetTrack();
+	const auto dp = track->GetDynamicParticle();
 
 	auto const particleName = dp->GetParticleDefinition()->GetParticleName();
 	auto const findResult = keyMap.find(particleName);
@@ -34,7 +35,8 @@ G4bool isnp::detector::Basic::ProcessHits(G4Step* const aStep,
 	}
 
 	energies.push_back(dp->GetTotalEnergy());
-	momenta.push_back(dp->GetMomentum());
+	momenta.push_back(dp->GetMomentumDirection());
+	positions.push_back(aStep->GetPreStepPoint()->GetPosition());
 
 	aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 	return true;
@@ -47,10 +49,19 @@ void isnp::detector::Basic::flush() {
 	auto ei = std::begin(energies), last = std::end(energies);
 	auto mi = std::begin(momenta);
 	auto ni = std::begin(names);
+	auto pi = std::begin(positions);
 
-	for (; ei != last; ++ei, ++mi, ++ni) {
-		file << nameMap[*ni] << '\t' << *ei / MeV << '\t' << mi->getX() << '\t'
-				<< mi->getY() << '\t' << mi->getZ() << '\n';
+	for (; ei != last; ++ei, ++mi, ++ni, ++pi) {
+		file << nameMap[*ni]
+
+		<< '\t' << *ei / MeV
+
+		<< '\t' << mi->getX() << '\t' << mi->getY() << '\t' << mi->getZ()
+
+		<< '\t' << pi->getX() / mm << '\t' << pi->getY() / mm << '\t'
+				<< pi->getZ() / mm
+
+				<< '\n';
 	}
 }
 
