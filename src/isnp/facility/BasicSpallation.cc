@@ -46,10 +46,11 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 	if (worldRadius < 1 * mm) {
 		// auto-calculate
-		worldRadius = std::sqrt(
-				Square(SpallationTarget::GetHalfWidth())
-						+ Square(SpallationTarget::GetHalfHeight())
-						+ Square(SpallationTarget::GetHalfLength()));
+		worldRadius = 1.0 * mm
+				+ std::sqrt(
+						Square(SpallationTarget::GetHalfWidth())
+								+ Square(SpallationTarget::GetHalfHeight())
+								+ Square(SpallationTarget::GetHalfLength()));
 	}
 
 	G4String const nameWorld = "World";
