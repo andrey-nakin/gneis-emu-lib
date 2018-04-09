@@ -64,7 +64,7 @@ void SpallationMessenger::SetNewValue(G4UIcommand* const command,
 	if (command == diameterCmd.get()) {
 		spallation.SetDiameter(diameterCmd->GetNewDoubleValue(newValue));
 	} else if (command == verboseCmd.get()) {
-		spallation.SetVerbose(verboseCmd->GetNewIntValue(newValue));
+		spallation.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
 	}
 
 }

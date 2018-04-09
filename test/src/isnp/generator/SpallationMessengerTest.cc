@@ -25,15 +25,15 @@ TEST(SpallationMessenger, SetDiameter)
 
 }
 
-TEST(SpallationMessenger, SetVerbose)
+TEST(SpallationMessenger, SetVerboseLevel)
 {
 
 	Spallation spallation;
 	auto const uiManager = G4UImanager::GetUIpointer();
 
-	EXPECT_EQ(1, spallation.GetVerbose());
+	EXPECT_EQ(1, spallation.GetVerboseLevel());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/verbose 2"));
-	EXPECT_EQ(2, spallation.GetVerbose());
+	EXPECT_EQ(2, spallation.GetVerboseLevel());
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/spallation/gun/verbose -1"));
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/spallation/gun/verbose 4"));
 

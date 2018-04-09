@@ -159,7 +159,7 @@ void BasicSpallationMessenger::SetNewValue(G4UIcommand* const command,
 		facility.SetDetectorLength(
 				detectorLengthCmd->GetNewDoubleValue(newValue));
 	} else if (command == verboseCmd.get()) {
-		facility.SetVerbose(verboseCmd->GetNewIntValue(newValue));
+		facility.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
 	}
 
 }

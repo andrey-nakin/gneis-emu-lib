@@ -8,21 +8,28 @@
 #include <G4VisExecutive.hh>
 #endif
 #endif	//	G4VIS_USE
+#include <QGSP_INCLXX_HP.hh>
+#include <QGSP_BERT_HP.hh>
+#include <QGSP_BIC_HP.hh>
 
 #include "isnp/runner/BasicRunner.hh"
 #include "isnp/runner/CommandLineParser.hh"
 #include "isnp/util/FileNameBuilder.hh"
 
-isnp::runner::BasicRunner::BasicRunner(int argc, char* argv[]) :
+namespace isnp {
+
+namespace runner {
+
+BasicRunner::BasicRunner(int argc, char* argv[]) :
 		parser(std::make_unique < CommandLineParser > (argc, argv)) {
 
 }
 
-isnp::runner::BasicRunner::~BasicRunner() {
+BasicRunner::~BasicRunner() {
 
 }
 
-int isnp::runner::BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
+int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 
 	if (parser->GetReturnCode()) {
 		return parser->GetReturnCode();
@@ -35,10 +42,18 @@ int isnp::runner::BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 	G4Random::setTheSeed(
 			parser->IsRandomSeedSet() ? parser->GetRandomSeed() : SystemTime());
 
+	if (!parser->GetPlName().isNull()) {
+		auto const pl = DetectPhysicsList(parser->GetPlName());
+		if (pl) {
+			runManager.SetUserInitialization(pl);
+		}
+	}
+
 	auto uiManager = G4UImanager::GetUIpointer();
 
 	if (parser->GetArgc() > 1) {
 		closure(runManager);
+		ValidateSettings(runManager);
 
 		// first argument is a script file name
 		const G4String command = "/control/execute ";
@@ -52,7 +67,10 @@ int isnp::runner::BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 
 		// no arguments passed to executable - run in visual mode
 		auto ui = new G4UIExecutive(parser->GetArgc(), parser->GetArgv());
+
 		closure(runManager);
+		ValidateSettings(runManager);
+
 		uiManager->ApplyCommand("/run/initialize");
 		uiManager->ApplyCommand("/control/execute vis.mac");
 		ui->SessionStart();
@@ -64,9 +82,39 @@ int isnp::runner::BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 	return 0;
 }
 
-long isnp::runner::BasicRunner::SystemTime() {
+long BasicRunner::SystemTime() {
 	using namespace std::chrono;
 	auto const now = time_point_cast < milliseconds > (system_clock::now());
 	auto const value = now.time_since_epoch();
 	return value.count();
+}
+
+G4VUserPhysicsList* BasicRunner::DetectPhysicsList(G4String const& name) const {
+
+#define	PL(n) if (name == #n) { return new n; }
+
+	if (name == "-") {
+		return nullptr;
+	}
+
+	PL(QGSP_BERT_HP)
+	PL(QGSP_BIC_HP)
+	PL(QGSP_INCLXX_HP)
+
+	return nullptr;
+
+#undef PL
+
+}
+
+void BasicRunner::ValidateSettings(G4RunManager& runManager) const {
+
+	if (!runManager.GetUserPhysicsList()) {
+		runManager.SetUserInitialization(new QGSP_BERT_HP);
+	}
+
+}
+
+}
+
 }

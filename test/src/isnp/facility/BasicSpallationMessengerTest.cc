@@ -85,15 +85,15 @@ TEST(BasicSpallationMessenger, SetDetectorLength)
 
 }
 
-TEST(BasicSpallationMessenger, SetVerbose)
+TEST(BasicSpallationMessenger, SetVerboseLevel)
 {
 
 	BasicSpallation facility(nullptr);
 	auto const uiManager = G4UImanager::GetUIpointer();
 
-	EXPECT_EQ(0, facility.GetVerbose());
+	EXPECT_EQ(0, facility.GetVerboseLevel());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/verbose 1"));
-	EXPECT_EQ(1, facility.GetVerbose());
+	EXPECT_EQ(1, facility.GetVerboseLevel());
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/basicSpallation/verbose -1"));
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/basicSpallation/verbose 4"));
 

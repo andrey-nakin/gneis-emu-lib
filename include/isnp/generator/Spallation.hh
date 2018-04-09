@@ -34,12 +34,12 @@ public:
 		diameter = v;
 	}
 
-	G4int GetVerbose() const {
-		return verbose;
+	G4int GetVerboseLevel() const {
+		return verboseLevel;
 	}
 
-	void SetVerbose(G4int const v) {
-		verbose = v;
+	void SetVerboseLevel(G4int const aVerboseLevel) {
+		verboseLevel = aVerboseLevel;
 	}
 
 private:
@@ -50,7 +50,7 @@ private:
 	std::unique_ptr<SpallationMessenger> const messenger;
 	G4double diameter;
 	unsigned counter;
-	G4int verbose;
+	G4int verboseLevel;
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;

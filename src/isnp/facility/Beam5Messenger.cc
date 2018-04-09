@@ -31,6 +31,7 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDiameter(
 	result->SetParameterName("diameter", false);
 	result->SetUnitCategory(G4UnitDefinition::GetCategory("mm"));
 	result->AvailableForStates(G4State_PreInit);
+	result->SetRange("diameter >0");
 
 	return result;
 
@@ -70,7 +71,7 @@ static std::unique_ptr<G4UIcmdWithABool> MakeHaveCollimator(
 
 }
 
-static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerbose(
+static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerboseLevel(
 		Beam5Messenger* const inst) {
 
 	auto result = std::make_unique < G4UIcmdWithAnInteger
@@ -94,7 +95,7 @@ Beam5Messenger::Beam5Messenger(Beam5& facility_) :
 				MakeHaveCollimator(this, 2)), haveCollimator3Cmd(
 				MakeHaveCollimator(this, 3)), haveCollimator4Cmd(
 				MakeHaveCollimator(this, 4)), haveCollimator5Cmd(
-				MakeHaveCollimator(this, 5)), verboseCmd(MakeVerbose(this)) {
+				MakeHaveCollimator(this, 5)), verboseCmd(MakeVerboseLevel(this)) {
 
 }
 
@@ -125,7 +126,7 @@ void Beam5Messenger::SetNewValue(G4UIcommand* const command,
 		facility.SetHaveCollimator5(
 				haveCollimator5Cmd->GetNewBoolValue(newValue));
 	} else if (command == verboseCmd.get()) {
-		facility.SetVerbose(verboseCmd->GetNewIntValue(newValue));
+		facility.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
 	}
 
 }

@@ -38,8 +38,8 @@ public:
 	G4double GetDetectorLength() const;
 	void SetDetectorLength(G4double aLength);
 
-	G4int GetVerbose() const;
-	void SetVerbose(G4int aVerbose);
+	G4int GetVerboseLevel() const;
+	void SetVerboseLevel(G4int aVerbose);
 
 private:
 
@@ -47,7 +47,7 @@ private:
 	std::unique_ptr<BasicSpallationMessenger> const messenger;
 	G4double worldRadius, horizontalAngle, verticalAngle, distance, detectorWidth,
 			detectorHeight, detectorLength;
-	G4int verbose;
+	G4int verboseLevel;
 
 	static G4double HalfOf(G4double v);
 

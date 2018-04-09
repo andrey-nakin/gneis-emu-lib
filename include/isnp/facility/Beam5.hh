@@ -43,8 +43,8 @@ public:
 	G4bool GetHaveCollimator5() const;
 	void SetHaveCollimator5(G4bool haveC5);
 
-	G4int GetVerbose() const;
-	void SetVerbose(G4int aVerbose);
+	G4int GetVerboseLevel() const;
+	void SetVerboseLevel(G4int aVerboseLevel);
 
 private:
 
@@ -55,7 +55,7 @@ private:
 	G4double diameter;
 	G4bool haveCollimator1, haveCollimator2, haveCollimator3, haveCollimator4,
 			haveCollimator5;
-	G4int verbose;
+	G4int verboseLevel;
 
 	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,
 			G4double position);

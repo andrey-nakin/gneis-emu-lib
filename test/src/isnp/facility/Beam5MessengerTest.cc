@@ -18,6 +18,7 @@ TEST(Beam5Messenger, SetDiameter)
 	EXPECT_DOUBLE_EQ(100 * mm, facility.GetDiameter());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/beam5/diameter 50 mm"));
 	EXPECT_DOUBLE_EQ(50 * mm, facility.GetDiameter());
+	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/beam5/diameter 0 mm"));
 
 }
 
@@ -99,9 +100,9 @@ TEST(Beam5Messenger, SetVerbose)
 	Beam5 facility(nullptr);
 	auto const uiManager = G4UImanager::GetUIpointer();
 
-	EXPECT_EQ(0, facility.GetVerbose());
+	EXPECT_EQ(0, facility.GetVerboseLevel());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/beam5/verbose 1"));
-	EXPECT_EQ(1, facility.GetVerbose());
+	EXPECT_EQ(1, facility.GetVerboseLevel());
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/beam5/verbose -1"));
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/beam5/verbose 4"));
 

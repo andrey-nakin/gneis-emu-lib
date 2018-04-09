@@ -19,7 +19,7 @@ BasicSpallation::BasicSpallation(G4VSensitiveDetector* const aDetector) :
 				std::make_unique < BasicSpallationMessenger > (*this)), worldRadius(
 				400.0 * mm), horizontalAngle(30.0 * deg), verticalAngle(
 				0.0 * deg), distance(1.0 * m), detectorWidth(10 * cm), detectorHeight(
-				10 * cm), detectorLength(1.0 * cm), verbose(0) {
+				10 * cm), detectorLength(1.0 * cm), verboseLevel(0) {
 
 }
 
@@ -62,7 +62,7 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 	}
 
 	if (detector) {
-		if (verbose >= 1) {
+		if (verboseLevel >= 1) {
 			G4cout << "Beam5: creating detector, width="
 					<< GetDetectorWidth() / mm << " mm, height="
 					<< GetDetectorHeight() / mm << " mm, length="
@@ -139,12 +139,12 @@ void BasicSpallation::SetDetectorLength(G4double const aLength) {
 	detectorLength = aLength;
 }
 
-G4int BasicSpallation::GetVerbose() const {
-	return verbose;
+G4int BasicSpallation::GetVerboseLevel() const {
+	return verboseLevel;
 }
 
-void BasicSpallation::SetVerbose(G4int aVerbose) {
-	verbose = aVerbose;
+void BasicSpallation::SetVerboseLevel(G4int aVerboseLevel) {
+	verboseLevel = aVerboseLevel;
 }
 
 G4double BasicSpallation::HalfOf(G4double const v) {

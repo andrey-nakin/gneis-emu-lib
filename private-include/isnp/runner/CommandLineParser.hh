@@ -35,6 +35,10 @@ public:
 		return fileSuffix;
 	}
 
+	G4String GetPlName() const {
+		return plName;
+	}
+
 	int GetArgc() const {
 		return parsedArgc;
 	}
@@ -48,7 +52,7 @@ private:
 	int returnCode;
 	bool randomSeedSet;
 	long randomSeed;
-	G4String fileSuffix;
+	G4String fileSuffix, plName;
 	int parsedArgc;
 	char** parsedArgv;
 

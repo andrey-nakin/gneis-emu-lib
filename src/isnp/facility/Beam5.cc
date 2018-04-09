@@ -35,7 +35,7 @@ Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
 				aDetector), zeroPosition(0.5 * m), length(36.0 * m), worldRadius(
 				200.0 * mm), angle(30.0 * deg), collimatorsHaveDetectors(false), diameter(
 				100 * mm), haveCollimator1(false), haveCollimator2(false), haveCollimator3(
-				false), haveCollimator4(false), haveCollimator5(true), verbose(
+				false), haveCollimator4(false), haveCollimator5(true), verboseLevel(
 				0) {
 }
 
@@ -76,7 +76,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator1) {
-		if (verbose >= 1) {
+		if (verboseLevel >= 1) {
 			G4cout << "Beam5: creating collimator #1\n";
 		}
 
@@ -85,7 +85,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator2) {
-		if (verbose >= 1) {
+		if (verboseLevel >= 1) {
 			G4cout << "Beam5: creating collimator #2\n";
 		}
 
@@ -94,7 +94,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator3) {
-		if (verbose >= 1) {
+		if (verboseLevel >= 1) {
 			G4cout << "Beam5: creating collimator #3\n";
 		}
 
@@ -103,7 +103,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator4) {
-		if (verbose >= 1) {
+		if (verboseLevel >= 1) {
 			G4cout << "Beam5: creating collimator #4\n";
 		}
 
@@ -112,7 +112,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator5) {
-		if (verbose >= 1) {
+		if (verboseLevel >= 1) {
 			G4cout << "Beam5: creating collimator #5 with diameter "
 					<< diameter / mm << " mm \n";
 		}
@@ -123,7 +123,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (detector) {
-		if (verbose >= 1) {
+		if (verboseLevel >= 1) {
 			G4cout << "Beam5: creating detector\n";
 		}
 
@@ -221,12 +221,12 @@ void Beam5::SetHaveCollimator5(G4bool const haveC5) {
 	this->haveCollimator5 = haveC5;
 }
 
-G4int Beam5::GetVerbose() const {
-	return verbose;
+G4int Beam5::GetVerboseLevel() const {
+	return verboseLevel;
 }
 
-void Beam5::SetVerbose(G4int const aVerbose) {
-	verbose = aVerbose;
+void Beam5::SetVerboseLevel(G4int const aVerboseLevel) {
+	verboseLevel = aVerboseLevel;
 }
 
 void Beam5::PlaceComponent(G4LogicalVolume* const world,
