@@ -91,19 +91,19 @@ long BasicRunner::SystemTime() {
 
 G4VUserPhysicsList* BasicRunner::DetectPhysicsList(G4String const& name) const {
 
-#define	PL(n) if (name == #n) { return new n; }
-
 	if (name == "-") {
 		return nullptr;
 	}
+
+#define	PL(n) if (name == #n) { return new n; }
 
 	PL(QGSP_BERT_HP)
 	PL(QGSP_BIC_HP)
 	PL(QGSP_INCLXX_HP)
 
-	return nullptr;
-
 #undef PL
+
+	return nullptr;
 
 }
 
