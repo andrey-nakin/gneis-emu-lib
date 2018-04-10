@@ -11,6 +11,8 @@
 #include <QGSP_INCLXX_HP.hh>
 #include <QGSP_BERT_HP.hh>
 #include <QGSP_BIC_HP.hh>
+#include <FTFP_INCLXX_HP.hh>
+#include <FTFP_BERT_HP.hh>
 
 #include "isnp/runner/BasicRunner.hh"
 #include "isnp/runner/CommandLineParser.hh"
@@ -99,6 +101,8 @@ G4VUserPhysicsList* BasicRunner::DetectPhysicsList(G4String const& name) const {
 	PL(QGSP_BERT_HP)
 	PL(QGSP_BIC_HP)
 	PL(QGSP_INCLXX_HP)
+	PL(FTFP_BERT_HP)
+	PL(FTFP_INCLXX_HP)
 
 #undef PL
 
