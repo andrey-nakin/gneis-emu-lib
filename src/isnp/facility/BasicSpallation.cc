@@ -7,6 +7,7 @@
 #include <G4VisAttributes.hh>
 #include <G4PVPlacement.hh>
 #include <G4SDManager.hh>
+#include "G4Threading.hh"
 
 #include "isnp/facility/BasicSpallation.hh"
 #include "isnp/facility/BasicSpallationMessenger.hh"
@@ -55,7 +56,7 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 								+ Square(SpallationTarget::GetHalfLength()));
 	}
 
-	if (verboseLevel >= 1) {
+	if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 		G4cout << "BasicSpallation: create world as a cylinder of "
 				<< worldRadius / mm << " mm radius.\n";
 	}
@@ -84,7 +85,7 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 	}
 
 	if (detector) {
-		if (verboseLevel >= 1) {
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "BasicSpallation: creating detector, width="
 					<< GetDetectorWidth() / mm << " mm, height="
 					<< GetDetectorHeight() / mm << " mm, length="

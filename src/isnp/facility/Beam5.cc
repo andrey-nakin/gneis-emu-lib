@@ -13,6 +13,7 @@
 #include <G4VisAttributes.hh>
 #include <G4SDManager.hh>
 #include <G4RotationMatrix.hh>
+#include "G4Threading.hh"
 
 #include "isnp/facility/Beam5.hh"
 #include "isnp/facility/Beam5Messenger.hh"
@@ -76,7 +77,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator1) {
-		if (verboseLevel >= 1) {
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #1\n";
 		}
 
@@ -85,7 +86,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator2) {
-		if (verboseLevel >= 1) {
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #2\n";
 		}
 
@@ -94,7 +95,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator3) {
-		if (verboseLevel >= 1) {
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #3\n";
 		}
 
@@ -103,7 +104,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator4) {
-		if (verboseLevel >= 1) {
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #4\n";
 		}
 
@@ -112,7 +113,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (haveCollimator5) {
-		if (verboseLevel >= 1) {
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #5 with diameter "
 					<< diameter / mm << " mm \n";
 		}
@@ -123,7 +124,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	if (detector) {
-		if (verboseLevel >= 1) {
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating detector\n";
 		}
 
