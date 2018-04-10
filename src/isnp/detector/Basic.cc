@@ -22,16 +22,24 @@ G4bool isnp::detector::Basic::ProcessHits(G4Step* const aStep,
 
 	const auto track = aStep->GetTrack();
 	const auto dp = track->GetDynamicParticle();
-
 	Data data;
 
-	data.particle = dp->GetParticleDefinition();
+	auto const particleName = dp->GetParticleDefinition()->GetParticleName();
+	auto const findResult = keyMap.find(particleName);
+	if (findResult != std::end(keyMap)) {
+		data.nameKey = findResult->second;
+	} else {
+		auto const key = keyMap.size();
+		keyMap[particleName] = key;
+		nameMap[key] = particleName;
+		data.nameKey = key;
+	}
+
 	data.totalEnergy = dp->GetTotalEnergy();
 	data.kineticEnergy = dp->GetKineticEnergy();
 	data.time = dp->GetProperTime();
 	data.direction = dp->GetMomentumDirection();
 	data.position = aStep->GetPreStepPoint()->GetPosition();
-
 	accum.push_back(data);
 
 	aStep->GetTrack()->SetTrackStatus(fStopAndKill);
@@ -44,7 +52,7 @@ void isnp::detector::Basic::flush() {
 			<< "Type\tTotalEnergy\tKineticEnergy\tTime\tDirectionX\tDirectionY\tDirectionZ\tPositionX\tPositionY\tPositionZ\n";
 
 	std::for_each(std::begin(accum), std::end(accum), [&](auto i) {
-		file << i.particle->GetParticleName()
+		file << nameMap[i.nameKey]
 
 		<< '\t' << i.totalEnergy / MeV << '\t' << i.kineticEnergy / MeV
 

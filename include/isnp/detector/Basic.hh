@@ -2,6 +2,7 @@
 #define isnp_detector_Basic_hh
 
 #include <vector>
+#include <map>
 #include <G4VSensitiveDetector.hh>
 #include <G4ParticleDefinition.hh>
 
@@ -22,13 +23,18 @@ protected:
 
 private:
 
+	typedef std::vector<double>::size_type key_type;
+
 	struct Data {
-		G4ParticleDefinition const* particle;
+		key_type nameKey;
 		G4double totalEnergy, kineticEnergy, time;
 		G4ThreeVector direction, position;
 	};
 
 	std::vector<Data> accum;
+
+	std::map<key_type, G4String> nameMap;
+	std::map<G4String, key_type> keyMap;
 
 	void flush();
 
