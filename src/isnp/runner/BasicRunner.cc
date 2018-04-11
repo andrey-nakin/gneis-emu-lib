@@ -9,9 +9,12 @@
 #endif
 #endif	//	G4VIS_USE
 #include <QGSP_INCLXX_HP.hh>
+#include <QGSP_BERT.hh>
 #include <QGSP_BERT_HP.hh>
+#include <QGSP_BIC.hh>
 #include <QGSP_BIC_HP.hh>
 #include <FTFP_INCLXX_HP.hh>
+#include <FTFP_BERT.hh>
 #include <FTFP_BERT_HP.hh>
 
 #include "isnp/runner/BasicRunner.hh"
@@ -98,10 +101,15 @@ G4VUserPhysicsList* BasicRunner::DetectPhysicsList(G4String const& name) const {
 
 #define	PL(n) if (name == #n) { return new n; }
 
+	PL(QGSP_BERT)
 	PL(QGSP_BERT_HP)
+	PL(QGSP_BIC)
 	PL(QGSP_BIC_HP)
+	PL(QGSP_INCLXX)
 	PL(QGSP_INCLXX_HP)
+	PL(FTFP_BERT)
 	PL(FTFP_BERT_HP)
+	PL(FTFP_INCLXX)
 	PL(FTFP_INCLXX_HP)
 
 #undef PL
