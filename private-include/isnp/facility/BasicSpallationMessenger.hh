@@ -22,6 +22,7 @@ public:
 	BasicSpallationMessenger(BasicSpallation& aFacility);
 	~BasicSpallationMessenger();
 
+	G4String GetCurrentValue(G4UIcommand* command) override;
 	void SetNewValue(G4UIcommand*, G4String) override;
 
 private:

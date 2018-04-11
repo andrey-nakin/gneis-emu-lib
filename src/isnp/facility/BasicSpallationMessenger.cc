@@ -138,6 +138,31 @@ BasicSpallationMessenger::~BasicSpallationMessenger() {
 
 }
 
+G4String BasicSpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
+
+	G4String ans;
+
+	if (command == horizontalAngleCmd.get()) {
+		ans = horizontalAngleCmd->ConvertToString(
+				facility.GetHorizontalAngle());
+	} else if (command == verticalAngleCmd.get()) {
+		ans = verticalAngleCmd->ConvertToString(facility.GetVerticalAngle());
+	} else if (command == distanceCmd.get()) {
+		ans = distanceCmd->ConvertToString(facility.GetDistance());
+	} else if (command == detectorWidthCmd.get()) {
+		ans = detectorWidthCmd->ConvertToString(facility.GetDetectorWidth());
+	} else if (command == detectorHeightCmd.get()) {
+		ans = detectorHeightCmd->ConvertToString(facility.GetDetectorHeight());
+	} else if (command == detectorLengthCmd.get()) {
+		ans = detectorLengthCmd->ConvertToString(facility.GetDetectorLength());
+	} else if (command == verboseCmd.get()) {
+		ans = verboseCmd->ConvertToString(facility.GetVerboseLevel());
+	}
+
+	return ans;
+
+}
+
 void BasicSpallationMessenger::SetNewValue(G4UIcommand* const command,
 		G4String const newValue) {
 

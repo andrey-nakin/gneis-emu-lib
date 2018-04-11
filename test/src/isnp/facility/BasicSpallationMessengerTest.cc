@@ -9,6 +9,20 @@ namespace isnp {
 
 namespace facility {
 
+constexpr G4double GET_CURRENT_DOUBLE_VALUE_DELTA = 1.e-6;
+
+TEST(BasicSpallationMessenger, GetHorizontalAngle)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(30 * deg, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/horizontalAngle"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	facility.SetHorizontalAngle(25 * deg);
+	EXPECT_NEAR(25 * deg, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/horizontalAngle"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
 TEST(BasicSpallationMessenger, SetHorizontalAngle)
 {
 
@@ -21,6 +35,18 @@ TEST(BasicSpallationMessenger, SetHorizontalAngle)
 
 }
 
+TEST(BasicSpallationMessenger, GetVerticalAngle)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(0 * deg, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/verticalAngle"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	facility.SetVerticalAngle(10 * deg);
+	EXPECT_NEAR(10 * deg, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/verticalAngle"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
 TEST(BasicSpallationMessenger, SetVerticalAngle)
 {
 
@@ -30,6 +56,18 @@ TEST(BasicSpallationMessenger, SetVerticalAngle)
 	EXPECT_DOUBLE_EQ(0 * deg, facility.GetVerticalAngle());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/verticalAngle 10 deg"));
 	EXPECT_DOUBLE_EQ(10 * deg, facility.GetVerticalAngle());
+
+}
+
+TEST(BasicSpallationMessenger, GetDistance)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(1 * m, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/distance"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	facility.SetDistance(10 * m);
+	EXPECT_NEAR(10 * m, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/distance"), GET_CURRENT_DOUBLE_VALUE_DELTA);
 
 }
 
@@ -46,6 +84,18 @@ TEST(BasicSpallationMessenger, SetDistance)
 
 }
 
+TEST(BasicSpallationMessenger, GetDetectorWidth)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(10 * cm, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/detectorWidth"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	facility.SetDetectorWidth(20 * cm);
+	EXPECT_NEAR(20 * cm, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/detectorWidth"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
 TEST(BasicSpallationMessenger, SetDetectorWidth)
 {
 
@@ -56,6 +106,18 @@ TEST(BasicSpallationMessenger, SetDetectorWidth)
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/detectorWidth 20 cm"));
 	EXPECT_DOUBLE_EQ(20 * cm, facility.GetDetectorWidth());
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/basicSpallation/detectorWidth 0 cm"));
+
+}
+
+TEST(BasicSpallationMessenger, GetDetectorHeight)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(10 * cm, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/detectorHeight"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	facility.SetDetectorHeight(20 * cm);
+	EXPECT_NEAR(20 * cm, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/detectorHeight"), GET_CURRENT_DOUBLE_VALUE_DELTA);
 
 }
 
@@ -72,6 +134,18 @@ TEST(BasicSpallationMessenger, SetDetectorHeight)
 
 }
 
+TEST(BasicSpallationMessenger, GetDetectorLength)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(1 * cm, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/detectorLength"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	facility.SetDetectorLength(2 * cm);
+	EXPECT_NEAR(2 * cm, uiManager->GetCurrentDoubleValue("/isnp/basicSpallation/detectorLength"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
 TEST(BasicSpallationMessenger, SetDetectorLength)
 {
 
@@ -82,6 +156,18 @@ TEST(BasicSpallationMessenger, SetDetectorLength)
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/detectorLength 2 cm"));
 	EXPECT_DOUBLE_EQ(2 * cm, facility.GetDetectorLength());
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/basicSpallation/detectorLength 0 cm"));
+
+}
+
+TEST(BasicSpallationMessenger, GetVerboseLevel)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_EQ(0, uiManager->GetCurrentIntValue("/isnp/basicSpallation/verbose"));
+	facility.SetVerboseLevel(1);
+	EXPECT_EQ(1, uiManager->GetCurrentIntValue("/isnp/basicSpallation/verbose"));
 
 }
 
