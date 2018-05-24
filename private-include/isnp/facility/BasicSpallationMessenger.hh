@@ -6,6 +6,7 @@
 #include <G4UImessenger.hh>
 #include <G4UIdirectory.hh>
 #include <G4UIcommand.hh>
+#include <G4UIcmdWithAString.hh>
 
 #include "isnp/facility/BasicSpallation.hh"
 
@@ -33,6 +34,7 @@ private:
 			verticalAngleCmd, distanceCmd, detectorWidthCmd, detectorHeightCmd,
 			detectorLengthCmd;
 	std::unique_ptr<G4UIcmdWithAnInteger> const verboseCmd;
+	std::unique_ptr<G4UIcmdWithAString> const worldMaterialCmd;
 
 };
 

@@ -17,6 +17,8 @@ namespace isnp {
 
 namespace facility {
 
+static G4String const DEFAULT_WORLD_MATERIAL = "G4_Galactic";
+
 static G4double Square(G4double const x) {
 	return std::pow(x, 2);
 }
@@ -26,7 +28,8 @@ BasicSpallation::BasicSpallation(G4VSensitiveDetector* const aDetector) :
 				std::make_unique < BasicSpallationMessenger > (*this)), worldRadius(
 				0.0), horizontalAngle(30.0 * deg), verticalAngle(0.0 * deg), distance(
 				1.0 * m), detectorWidth(10 * cm), detectorHeight(10 * cm), detectorLength(
-				1.0 * cm), verboseLevel(0) {
+				1.0 * cm), verboseLevel(0), worldMaterial(
+				DEFAULT_WORLD_MATERIAL), logicWorld(nullptr) {
 
 }
 
@@ -64,8 +67,8 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 	G4String const nameWorld = "World";
 	auto const solidWorld = new G4Tubs(nameWorld, 0.0, worldRadius,
 			GetDistance() + GetDetectorLength(), 0.0 * deg, 360.0 * deg);
-	auto const logicWorld = new G4LogicalVolume(solidWorld,
-			nist->FindOrBuildMaterial("G4_Galactic"), nameWorld);
+	logicWorld = new G4LogicalVolume(solidWorld,
+			nist->FindOrBuildMaterial(worldMaterial), nameWorld);
 	logicWorld->SetVisAttributes(G4VisAttributes::Invisible);
 
 	auto const physWorld = new G4PVPlacement(noRotation, G4ThreeVector(),
@@ -169,6 +172,28 @@ G4int BasicSpallation::GetVerboseLevel() const {
 
 void BasicSpallation::SetVerboseLevel(G4int aVerboseLevel) {
 	verboseLevel = aVerboseLevel;
+}
+
+void BasicSpallation::SetWorldMaterial(const G4String& aWorldMaterial) {
+
+	auto nistManager = G4NistManager::Instance();
+	auto material = nistManager->FindOrBuildMaterial(aWorldMaterial);
+
+	if (material) {
+		if (verboseLevel > 1) {
+			G4cout << "BasicSpallation: set material " << aWorldMaterial
+					<< "\n";
+		}
+
+		this->worldMaterial = aWorldMaterial;
+		if (logicWorld) {
+			logicWorld->SetMaterial(material);
+		}
+	} else {
+		G4cerr << "BasicSpallation: unknown material " << aWorldMaterial
+				<< "\n";
+	}
+
 }
 
 G4double BasicSpallation::HalfOf(G4double const v) {

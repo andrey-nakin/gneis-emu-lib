@@ -185,6 +185,33 @@ TEST(BasicSpallationMessenger, SetVerboseLevel)
 
 }
 
+TEST(BasicSpallationMessenger, GetWorldMaterial)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_EQ(G4String("G4_Galactic"), uiManager->GetCurrentStringValue("/isnp/basicSpallation/worldMaterial"));
+	facility.SetWorldMaterial("G4_AIR");
+	EXPECT_EQ(G4String("G4_AIR"), uiManager->GetCurrentStringValue("/isnp/basicSpallation/worldMaterial"));
+
+}
+
+TEST(BasicSpallationMessenger, SetWorldMaterial)
+{
+
+	BasicSpallation facility(nullptr);
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_EQ(G4String("G4_Galactic"), facility.GetWorldMaterial());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/worldMaterial G4_AIR"));
+	EXPECT_EQ(G4String("G4_AIR"), facility.GetWorldMaterial());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/basicSpallation/worldMaterial invalid_material_name"));
+	EXPECT_EQ(G4String("G4_AIR"), facility.GetWorldMaterial());
+	EXPECT_EQ(400, uiManager->ApplyCommand("/isnp/basicSpallation/worldMaterial"));
+
+}
+
 }
 
 }

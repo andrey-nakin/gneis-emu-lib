@@ -41,13 +41,20 @@ public:
 	G4int GetVerboseLevel() const;
 	void SetVerboseLevel(G4int aVerbose);
 
+	G4String GetWorldMaterial() const {
+		return worldMaterial;
+	}
+	void SetWorldMaterial(const G4String&);
+
 private:
 
 	G4VSensitiveDetector* const detector;
 	std::unique_ptr<BasicSpallationMessenger> const messenger;
-	G4double worldRadius, horizontalAngle, verticalAngle, distance, detectorWidth,
-			detectorHeight, detectorLength;
+	G4double worldRadius, horizontalAngle, verticalAngle, distance,
+			detectorWidth, detectorHeight, detectorLength;
 	G4int verboseLevel;
+	G4String worldMaterial;
+	G4LogicalVolume* logicWorld;
 
 	static G4double HalfOf(G4double v);
 

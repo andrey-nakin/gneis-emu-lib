@@ -124,13 +124,27 @@ static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerbose(
 
 }
 
+static std::unique_ptr<G4UIcmdWithAString> MakeWorldMaterial(
+		BasicSpallationMessenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithAString
+			> (DIR "worldMaterial", inst);
+	result->SetGuidance("Set a material of world");
+	result->SetParameterName("material", false);
+	result->AvailableForStates(G4State_PreInit, G4State_Idle);
+
+	return result;
+
+}
+
 BasicSpallationMessenger::BasicSpallationMessenger(BasicSpallation& aFacility) :
 		facility(aFacility), directory(MakeDirectory()), horizontalAngleCmd(
 				MakeHorizontalAngle(this)), verticalAngleCmd(
 				MakeVerticalAngle(this)), distanceCmd(MakeDistance(this)), detectorWidthCmd(
 				MakeDetectorWidth(this)), detectorHeightCmd(
 				MakeDetectorHeight(this)), detectorLengthCmd(
-				MakeDetectorLength(this)), verboseCmd(MakeVerbose(this)) {
+				MakeDetectorLength(this)), verboseCmd(MakeVerbose(this)), worldMaterialCmd(
+				MakeWorldMaterial(this)) {
 
 }
 
@@ -157,6 +171,8 @@ G4String BasicSpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
 		ans = detectorLengthCmd->ConvertToString(facility.GetDetectorLength());
 	} else if (command == verboseCmd.get()) {
 		ans = verboseCmd->ConvertToString(facility.GetVerboseLevel());
+	} else if (command == worldMaterialCmd.get()) {
+		ans = facility.GetWorldMaterial();
 	}
 
 	return ans;
@@ -185,6 +201,8 @@ void BasicSpallationMessenger::SetNewValue(G4UIcommand* const command,
 				detectorLengthCmd->GetNewDoubleValue(newValue));
 	} else if (command == verboseCmd.get()) {
 		facility.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
+	} else if (command == worldMaterialCmd.get()) {
+		facility.SetWorldMaterial(newValue);
 	}
 
 }
