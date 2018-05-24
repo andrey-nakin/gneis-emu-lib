@@ -8,14 +8,15 @@
 #include <G4VisExecutive.hh>
 #endif
 #endif	//	G4VIS_USE
-#include <QGSP_INCLXX_HP.hh>
-#include <QGSP_BERT.hh>
 #include <QGSP_BERT_HP.hh>
-#include <QGSP_BIC.hh>
-#include <QGSP_BIC_HP.hh>
-#include <FTFP_INCLXX_HP.hh>
-#include <FTFP_BERT.hh>
-#include <FTFP_BERT_HP.hh>
+//#include <QGSP_INCLXX_HP.hh>
+//#include <QGSP_BERT.hh>
+//#include <QGSP_BIC.hh>
+//#include <QGSP_BIC_HP.hh>
+//#include <FTFP_INCLXX_HP.hh>
+//#include <FTFP_BERT.hh>
+//#include <FTFP_BERT_HP.hh>
+#include <G4PhysListFactory.hh>
 
 #include "isnp/runner/BasicRunner.hh"
 #include "isnp/runner/CommandLineParser.hh"
@@ -99,20 +100,36 @@ G4VUserPhysicsList* BasicRunner::DetectPhysicsList(G4String const& name) const {
 		return nullptr;
 	}
 
-#define	PL(n) if (name == #n) { return new n; }
+	G4PhysListFactory factory;
 
-	PL(QGSP_BERT)
-	PL(QGSP_BERT_HP)
-	PL(QGSP_BIC)
-	PL(QGSP_BIC_HP)
-	PL(QGSP_INCLXX)
-	PL(QGSP_INCLXX_HP)
-	PL(FTFP_BERT)
-	PL(FTFP_BERT_HP)
-	PL(FTFP_INCLXX)
-	PL(FTFP_INCLXX_HP)
+	if (!name.isNull() && factory.IsReferencePhysList(name)) {
+		return factory.GetReferencePhysList(name);
+	}
 
-#undef PL
+	/*#define	PL(n) if (name == #n) { return new n; }
+
+	 PL(QBBC)
+
+	 PL(QGS_BIC)
+	 PL(QGSP_BERT)
+	 PL(QGSP_BERT_HP)
+	 PL(QGSP_BIC)
+	 PL(QGSP_BIC_AllHP)
+	 PL(QGSP_BIC_HP)
+	 PL(QGSP_FTFP_BERT)
+	 PL(QGSP_INCLXX)
+	 PL(QGSP_INCLXX_HP)
+
+	 PL(FTF_BIC)
+	 PL(FTFP_BERT)
+	 PL(FTFP_BERT_ATL)
+	 PL(FTFP_BERT_HP)
+	 PL(FTFP_BERT_TRV)
+	 PL(FTFP_INCLXX)
+	 PL(FTFP_INCLXX_HP)
+	 PL(FTFQGSP_BERT)
+
+	 #undef PL*/
 
 	return nullptr;
 
