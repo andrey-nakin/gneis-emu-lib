@@ -176,8 +176,8 @@ void BasicSpallation::SetVerboseLevel(G4int aVerboseLevel) {
 
 void BasicSpallation::SetWorldMaterial(const G4String& aWorldMaterial) {
 
-	auto nistManager = G4NistManager::Instance();
-	auto material = nistManager->FindOrBuildMaterial(aWorldMaterial);
+	auto const nistManager = G4NistManager::Instance();
+	auto const material = nistManager->FindOrBuildMaterial(aWorldMaterial);
 
 	if (material) {
 		if (verboseLevel > 1) {
