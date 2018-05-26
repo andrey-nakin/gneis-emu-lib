@@ -31,9 +31,9 @@ void Spallation::GeneratePrimaries(G4Event* const anEvent) {
 	particleGun->SetParticleMomentumDirection(GenerateDirection(transform));
 	particleGun->GeneratePrimaryVertex(anEvent);
 
-	if (verboseLevel > 0) {
+	if (verboseLevel > 1) {
 		G4cout << "Spallation: generating #" << ++counter << " particle\n";
-		if (verboseLevel > 1) {
+		if (verboseLevel > 2) {
 			G4cout << "Spallation position: "
 					<< particleGun->GetParticlePosition() << "\n";
 			G4cout << "Spallation direction: "
