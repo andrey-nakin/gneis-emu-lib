@@ -16,7 +16,8 @@ namespace generator {
 Spallation::Spallation() :
 		particleGun(MakeGun()), messenger(
 				std::make_unique < SpallationMessenger > (*this)), diameter(
-				4.0 * cm), counter(0), verboseLevel(1) {
+				4.0 * cm), positionX(0), positionY(0), counter(0), verboseLevel(
+				1) {
 }
 
 Spallation::~Spallation() {
@@ -62,7 +63,8 @@ G4ThreeVector Spallation::GeneratePosition(
 
 	if (diameter < 1.0 * angstrom) {
 
-		position = G4ThreeVector(0.0, 0.0, -SpallationTarget::GetHalfLength());
+		position = G4ThreeVector(positionX, positionY,
+				-SpallationTarget::GetHalfLength());
 
 	} else {
 
@@ -76,7 +78,8 @@ G4ThreeVector Spallation::GeneratePosition(
 			y = CLHEP::RandFlat::shoot(minValue, maxValue);
 		} while (x * x + y * y >= maxValue2);
 
-		position = G4ThreeVector(x, y, -SpallationTarget::GetHalfLength());
+		position = G4ThreeVector(x + positionX, y + positionY,
+				-SpallationTarget::GetHalfLength());
 
 	}
 

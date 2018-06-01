@@ -31,6 +31,32 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDiameter(
 
 }
 
+static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakePositionX(
+		SpallationMessenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithADoubleAndUnit
+			> (DIR "positionX", inst);
+	result->SetGuidance("Set the X position of the beam's center");
+	result->SetParameterName("position", false);
+	result->SetUnitCategory(G4UnitDefinition::GetCategory("mm"));
+
+	return result;
+
+}
+
+static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakePositionY(
+		SpallationMessenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithADoubleAndUnit
+			> (DIR "positionY", inst);
+	result->SetGuidance("Set the Y position of the beam's center");
+	result->SetParameterName("position", false);
+	result->SetUnitCategory(G4UnitDefinition::GetCategory("mm"));
+
+	return result;
+
+}
+
 static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerbose(
 		SpallationMessenger* const inst) {
 
@@ -50,7 +76,8 @@ static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerbose(
 
 SpallationMessenger::SpallationMessenger(Spallation& spallation_) :
 		spallation(spallation_), directory(MakeDirectory()), diameterCmd(
-				MakeDiameter(this)), verboseCmd(MakeVerbose(this)) {
+				MakeDiameter(this)), positionXCmd(MakePositionX(this)), positionYCmd(
+				MakePositionY(this)), verboseCmd(MakeVerbose(this)) {
 
 }
 

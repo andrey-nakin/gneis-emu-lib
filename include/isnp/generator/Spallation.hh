@@ -34,6 +34,22 @@ public:
 		diameter = v;
 	}
 
+	G4double GetPositionX() const {
+		return positionX;
+	}
+
+	void SetPositionX(G4double const v) {
+		positionX = v;
+	}
+
+	G4double GetPositionY() const {
+		return positionY;
+	}
+
+	void SetPositionY(G4double const v) {
+		positionY = v;
+	}
+
 	G4int GetVerboseLevel() const {
 		return verboseLevel;
 	}
@@ -44,11 +60,21 @@ public:
 
 private:
 
-	FRIEND_TEST(Spallation, GeneratePositionStatistics);FRIEND_TEST(Spallation, ZeroDiameter);FRIEND_TEST(Spallation, GeneratePosition);FRIEND_TEST(Spallation, GenerateDirection);
+	FRIEND_TEST(Spallation, PositionY);
+
+	FRIEND_TEST(Spallation, PositionX);
+
+	FRIEND_TEST(Spallation, GeneratePositionStatistics);
+
+	FRIEND_TEST(Spallation, ZeroDiameter);
+
+	FRIEND_TEST(Spallation, GeneratePosition);
+
+	FRIEND_TEST(Spallation, GenerateDirection);
 
 	std::unique_ptr<G4ParticleGun> const particleGun;
 	std::unique_ptr<SpallationMessenger> const messenger;
-	G4double diameter;
+	G4double diameter, positionX, positionY;
 	unsigned counter;
 	G4int verboseLevel;
 

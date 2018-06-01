@@ -28,7 +28,7 @@ private:
 
 	Spallation& spallation;
 	std::unique_ptr<G4UIdirectory> const directory;
-	std::unique_ptr<G4UIcmdWithADoubleAndUnit> const diameterCmd;
+	std::unique_ptr<G4UIcmdWithADoubleAndUnit> const diameterCmd, positionXCmd, positionYCmd;
 	std::unique_ptr<G4UIcmdWithAnInteger> const verboseCmd;
 
 };

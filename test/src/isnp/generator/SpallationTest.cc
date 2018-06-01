@@ -25,6 +25,54 @@ TEST(Spallation, Diameter)
 
 }
 
+TEST(Spallation, PositionX)
+{
+
+	using namespace isnp::testutil;
+
+	Spallation spallation;
+
+	EXPECT_DOUBLE_EQ(0 * mm, spallation.GetPositionX());
+
+	spallation.SetPositionX(5 * mm);
+	EXPECT_DOUBLE_EQ(5 * mm, spallation.GetPositionX());
+
+	Stat x;
+	G4Transform3D const zeroTransform;
+
+	for (int i = 0; i < 10000; i++) {
+		auto const pos = spallation.GeneratePosition(zeroTransform);
+		x += pos.getX();
+	}
+
+	EXPECT_TRUE(x.Is(5.0 * mm));
+
+}
+
+TEST(Spallation, PositionY)
+{
+
+	using namespace isnp::testutil;
+
+	Spallation spallation;
+
+	EXPECT_DOUBLE_EQ(0 * mm, spallation.GetPositionY());
+
+	spallation.SetPositionY(5 * mm);
+	EXPECT_DOUBLE_EQ(5 * mm, spallation.GetPositionY());
+
+	Stat y;
+	G4Transform3D const zeroTransform;
+
+	for (int i = 0; i < 10000; i++) {
+		auto const pos = spallation.GeneratePosition(zeroTransform);
+		y += pos.getY();
+	}
+
+	EXPECT_TRUE(y.Is(5.0 * mm));
+
+}
+
 TEST(Spallation, GeneratePositionStatistics)
 {
 
