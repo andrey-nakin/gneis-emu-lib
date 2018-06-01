@@ -19,6 +19,8 @@ static void ScatteringTest(G4double const significant, unsigned const precision,
 	}
 
 	EXPECT_TRUE(v.Is(significant));
+	EXPECT_TRUE(v.GetMin() >= significant - expectedRange / 2);
+	EXPECT_TRUE(v.GetMax() < significant + expectedRange / 2);
 	EXPECT_NEAR(expectedRange / std::sqrt(12), v.GetStd(),
 			expectedRange / 1000);
 
