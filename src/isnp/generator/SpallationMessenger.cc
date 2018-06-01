@@ -85,11 +85,33 @@ SpallationMessenger::~SpallationMessenger() {
 
 }
 
+G4String SpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
+
+	G4String ans;
+
+	if (command == diameterCmd.get()) {
+		ans = diameterCmd->ConvertToString(spallation.GetDiameter());
+	} else if (command == positionXCmd.get()) {
+		ans = positionXCmd->ConvertToString(spallation.GetPositionX());
+	} else if (command == positionYCmd.get()) {
+		ans = positionYCmd->ConvertToString(spallation.GetPositionY());
+	} else if (command == verboseCmd.get()) {
+		ans = verboseCmd->ConvertToString(spallation.GetVerboseLevel());
+	}
+
+	return ans;
+
+}
+
 void SpallationMessenger::SetNewValue(G4UIcommand* const command,
 		G4String const newValue) {
 
 	if (command == diameterCmd.get()) {
 		spallation.SetDiameter(diameterCmd->GetNewDoubleValue(newValue));
+	} else if (command == positionXCmd.get()) {
+		spallation.SetPositionX(positionXCmd->GetNewDoubleValue(newValue));
+	} else if (command == positionYCmd.get()) {
+		spallation.SetPositionY(positionYCmd->GetNewDoubleValue(newValue));
 	} else if (command == verboseCmd.get()) {
 		spallation.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
 	}

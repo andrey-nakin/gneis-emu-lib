@@ -13,6 +13,20 @@ namespace isnp {
 
 namespace generator {
 
+constexpr G4double GET_CURRENT_DOUBLE_VALUE_DELTA = 1.e-6;
+
+TEST(SpallationMessenger, GetDiameter)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(40 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/diameter"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	spallation.SetDiameter(50 * mm);
+	EXPECT_NEAR(50 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/diameter"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
 TEST(SpallationMessenger, SetDiameter)
 {
 
@@ -22,6 +36,66 @@ TEST(SpallationMessenger, SetDiameter)
 	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetDiameter());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/diameter 50 mm"));
 	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetDiameter());
+
+}
+
+TEST(SpallationMessenger, GetPositionX)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(0 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/positionX"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	spallation.SetPositionX(5 * mm);
+	EXPECT_NEAR(5 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/positionX"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
+TEST(SpallationMessenger, SetPositionX)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_DOUBLE_EQ(0 * mm, spallation.GetPositionX());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/positionX 5 mm"));
+	EXPECT_DOUBLE_EQ(5 * mm, spallation.GetPositionX());
+
+}
+
+TEST(SpallationMessenger, GetPositionY)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(0 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/positionY"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	spallation.SetPositionY(5 * mm);
+	EXPECT_NEAR(5 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/positionY"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
+TEST(SpallationMessenger, SetPositionY)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_DOUBLE_EQ(0 * mm, spallation.GetPositionY());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/positionY 5 mm"));
+	EXPECT_DOUBLE_EQ(5 * mm, spallation.GetPositionY());
+
+}
+
+TEST(SpallationMessenger, GetVerboseLevel)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_EQ(1, uiManager->GetCurrentIntValue("/isnp/spallation/gun/verbose"));
+	spallation.SetVerboseLevel(0);
+	EXPECT_EQ(0, uiManager->GetCurrentIntValue("/isnp/spallation/gun/verbose"));
 
 }
 
