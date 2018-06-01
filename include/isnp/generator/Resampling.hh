@@ -28,6 +28,10 @@ public:
 
 	};
 
+	class EmptySampleException : public std::exception {
+
+	};
+
 	Resampling();
 	~Resampling();
 
@@ -44,6 +48,8 @@ private:
 	G4String sampleFileName, energyColumn, directionXColumn, directionYColumn,
 			directionZColumn, positionXColumn, positionYColumn, positionZColumn, typeColumn;
 	bool sampleFileLoaded;
+	unsigned counter;
+	G4int verboseLevel;
 	std::unique_ptr<util::DataFrame> dataFrame;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();

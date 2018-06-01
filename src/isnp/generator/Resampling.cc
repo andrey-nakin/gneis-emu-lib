@@ -16,7 +16,8 @@ Resampling::Resampling() :
 				"KineticEnergy"), directionXColumn("DirectionX"), directionYColumn(
 				"DirectionY"), directionZColumn("DirectionZ"), positionXColumn(
 				"PositionX"), positionYColumn("PositionY"), positionZColumn(
-				"PositionZ"), typeColumn("Type"), sampleFileLoaded(false) {
+				"PositionZ"), typeColumn("Type"), sampleFileLoaded(false), counter(
+				0), verboseLevel(1) {
 
 }
 
@@ -43,6 +44,18 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 
 	// generate particle
 	particleGun->GeneratePrimaryVertex(anEvent);
+
+	++counter;
+
+	if (verboseLevel > 1) {
+		G4cout << "Spallation: generating #" << counter << " particle\n";
+		if (verboseLevel > 2) {
+			G4cout << "Spallation position: "
+					<< particleGun->GetParticlePosition() << "\n";
+			G4cout << "Spallation direction: "
+					<< particleGun->GetParticleMomentumDirection() << "\n";
+		}
+	}
 
 }
 
@@ -73,6 +86,11 @@ G4ThreeVector Resampling::CalculatePosition(const G4ThreeVector& direction,
 
 void Resampling::LoadSampleFile() {
 
+	if (verboseLevel > 0) {
+		G4cout << "Resampling: loading sample from file " << sampleFileName
+				<< "\n";
+	}
+
 	if (sampleFileName.isNull()) {
 		throw NoFileException();
 	}
@@ -94,6 +112,15 @@ void Resampling::LoadSampleFile() {
 	util::DataFrameLoader loader(numericColumns, categoryColumns);
 
 	dataFrame = loader.load(f);
+
+	if (verboseLevel > 0) {
+		G4cout << "Resampling: " << dataFrame->size()
+				<< " records is loaded from file " << sampleFileName << "\n";
+	}
+
+	if (dataFrame->size() == 0) {
+		throw EmptySampleException();
+	}
 
 	sampleFileLoaded = true;
 
