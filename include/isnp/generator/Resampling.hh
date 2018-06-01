@@ -42,6 +42,7 @@ private:
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
 	void LoadSampleFile();
+	G4double ShootNumber(const G4String& column) const;
 
 };
 

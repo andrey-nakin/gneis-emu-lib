@@ -29,12 +29,19 @@ public:
 
 	typedef DoubleVector::size_type size_type;
 
+	unsigned GetPrecision() const {
+
+		return precision;
+
+	}
+
 	size_type size() const;
 
 	const DoubleVector& numeric(const G4String& columnName) const;
 
 private:
 
+	unsigned precision;
 	DoubleVectorMap numericData;
 
 };
