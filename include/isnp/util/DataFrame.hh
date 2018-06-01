@@ -23,7 +23,7 @@ class DataFrame {
 
 public:
 
-	class NoDataException : public std::exception {
+	class NoSuchColumnException : public std::exception {
 
 	};
 

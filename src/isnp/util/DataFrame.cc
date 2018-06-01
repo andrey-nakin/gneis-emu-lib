@@ -15,7 +15,7 @@ const DataFrame::DoubleVector& DataFrame::numeric(
 
 	auto const it = numericData.find(columnName);
 	if (it == numericData.cend()) {
-		throw NoDataException();
+		throw NoSuchColumnException();
 	}
 
 	return it->second;
