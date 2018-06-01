@@ -42,6 +42,14 @@ public:
 	}
 	void SetSampleFileName(const G4String&);
 
+	G4int GetVerboseLevel() const {
+		return verboseLevel;
+	}
+
+	void SetVerboseLevel(G4int const aVerboseLevel) {
+		verboseLevel = aVerboseLevel;
+	}
+
 private:
 
 	std::unique_ptr<G4ParticleGun> const particleGun;
