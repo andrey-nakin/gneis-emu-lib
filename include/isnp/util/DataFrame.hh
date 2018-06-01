@@ -29,6 +29,11 @@ public:
 
 	typedef DoubleVector::size_type size_type;
 
+	DataFrame(DataFrame&) = delete;
+	DataFrame(const DataFrame&) = delete;
+	DataFrame(volatile DataFrame&) = delete;
+	DataFrame(const volatile DataFrame&) = delete;
+
 	unsigned GetPrecision() const {
 
 		return precision;
@@ -40,6 +45,10 @@ public:
 	const DoubleVector& numeric(const G4String& columnName) const;
 
 private:
+
+	friend class DataFrameLoader;
+
+	DataFrame();
 
 	unsigned precision;
 	DoubleVectorMap numericData;

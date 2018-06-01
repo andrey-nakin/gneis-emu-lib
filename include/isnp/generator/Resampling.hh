@@ -2,6 +2,7 @@
 #define isnp_generator_Resampling_hh
 
 #include <memory>
+#include <exception>
 
 #include <G4VUserPrimaryGeneratorAction.hh>
 #include <G4ParticleGun.hh>
@@ -23,6 +24,10 @@ class ResamplingMessenger;
 class Resampling: public G4VUserPrimaryGeneratorAction {
 public:
 
+	class NoFileException : public std::exception {
+
+	};
+
 	Resampling();
 	~Resampling();
 
@@ -36,13 +41,17 @@ public:
 private:
 
 	std::unique_ptr<G4ParticleGun> const particleGun;
-	G4String sampleFileName, energyColumn;
+	G4String sampleFileName, energyColumn, directionXColumn, directionYColumn,
+			directionZColumn, positionXColumn, positionYColumn, positionZColumn, typeColumn;
 	bool sampleFileLoaded;
 	std::unique_ptr<util::DataFrame> dataFrame;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
+	static G4ThreeVector CalculatePosition(const G4ThreeVector& direction, const G4ThreeVector& targetPos);
 	void LoadSampleFile();
 	G4double ShootNumber(const G4String& column) const;
+	G4ThreeVector ShootVector(const G4String& columnX, const G4String& columnY,
+			const G4String& columnZ) const;
 
 };
 
