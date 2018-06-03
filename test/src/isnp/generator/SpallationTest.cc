@@ -97,19 +97,19 @@ TEST(Spallation, GeneratePositionStatistics)
 	}
 
 	EXPECT_TRUE(x.Is(0.0 * cm));
-	EXPECT_NEAR(-2 * cm, x.GetMin(), 0.01 * cm);
-	EXPECT_NEAR(2 * cm, x.GetMax(), 0.01 * cm);
-	EXPECT_TRUE(x.GetStd() > 0.99 * cm);
+	EXPECT_NEAR(-2 * cm, x.GetMin(), 0.001 * cm);
+	EXPECT_NEAR(2 * cm, x.GetMax(), 0.001 * cm);
+	EXPECT_NEAR(1.0 * cm, x.GetStd(), 0.001 * cm);
 
 	EXPECT_TRUE(y.Is(0.0 * cm));
-	EXPECT_NEAR(-2 * cm, y.GetMin(), 0.01 * cm);
-	EXPECT_NEAR(2 * cm, y.GetMax(), 0.01 * cm);
-	EXPECT_TRUE(y.GetStd() > 0.99 * cm);
+	EXPECT_NEAR(-2 * cm, y.GetMin(), 0.001 * cm);
+	EXPECT_NEAR(2 * cm, y.GetMax(), 0.001 * cm);
+	EXPECT_NEAR(1.0 * cm, y.GetStd(), 0.001 * cm);
 
 	EXPECT_DOUBLE_EQ(-200.0 * mm, z.GetMean());
 
 	EXPECT_NEAR(2 * cm, r.GetMax(), 0.01 * cm);
-	EXPECT_TRUE(r.GetStd() > 0.47 * cm);
+	EXPECT_NEAR(0.47 * cm, r.GetStd(), 0.01 * cm);
 
 }
 
