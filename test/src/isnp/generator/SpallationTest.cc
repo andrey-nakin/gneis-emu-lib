@@ -46,8 +46,8 @@ TEST(Spallation, PositionX)
 	}
 
 	EXPECT_TRUE(x.Is(20.0 * mm));
-	EXPECT_TRUE(x.GetMin() >= - spallation.GetDiameter() / 2 + 20.0 * mm);
-	EXPECT_TRUE(x.GetMax() < spallation.GetDiameter() / 2 + 20.0 * mm);
+	EXPECT_NEAR(x.GetMin(), -spallation.GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(x.GetMax(), spallation.GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
 	EXPECT_TRUE(x.GetStd() > 0.99 * cm);
 
 }
@@ -73,8 +73,8 @@ TEST(Spallation, PositionY)
 	}
 
 	EXPECT_TRUE(y.Is(20.0 * mm));
-	EXPECT_TRUE(y.GetMin() >= - spallation.GetDiameter() / 2 + 20.0 * mm);
-	EXPECT_TRUE(y.GetMax() < spallation.GetDiameter() / 2 + 20.0 * mm);
+	EXPECT_NEAR(y.GetMin(), -spallation.GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(y.GetMax(), spallation.GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
 	EXPECT_TRUE(y.GetStd() > 0.99 * cm);
 
 }
