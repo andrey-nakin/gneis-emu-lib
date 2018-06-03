@@ -40,7 +40,7 @@ TEST(Spallation, PositionX)
 	Stat x;
 	G4Transform3D const zeroTransform;
 
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 100000; i++) {
 		auto const pos = spallation.GeneratePosition(zeroTransform);
 		x += pos.getX();
 	}
@@ -48,6 +48,7 @@ TEST(Spallation, PositionX)
 	EXPECT_TRUE(x.Is(5.0 * mm));
 	EXPECT_TRUE(x.GetMin() >= - spallation.GetDiameter() / 2 - 5.0 * mm);
 	EXPECT_TRUE(x.GetMax() < spallation.GetDiameter() / 2 + 5.0 * mm);
+	EXPECT_TRUE(x.GetStd() > 0.99 * cm);
 
 }
 
@@ -66,7 +67,7 @@ TEST(Spallation, PositionY)
 	Stat y;
 	G4Transform3D const zeroTransform;
 
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 100000; i++) {
 		auto const pos = spallation.GeneratePosition(zeroTransform);
 		y += pos.getY();
 	}
@@ -74,6 +75,7 @@ TEST(Spallation, PositionY)
 	EXPECT_TRUE(y.Is(5.0 * mm));
 	EXPECT_TRUE(y.GetMin() >= - spallation.GetDiameter() / 2 - 5.0 * mm);
 	EXPECT_TRUE(y.GetMax() < spallation.GetDiameter() / 2 + 5.0 * mm);
+	EXPECT_TRUE(y.GetStd() > 0.99 * cm);
 
 }
 
