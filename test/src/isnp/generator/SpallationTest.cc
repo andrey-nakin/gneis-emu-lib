@@ -46,6 +46,8 @@ TEST(Spallation, PositionX)
 	}
 
 	EXPECT_TRUE(x.Is(5.0 * mm));
+	EXPECT_TRUE(x.GetMin() >= - spallation.GetDiameter() / 2 - 5.0 * mm);
+	EXPECT_TRUE(x.GetMax() < spallation.GetDiameter() / 2 + 5.0 * mm);
 
 }
 
@@ -70,6 +72,8 @@ TEST(Spallation, PositionY)
 	}
 
 	EXPECT_TRUE(y.Is(5.0 * mm));
+	EXPECT_TRUE(y.GetMin() >= - spallation.GetDiameter() / 2 - 5.0 * mm);
+	EXPECT_TRUE(y.GetMax() < spallation.GetDiameter() / 2 + 5.0 * mm);
 
 }
 
