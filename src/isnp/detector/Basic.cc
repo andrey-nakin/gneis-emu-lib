@@ -2,6 +2,8 @@
 #include <G4SystemOfUnits.hh>
 #include "isnp/detector/Basic.hh"
 #include "isnp/util/FileNameBuilder.hh"
+#include "isnp/info/Version.hh"
+#include "isnp/info/Geant4Version.hh"
 
 isnp::detector::Basic::Basic() :
 		G4VSensitiveDetector("detector") {
@@ -48,7 +50,10 @@ G4bool isnp::detector::Basic::ProcessHits(G4Step* const aStep,
 
 void isnp::detector::Basic::flush() {
 	std::ofstream file(isnp::util::FileNameBuilder::Make(GetName(), ".txt"));
-	file
+	file << "# geant4 " << info::Geant4Version::GetAsString() << " "
+			<< info::Geant4Version::GetDateAsString() << " isnp-exp-lib "
+			<< info::Version::GetAsString() << " "
+			<< info::Version::GetDateAsString() << "\n"
 			<< "Type\tTotalEnergy\tKineticEnergy\tTime\tDirectionX\tDirectionY\tDirectionZ\tPositionX\tPositionY\tPositionZ\n";
 
 	std::for_each(std::begin(accum), std::end(accum), [&](auto i) {

@@ -1,5 +1,5 @@
-#ifndef isnp_info_Version_hh
-#define isnp_info_Version_hh
+#ifndef isnp_info_Geant4Version_hh
+#define isnp_info_Geant4Version_hh
 
 #include <vector>
 #include <G4String.hh>
@@ -9,12 +9,12 @@ namespace isnp {
 namespace info {
 
 /**
- * Class provides information about library's version.
+ * Class provides information about Geant4 version.
  */
-class Version {
+class Geant4Version {
 public:
 
-	Version() = delete;
+	Geant4Version() = delete;
 
 	static const std::vector<int> Get();
 	static const G4String GetAsString();
@@ -29,4 +29,4 @@ private:
 
 }
 
-#endif	//	isnp_info_Version_hh
+#endif	//	isnp_info_Geant4Version_hh

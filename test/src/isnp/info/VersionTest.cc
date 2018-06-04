@@ -57,6 +57,11 @@ TEST(Version, Matches)
 	);
 }
 
+TEST(Version, GetDateAsString)
+{
+	EXPECT_FALSE(Version::GetDateAsString().isNull());
+}
+
 }
 
 }

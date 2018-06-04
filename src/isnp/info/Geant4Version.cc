@@ -1,30 +1,23 @@
 #include <algorithm>
 #include <sstream>
-#include "isnp/info/Version.hh"
+#include <G4Version.hh>
+#include "isnp/info/Geant4Version.hh"
 
-const std::vector<int> isnp::info::Version::Get() {
+namespace isnp {
+
+namespace info {
+
+const std::vector<int> Geant4Version::Get() {
 	std::vector<int> version;
 
-#ifdef	ISNPEMULIB_VERSION_MAJOR
-	version.push_back(ISNPEMULIB_VERSION_MAJOR);
-#else
-	version.push_back(-1);
-#endif
-#ifdef	ISNPEMULIB_VERSION_MINOR
-	version.push_back(ISNPEMULIB_VERSION_MINOR);
-#else
-	version.push_back(-1);
-#endif
-#ifdef	ISNPEMULIB_VERSION_PATCH
-	version.push_back(ISNPEMULIB_VERSION_PATCH);
-#else
-	version.push_back(-1);
-#endif
+	version.push_back(G4VERSION_NUMBER / 100);
+	version.push_back(G4VERSION_NUMBER / 10 % 10);
+	version.push_back(G4VERSION_NUMBER % 10);
 
 	return version;
 }
 
-const G4String isnp::info::Version::GetAsString() {
+const G4String Geant4Version::GetAsString() {
 	const std::vector<int> ver = Get();
 	std::stringstream s;
 	bool first = true;
@@ -41,8 +34,7 @@ const G4String isnp::info::Version::GetAsString() {
 	return G4String(s.str());
 }
 
-bool isnp::info::Version::Matches(const int major, const int minor,
-		const int patch) {
+bool Geant4Version::Matches(const int major, const int minor, const int patch) {
 
 	const std::vector<int> ver = Get();
 
@@ -84,8 +76,10 @@ bool isnp::info::Version::Matches(const int major, const int minor,
 	return true;
 }
 
-const G4String isnp::info::Version::GetDateAsString() {
+const G4String Geant4Version::GetDateAsString() {
+	return G4Date;
+}
 
-	return __DATE__;
+}
 
 }
