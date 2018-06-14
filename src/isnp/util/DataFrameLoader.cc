@@ -36,6 +36,15 @@ static std::vector<std::string> tokenize(const std::string& s, char const c) {
 
 }
 
+static unsigned detectPrecision(std::string const& s) {
+	auto const p = std::find_if(std::begin(s), std::end(s), [](auto ch) {
+		return ch == 'e' || ch == 'E';
+	});
+	auto const result = std::distance(std::begin(s), p);
+	auto const dp = std::find(std::begin(s), p, '.');
+	return dp == std::end(s) ? result : result - 1;
+}
+
 DataFrameLoader::NoColumnException::NoColumnException(G4String const& aColName) :
 		colName(aColName) {
 }
@@ -56,12 +65,13 @@ DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
 
 	unsigned lineNo = 0;
 	std::string line;
-	bool isfirst = true;
+	bool isfirst = true, precisionDetected = false;
 	std::vector < std::string > columnNames;
 	std::vector < std::size_t > floatIndices;
 	std::vector < DataFrame::FloatVectorMap::iterator > floatVectors;
 	auto data = std::make_unique<DataFrame::DataPack>();
 	DataFrame::FloatVector const emptyFloatVector;
+	std::size_t lastFloatIndex = 0;
 
 	while (is.good()) {
 		std::getline(is, line);
@@ -88,17 +98,34 @@ DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
 						floatIndices.push_back(pos - std::begin(columnNames));
 						floatVectors.push_back(data->floatColumns.insert(data->floatColumns.end(), std::pair<G4String, DataFrame::FloatVector>(cn, emptyFloatVector)));
 					});
+			lastFloatIndex = floatIndices.size();
 
 			isfirst = false;
 			continue;
 		}
 
 		std::vector<std::string> const v = tokenize(line, separatorChar);
-		for (std::size_t i = 0; i < floatIndices.size(); i++) {
-			if (floatIndices[i] >= v.size()) {
+		if (!precisionDetected) {
+
+			data->precision = 32;
+			for (std::size_t i = 0; i < lastFloatIndex; i++) {
+				auto const idx = floatIndices[i];
+				if (idx >= v.size()) {
+					throw NoValueException(columnNames[i], lineNo);
+				}
+				data->precision = std::min(data->precision,
+						detectPrecision(v[idx]));
+			};
+
+			precisionDetected = true;
+		}
+
+		for (std::size_t i = 0; i < lastFloatIndex; i++) {
+			auto const idx = floatIndices[i];
+			if (idx >= v.size()) {
 				throw NoValueException(columnNames[i], lineNo);
 			}
-			float const f = std::stof(v[floatIndices[i]]);
+			float const f = std::stof(v[idx]);
 			floatVectors[i]->second.push_back(f);
 		};
 	}

@@ -22,6 +22,7 @@ TEST(DataFrameLoader, Generic)
 	EXPECT_EQ(2, df.size());
 	EXPECT_EQ(2, df.floatColumn("A").size());
 	EXPECT_EQ(2, df.floatColumn("B").size());
+	EXPECT_EQ(6, df.GetPrecision());
 	EXPECT_EQ(1.23456e20f, df.floatColumn("A")[0]);
 	EXPECT_EQ(1.23456e-20f, df.floatColumn("B")[0]);
 	EXPECT_EQ(2.34567e20f, df.floatColumn("A")[1]);
