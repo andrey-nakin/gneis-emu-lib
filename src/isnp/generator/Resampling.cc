@@ -111,7 +111,7 @@ void Resampling::LoadSampleFile() {
 	categoryColumns.insert(typeColumn);
 	util::DataFrameLoader loader(numericColumns, categoryColumns);
 
-	dataFrame = std::make_unique<util::DataFrame>(loader.load(f));
+	dataFrame = std::make_unique < util::DataFrame > (loader.load(f));
 
 	if (verboseLevel > 0) {
 		G4cout << "Resampling: " << dataFrame->size()
@@ -131,10 +131,10 @@ G4double Resampling::ShootNumber(const G4String& column) const {
 	auto const dataSize = dataFrame->size();
 	auto const rowNo = CLHEP::RandFlat::shootInt(dataSize);
 	auto const v = dataFrame->floatColumn(column)[rowNo];
+	auto const precision = dataFrame->Precision(column);
 
-	if (dataFrame->GetPrecision() > 0) {
-		return util::RandomNumberGenerator::locality(v,
-				dataFrame->GetPrecision());
+	if (precision > 0) {
+		return util::RandomNumberGenerator::locality(v, precision);
 	} else {
 		return v;
 	}

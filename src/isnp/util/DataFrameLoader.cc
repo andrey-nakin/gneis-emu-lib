@@ -107,14 +107,12 @@ DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
 		std::vector<std::string> const v = tokenize(line, separatorChar);
 		if (!precisionDetected) {
 
-			data->precision = 32;
 			for (std::size_t i = 0; i < lastFloatIndex; i++) {
 				auto const idx = floatIndices[i];
 				if (idx >= v.size()) {
 					throw NoValueException(columnNames[i], lineNo);
 				}
-				data->precision = std::min(data->precision,
-						detectPrecision(v[idx]));
+				data->precisions[columnNames[idx]] = detectPrecision(v[idx]);
 			};
 
 			precisionDetected = true;

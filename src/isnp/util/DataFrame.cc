@@ -6,7 +6,9 @@ namespace util {
 
 static G4String const NO_NAME = "";
 
-DataFrame::DataFrame(DataFrame&& aDataFrame) : data(std::move(aDataFrame.data)) {}
+DataFrame::DataFrame(DataFrame&& aDataFrame) :
+		data(std::move(aDataFrame.data)) {
+}
 
 DataFrame::DataFrame(std::unique_ptr<DataPack> aData) :
 		data(std::move(aData)) {
@@ -55,6 +57,18 @@ const DataFrame::FloatVector& DataFrame::floatColumn(
 
 	auto const it = data->floatColumns.find(columnName);
 	if (it == data->floatColumns.cend()) {
+		throw NoSuchColumnException();
+	}
+
+	return it->second;
+
+}
+
+unsigned DataFrame::Precision(const G4String& columnName) const
+		throw (NoSuchColumnException) {
+
+	auto const it = data->precisions.find(columnName);
+	if (it == data->precisions.cend()) {
 		throw NoSuchColumnException();
 	}
 

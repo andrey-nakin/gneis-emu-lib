@@ -34,13 +34,14 @@ private:
 	typedef std::map<CategoryId, G4String> CategoryMap;
 	typedef std::map<G4String, CategoryMap> CategoryNameMap;
 	typedef std::map<G4String, FloatVector> FloatVectorMap;
+	typedef std::map<G4String, unsigned> PrecisionMap;
 
 	struct DataPack {
 
-		unsigned precision;
 		FloatVectorMap floatColumns;
 		CategoryVectorMap categoryColumns;
 		CategoryNameMap categoryNames;
+		PrecisionMap precisions;
 
 	};
 
@@ -54,12 +55,6 @@ public:
 
 	DataFrame(DataFrame&&);
 
-	unsigned GetPrecision() const {
-
-		return data->precision;
-
-	}
-
 	size_type size() const;
 
 	G4String const& categoryName(const G4String& columnName,
@@ -67,6 +62,8 @@ public:
 	CategoryVector const& categoryColumn(const G4String& columnName) const
 			throw (NoSuchColumnException);
 	FloatVector const& floatColumn(const G4String& columnName) const
+			throw (NoSuchColumnException);
+	unsigned Precision(const G4String& columnName) const
 			throw (NoSuchColumnException);
 
 private:
