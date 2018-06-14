@@ -14,6 +14,8 @@ namespace isnp {
 
 namespace util {
 
+class DataFrameLoader;
+
 /**
  * Class holds one or several data vectors, with either numeric or categorized values.
  * All vectors have equal size.
@@ -50,7 +52,7 @@ public:
 
 	typedef FloatVector::size_type size_type;
 
-	DataFrame(DataFrame&& aDataFrame);
+	DataFrame(DataFrame&&);
 
 	unsigned GetPrecision() const {
 

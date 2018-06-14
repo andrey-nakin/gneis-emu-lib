@@ -111,7 +111,7 @@ void Resampling::LoadSampleFile() {
 	categoryColumns.insert(typeColumn);
 	util::DataFrameLoader loader(numericColumns, categoryColumns);
 
-	dataFrame = loader.load(f);
+	dataFrame = std::make_unique<util::DataFrame>(loader.load(f));
 
 	if (verboseLevel > 0) {
 		G4cout << "Resampling: " << dataFrame->size()

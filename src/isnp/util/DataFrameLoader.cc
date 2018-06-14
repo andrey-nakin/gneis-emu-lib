@@ -1,18 +1,109 @@
+#include <algorithm>
+#include <cctype>
+#include <string>
 #include "isnp/util/DataFrameLoader.hh"
 
 namespace isnp {
 
 namespace util {
 
-DataFrameLoader::DataFrameLoader(std::set<G4String> const& aNumericColumns,
-		std::set<G4String> const& aCategoryColumns) :
-		numericColumns(aNumericColumns), categoryColumns(aCategoryColumns) {
+static inline void ltrim(std::string &s) {
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
+		return !std::isspace(ch);
+	}));
+}
+
+static std::vector<std::string> tokenize(const std::string& s, char const c) {
+
+	auto end = s.cend();
+	auto start = end;
+
+	std::vector < std::string > v;
+	for (auto it = s.cbegin(); it != end; ++it) {
+		if (*it != c) {
+			if (start == end)
+				start = it;
+			continue;
+		}
+		if (start != end) {
+			v.emplace_back(start, it);
+			start = end;
+		}
+	}
+	if (start != end)
+		v.emplace_back(start, end);
+	return v;
 
 }
 
-std::unique_ptr<DataFrame> DataFrameLoader::load(std::istream& is) {
+DataFrameLoader::NoColumnException::NoColumnException(G4String const& aColName) :
+		colName(aColName) {
+}
 
-	// @TODO
+DataFrameLoader::NoValueException::NoValueException(G4String const& aColName,
+		unsigned const aLineNo) :
+		colName(aColName), lineNo(aLineNo) {
+}
+
+DataFrameLoader::DataFrameLoader(std::set<G4String> const& aFloatColumns,
+		std::set<G4String> const& aCategoryColumns) :
+		floatColumns(aFloatColumns), categoryColumns(aCategoryColumns), commentChar(
+				'#'), separatorChar('\t') {
+
+}
+
+DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
+
+	unsigned lineNo = 0;
+	std::string line;
+	bool isfirst = true;
+	std::vector < std::string > columnNames;
+	std::vector < std::size_t > floatIndices;
+	std::vector < DataFrame::FloatVectorMap::iterator > floatVectors;
+	auto data = std::make_unique<DataFrame::DataPack>();
+	DataFrame::FloatVector const emptyFloatVector;
+
+	while (is.good()) {
+		std::getline(is, line);
+		lineNo++;
+		ltrim(line);
+		if (line.empty()) {
+			continue;
+		}
+		if (line[0] == commentChar) {
+			continue;
+		}
+
+		if (isfirst) {
+			// read column names
+			columnNames = tokenize(line, separatorChar);
+
+			std::for_each(std::begin(floatColumns), std::end(floatColumns),
+					[&](auto cn) {
+						std::string const sn = cn;
+						auto const pos = std::find(std::begin(columnNames), std::end(columnNames), sn);
+						if (pos == std::end(columnNames)) {
+							throw NoColumnException(cn);
+						}
+						floatIndices.push_back(pos - std::begin(columnNames));
+						floatVectors.push_back(data->floatColumns.insert(data->floatColumns.end(), std::pair<G4String, DataFrame::FloatVector>(cn, emptyFloatVector)));
+					});
+
+			isfirst = false;
+			continue;
+		}
+
+		std::vector<std::string> const v = tokenize(line, separatorChar);
+		for (std::size_t i = 0; i < floatIndices.size(); i++) {
+			if (floatIndices[i] >= v.size()) {
+				throw NoValueException(columnNames[i], lineNo);
+			}
+			float const f = std::stof(v[floatIndices[i]]);
+			floatVectors[i]->second.push_back(f);
+		};
+	}
+
+	return DataFrame(std::move(data));
 
 }
 

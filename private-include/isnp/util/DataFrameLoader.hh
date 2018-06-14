@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <set>
+#include <exception>
 
 #include "isnp/util/DataFrame.hh"
 
@@ -18,13 +19,60 @@ class DataFrameLoader {
 
 public:
 
-	DataFrameLoader(std::set<G4String> const& aNumericColumns, std::set<G4String> const& aCategoryColumns);
+	class LoaderException: public std::exception {
 
-	std::unique_ptr<DataFrame> load(std::istream&);
+	};
+
+	class NoColumnException: public LoaderException {
+	public:
+
+		NoColumnException(G4String const&);
+
+		G4String const& GetColumnName() const {
+
+			return colName;
+
+		}
+
+	private:
+
+		G4String const colName;
+
+	};
+
+	class NoValueException: public LoaderException {
+	public:
+
+		NoValueException(G4String const& aColName, unsigned aLineNo);
+
+		G4String const& GetColumnName() const {
+
+			return colName;
+
+		}
+
+		unsigned GetLineNo() const {
+
+			return lineNo;
+
+		}
+
+	private:
+
+		G4String const colName;
+		unsigned const lineNo;
+
+	};
+
+	DataFrameLoader(std::set<G4String> const& aFloatColumns,
+			std::set<G4String> const& aCategoryColumns);
+
+	DataFrame load(std::istream&) throw (LoaderException);
 
 private:
 
-	std::set<G4String> const numericColumns, categoryColumns;
+	std::set<G4String> const floatColumns, categoryColumns;
+	char const commentChar, separatorChar;
 
 };
 

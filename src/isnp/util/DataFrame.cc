@@ -6,8 +6,11 @@ namespace util {
 
 static G4String const NO_NAME = "";
 
-DataFrame::DataFrame(DataFrame&& aDataFrame) :
-		data(std::move(aDataFrame.data)) {
+DataFrame::DataFrame(DataFrame&& aDataFrame) : data(std::move(aDataFrame.data)) {}
+
+DataFrame::DataFrame(std::unique_ptr<DataPack> aData) :
+		data(std::move(aData)) {
+
 }
 
 DataFrame::size_type DataFrame::size() const {
@@ -56,11 +59,6 @@ const DataFrame::FloatVector& DataFrame::floatColumn(
 	}
 
 	return it->second;
-
-}
-
-DataFrame::DataFrame(std::unique_ptr<DataPack> aData) :
-		data(std::move(aData)) {
 
 }
 
