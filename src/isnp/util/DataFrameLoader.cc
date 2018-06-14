@@ -95,7 +95,7 @@ DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
 						if (pos == std::end(columnNames)) {
 							throw NoColumnException(cn);
 						}
-						floatIndices.push_back(pos - std::begin(columnNames));
+						floatIndices.push_back(std::distance(std::begin(columnNames), pos));
 						floatVectors.push_back(data->floatColumns.insert(data->floatColumns.end(), std::pair<G4String, DataFrame::FloatVector>(cn, emptyFloatVector)));
 					});
 			lastFloatIndex = floatIndices.size();
@@ -123,8 +123,7 @@ DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
 			if (idx >= v.size()) {
 				throw NoValueException(columnNames[idx], lineNo);
 			}
-			float const f = std::stof(v[idx]);
-			floatVectors[i]->second.push_back(f);
+			floatVectors[i]->second.push_back(std::stof(v[idx]));
 		};
 	}
 
