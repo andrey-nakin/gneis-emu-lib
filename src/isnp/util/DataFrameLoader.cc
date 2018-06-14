@@ -110,7 +110,7 @@ DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
 			for (std::size_t i = 0; i < lastFloatIndex; i++) {
 				auto const idx = floatIndices[i];
 				if (idx >= v.size()) {
-					throw NoValueException(columnNames[i], lineNo);
+					throw NoValueException(columnNames[idx], lineNo);
 				}
 				data->precisions[columnNames[idx]] = detectPrecision(v[idx]);
 			};
@@ -121,7 +121,7 @@ DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
 		for (std::size_t i = 0; i < lastFloatIndex; i++) {
 			auto const idx = floatIndices[i];
 			if (idx >= v.size()) {
-				throw NoValueException(columnNames[i], lineNo);
+				throw NoValueException(columnNames[idx], lineNo);
 			}
 			float const f = std::stof(v[idx]);
 			floatVectors[i]->second.push_back(f);
