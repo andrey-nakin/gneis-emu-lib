@@ -130,7 +130,7 @@ G4double Resampling::ShootNumber(const G4String& column) const {
 
 	auto const dataSize = dataFrame->size();
 	auto const rowNo = CLHEP::RandFlat::shootInt(dataSize);
-	auto const v = dataFrame->numeric(column)[rowNo];
+	auto const v = dataFrame->floatColumn(column)[rowNo];
 
 	if (dataFrame->GetPrecision() > 0) {
 		return util::RandomNumberGenerator::locality(v,

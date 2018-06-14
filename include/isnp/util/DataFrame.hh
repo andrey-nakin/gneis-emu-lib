@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 #include <exception>
+#include <cstdint>
+#include <memory>
 
 #include <G4Types.hh>
 #include <G4String.hh>
@@ -18,40 +20,60 @@ namespace util {
  */
 class DataFrame {
 
-	typedef std::vector<G4double> DoubleVector;
-	typedef std::map<G4String, DoubleVector> DoubleVectorMap;
-
 public:
 
-	class NoSuchColumnException : public std::exception {
+	typedef uint8_t CategoryId;
+
+private:
+
+	typedef std::vector<CategoryId> CategoryVector;
+	typedef std::vector<G4float> FloatVector;
+	typedef std::map<G4String, CategoryVector> CategoryVectorMap;
+	typedef std::map<CategoryId, G4String> CategoryMap;
+	typedef std::map<G4String, CategoryMap> CategoryNameMap;
+	typedef std::map<G4String, FloatVector> FloatVectorMap;
+
+	struct DataPack {
+
+		unsigned precision;
+		FloatVectorMap floatColumns;
+		CategoryVectorMap categoryColumns;
+		CategoryNameMap categoryNames;
 
 	};
 
-	typedef DoubleVector::size_type size_type;
+public:
 
-	DataFrame(DataFrame&) = delete;
-	DataFrame(const DataFrame&) = delete;
-	DataFrame(volatile DataFrame&) = delete;
-	DataFrame(const volatile DataFrame&) = delete;
+	class NoSuchColumnException: public std::exception {
+
+	};
+
+	typedef FloatVector::size_type size_type;
+
+	DataFrame(DataFrame&& aDataFrame);
 
 	unsigned GetPrecision() const {
 
-		return precision;
+		return data->precision;
 
 	}
 
 	size_type size() const;
 
-	const DoubleVector& numeric(const G4String& columnName) const;
+	G4String const& categoryName(const G4String& columnName,
+			CategoryId id) const throw (NoSuchColumnException);
+	CategoryVector const& categoryColumn(const G4String& columnName) const
+			throw (NoSuchColumnException);
+	FloatVector const& floatColumn(const G4String& columnName) const
+			throw (NoSuchColumnException);
 
 private:
 
 	friend class DataFrameLoader;
 
-	DataFrame();
+	DataFrame (std::unique_ptr<DataPack>);
 
-	unsigned precision;
-	DoubleVectorMap numericData;
+	std::unique_ptr<DataPack> data;
 
 };
 

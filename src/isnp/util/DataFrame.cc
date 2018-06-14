@@ -4,21 +4,63 @@ namespace isnp {
 
 namespace util {
 
+static G4String const NO_NAME = "";
+
+DataFrame::DataFrame(DataFrame&& aDataFrame) :
+		data(std::move(aDataFrame.data)) {
+}
+
 DataFrame::size_type DataFrame::size() const {
 
-	return numericData.empty() ? 0 : numericData.cbegin()->second.size();
+	return data->floatColumns.empty() ?
+			0 : data->floatColumns.cbegin()->second.size();
 
 }
 
-const DataFrame::DoubleVector& DataFrame::numeric(
-		const G4String& columnName) const {
+G4String const& DataFrame::categoryName(const G4String& columnName,
+		CategoryId const id) const throw (NoSuchColumnException) {
 
-	auto const it = numericData.find(columnName);
-	if (it == numericData.cend()) {
+	auto const it = data->categoryNames.find(columnName);
+	if (it == data->categoryNames.cend()) {
+		throw NoSuchColumnException();
+	}
+
+	auto const nameMap = it->second;
+	auto const nameit = nameMap.find(id);
+	if (nameit == nameMap.cend()) {
+		return NO_NAME;
+	} else {
+		return nameit->second;
+	}
+
+}
+
+const DataFrame::CategoryVector& DataFrame::categoryColumn(
+		const G4String& columnName) const throw (NoSuchColumnException) {
+
+	auto const it = data->categoryColumns.find(columnName);
+	if (it == data->categoryColumns.cend()) {
 		throw NoSuchColumnException();
 	}
 
 	return it->second;
+
+}
+
+const DataFrame::FloatVector& DataFrame::floatColumn(
+		const G4String& columnName) const throw (NoSuchColumnException) {
+
+	auto const it = data->floatColumns.find(columnName);
+	if (it == data->floatColumns.cend()) {
+		throw NoSuchColumnException();
+	}
+
+	return it->second;
+
+}
+
+DataFrame::DataFrame(std::unique_ptr<DataPack> aData) :
+		data(std::move(aData)) {
 
 }
 
