@@ -21,18 +21,68 @@ class SpallationMessenger;
 class Spallation: public G4VUserPrimaryGeneratorAction {
 public:
 
+	enum class Mode {
+		UniformCircle, GaussianEllipse
+	};
+
+	class UniformCircleProps {
+	public:
+
+		UniformCircleProps();
+
+		G4double GetDiameter() const {
+			return diameter;
+		}
+
+		void SetDiameter(G4double const v) {
+			diameter = v;
+		}
+
+	private:
+
+		G4double diameter;
+
+	};
+
+	class GaussianEllipseProps {
+	public:
+
+		GaussianEllipseProps();
+
+		G4double GetXWidth() const {
+
+			return xWidth;
+
+		}
+
+		void SetXWidth(G4double const aXWidth) {
+
+			xWidth = aXWidth;
+
+		}
+
+		G4double GetYWidth() const {
+
+			return yWidth;
+
+		}
+
+		void SetYWidth(G4double const aYWidth) {
+
+			yWidth = aYWidth;
+
+		}
+
+	private:
+
+		G4double xWidth, yWidth;
+
+	};
+
 	Spallation();
 	~Spallation();
 
 	void GeneratePrimaries(G4Event*);
-
-	G4double GetDiameter() const {
-		return diameter;
-	}
-
-	void SetDiameter(G4double const v) {
-		diameter = v;
-	}
 
 	G4double GetPositionX() const {
 		return positionX;
@@ -58,6 +108,38 @@ public:
 		verboseLevel = aVerboseLevel;
 	}
 
+	Mode GetMode() const {
+		return mode;
+	}
+
+	void SetMode(Mode const aMode) {
+		mode = aMode;
+	}
+
+	UniformCircleProps& GetUcProps() {
+
+		return ucProps;
+
+	}
+
+	UniformCircleProps const& GetUcProps() const {
+
+		return ucProps;
+
+	}
+
+	GaussianEllipseProps& GetGeProps() {
+
+		return geProps;
+
+	}
+
+	GaussianEllipseProps const& GetGeProps() const {
+
+		return geProps;
+
+	}
+
 private:
 
 	FRIEND_TEST(Spallation, PositionY);
@@ -74,9 +156,12 @@ private:
 
 	std::unique_ptr<G4ParticleGun> const particleGun;
 	std::unique_ptr<SpallationMessenger> const messenger;
-	G4double diameter, positionX, positionY;
+	G4double positionX, positionY;
 	unsigned counter;
 	G4int verboseLevel;
+	Mode mode;
+	UniformCircleProps ucProps;
+	GaussianEllipseProps geProps;
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;

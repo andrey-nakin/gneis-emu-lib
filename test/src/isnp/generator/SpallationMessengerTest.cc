@@ -22,7 +22,7 @@ TEST(SpallationMessenger, GetDiameter)
 	auto const uiManager = G4UImanager::GetUIpointer();
 
 	EXPECT_NEAR(40 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/diameter"), GET_CURRENT_DOUBLE_VALUE_DELTA);
-	spallation.SetDiameter(50 * mm);
+	spallation.GetUcProps().SetDiameter(50 * mm);
 	EXPECT_NEAR(50 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/diameter"), GET_CURRENT_DOUBLE_VALUE_DELTA);
 
 }
@@ -33,9 +33,9 @@ TEST(SpallationMessenger, SetDiameter)
 	Spallation spallation;
 	auto const uiManager = G4UImanager::GetUIpointer();
 
-	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetDiameter());
+	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetUcProps().GetDiameter());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/diameter 50 mm"));
-	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetDiameter());
+	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetUcProps().GetDiameter());
 
 }
 

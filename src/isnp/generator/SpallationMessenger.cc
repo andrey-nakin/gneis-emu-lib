@@ -90,7 +90,7 @@ G4String SpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
 	G4String ans;
 
 	if (command == diameterCmd.get()) {
-		ans = diameterCmd->ConvertToString(spallation.GetDiameter());
+		ans = diameterCmd->ConvertToString(spallation.GetUcProps().GetDiameter());
 	} else if (command == positionXCmd.get()) {
 		ans = positionXCmd->ConvertToString(spallation.GetPositionX());
 	} else if (command == positionYCmd.get()) {
@@ -107,7 +107,7 @@ void SpallationMessenger::SetNewValue(G4UIcommand* const command,
 		G4String const newValue) {
 
 	if (command == diameterCmd.get()) {
-		spallation.SetDiameter(diameterCmd->GetNewDoubleValue(newValue));
+		spallation.GetUcProps().SetDiameter(diameterCmd->GetNewDoubleValue(newValue));
 	} else if (command == positionXCmd.get()) {
 		spallation.SetPositionX(positionXCmd->GetNewDoubleValue(newValue));
 	} else if (command == positionYCmd.get()) {

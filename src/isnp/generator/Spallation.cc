@@ -13,11 +13,18 @@ namespace isnp {
 
 namespace generator {
 
+Spallation::UniformCircleProps::UniformCircleProps() :
+		diameter(4.0 * cm) {
+}
+
+Spallation::GaussianEllipseProps::GaussianEllipseProps() :
+		xWidth(50 * mm), yWidth(200 * mm) {
+}
+
 Spallation::Spallation() :
 		particleGun(MakeGun()), messenger(
-				std::make_unique < SpallationMessenger > (*this)), diameter(
-				4.0 * cm), positionX(0), positionY(0), counter(0), verboseLevel(
-				1) {
+				std::make_unique < SpallationMessenger > (*this)), positionX(0), positionY(
+				0), counter(0), verboseLevel(1), mode(Mode::UniformCircle) {
 }
 
 Spallation::~Spallation() {
@@ -61,14 +68,14 @@ G4ThreeVector Spallation::GeneratePosition(
 
 	G4ThreeVector position;
 
-	if (diameter < 1.0 * angstrom) {
+	if (ucProps.GetDiameter() < 1.0 * angstrom) {
 
 		position = G4ThreeVector(positionX, positionY,
 				-SpallationTarget::GetHalfLength());
 
 	} else {
 
-		G4double const maxValue = diameter / 2;
+		G4double const maxValue = ucProps.GetDiameter() / 2;
 		G4double const minValue = -maxValue;
 		G4double const maxValue2 = maxValue * maxValue;
 		G4double x, y;

@@ -18,10 +18,10 @@ TEST(Spallation, Diameter)
 
 	Spallation spallation;
 
-	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetDiameter());
+	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetUcProps().GetDiameter());
 
-	spallation.SetDiameter(50 * mm);
-	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetDiameter());
+	spallation.GetUcProps().SetDiameter(50 * mm);
+	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetUcProps().GetDiameter());
 
 }
 
@@ -46,8 +46,8 @@ TEST(Spallation, PositionX)
 	}
 
 	EXPECT_TRUE(x.Is(20.0 * mm));
-	EXPECT_NEAR(x.GetMin(), -spallation.GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
-	EXPECT_NEAR(x.GetMax(), spallation.GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(x.GetMin(), -spallation.GetUcProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(x.GetMax(), spallation.GetUcProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
 	EXPECT_TRUE(x.GetStd() > 0.99 * cm);
 
 }
@@ -73,8 +73,8 @@ TEST(Spallation, PositionY)
 	}
 
 	EXPECT_TRUE(y.Is(20.0 * mm));
-	EXPECT_NEAR(y.GetMin(), -spallation.GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
-	EXPECT_NEAR(y.GetMax(), spallation.GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(y.GetMin(), -spallation.GetUcProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(y.GetMax(), spallation.GetUcProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
 	EXPECT_TRUE(y.GetStd() > 0.99 * cm);
 
 }
@@ -117,7 +117,7 @@ TEST(Spallation, ZeroDiameter)
 {
 
 	Spallation spallation;
-	spallation.SetDiameter(0.0);
+	spallation.GetUcProps().SetDiameter(0.0);
 	G4Transform3D const zeroTransform;
 
 	auto const pos = spallation.GeneratePosition(zeroTransform);
@@ -157,7 +157,7 @@ TEST(Spallation, GeneratePosition)
 {
 
 	Spallation spallation;
-	spallation.SetDiameter(0.0);
+	spallation.GetUcProps().SetDiameter(0.0);
 
 	{
 		G4Transform3D const zeroTransform;
