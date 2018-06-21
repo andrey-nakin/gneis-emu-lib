@@ -10,6 +10,13 @@ namespace generator {
 
 #define DIR "/isnp/spallation/gun/"
 
+namespace mode {
+
+static G4String const GaussianEllipse = "GaussianEllipse";
+static G4String const UniformCircle = "UniformCircle";
+
+}
+
 static std::unique_ptr<G4UIdirectory> MakeDirectory() {
 
 	auto result = std::make_unique < G4UIdirectory > (DIR);
@@ -100,11 +107,28 @@ static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerbose(
 
 }
 
+static std::unique_ptr<G4UIcmdWithAString> MakeMode(
+		SpallationMessenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithAString > (DIR "mode", inst);
+	result->SetGuidance("Set a beam distribution mode");
+
+	G4String const g = G4String("  mode: ") + mode::GaussianEllipse + ", "
+			+ mode::UniformCircle;
+	result->SetGuidance(g);
+	result->SetParameterName("mode", false);
+	result->SetCandidates("GaussianEllipse UniformCircle");
+
+	return result;
+
+}
+
 SpallationMessenger::SpallationMessenger(Spallation& spallation_) :
 		spallation(spallation_), directory(MakeDirectory()), diameterCmd(
 				MakeDiameter(this)), xWidthCmd(MakeXWidth(this)), yWidthCmd(
 				MakeYWidth(this)), positionXCmd(MakePositionX(this)), positionYCmd(
-				MakePositionY(this)), verboseCmd(MakeVerbose(this)) {
+				MakePositionY(this)), verboseCmd(MakeVerbose(this)), modeCmd(
+				MakeMode(this)) {
 
 }
 
@@ -129,6 +153,8 @@ G4String SpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
 		ans = positionYCmd->ConvertToString(spallation.GetPositionY());
 	} else if (command == verboseCmd.get()) {
 		ans = verboseCmd->ConvertToString(spallation.GetVerboseLevel());
+	} else if (command == modeCmd.get()) {
+		ans = ModeToString(spallation.GetMode());
 	}
 
 	return ans;
@@ -153,7 +179,37 @@ void SpallationMessenger::SetNewValue(G4UIcommand* const command,
 		spallation.SetPositionY(positionYCmd->GetNewDoubleValue(newValue));
 	} else if (command == verboseCmd.get()) {
 		spallation.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
+	} else if (command == modeCmd.get()) {
+		spallation.SetMode(StringToMode(newValue));
 	}
+
+}
+
+G4String SpallationMessenger::ModeToString(Spallation::Mode mode) {
+
+	switch (mode) {
+	case Spallation::Mode::GaussianEllipse:
+		return mode::GaussianEllipse;
+
+	case Spallation::Mode::UniformCircle:
+		return mode::UniformCircle;
+	}
+
+	return "";
+
+}
+
+Spallation::Mode SpallationMessenger::StringToMode(G4String const& mode) {
+
+	if (mode == mode::GaussianEllipse) {
+		return Spallation::Mode::GaussianEllipse;
+	}
+
+	if (mode == mode::UniformCircle) {
+		return Spallation::Mode::UniformCircle;
+	}
+
+	return Spallation::Mode::GaussianEllipse;
 
 }
 

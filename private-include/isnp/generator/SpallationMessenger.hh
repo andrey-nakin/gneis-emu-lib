@@ -6,6 +6,7 @@
 #include <G4UImessenger.hh>
 #include <G4UIdirectory.hh>
 #include <G4UIcommand.hh>
+#include <G4UIcmdWithAString.hh>
 
 #include "isnp/generator/Spallation.hh"
 
@@ -32,6 +33,10 @@ private:
 	std::unique_ptr<G4UIcmdWithADoubleAndUnit> const diameterCmd, xWidthCmd,
 			yWidthCmd, positionXCmd, positionYCmd;
 	std::unique_ptr<G4UIcmdWithAnInteger> const verboseCmd;
+	std::unique_ptr<G4UIcmdWithAString> const modeCmd;
+
+	static G4String ModeToString(Spallation::Mode mode);
+	static Spallation::Mode StringToMode(G4String const& mode);
 
 };
 

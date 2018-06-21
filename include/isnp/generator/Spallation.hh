@@ -109,11 +109,15 @@ public:
 	}
 
 	Mode GetMode() const {
+
 		return mode;
+
 	}
 
 	void SetMode(Mode const aMode) {
+
 		mode = aMode;
+
 	}
 
 	UniformCircleProps& GetUcProps() {
