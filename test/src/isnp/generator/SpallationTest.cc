@@ -122,6 +122,7 @@ TEST(Spallation, GeneratePositionStatisticsGE)
 	EXPECT_NEAR(2.354820045, FWHM, 0.5e-10);
 	static G4double const expectedXWidth[] = {-1, 500 * mm, 1 * angstrom};
 	static G4double const expectedYWidth[] = {-1, 20 * mm, 2 * angstrom};
+	static G4double const expectedRMax[] = {114.78 * mm, 300.50 * mm, 2 * angstrom};
 	static std::size_t nTests = sizeof(expectedXWidth) / sizeof(expectedXWidth[0]);
 
 	for (std::size_t testNo = 0; testNo < nTests; testNo++) {
@@ -135,13 +136,14 @@ TEST(Spallation, GeneratePositionStatisticsGE)
 			spallation.GetGeProps().SetYWidth(expectedYWidth[testNo]);
 		}
 
-		Stat x, y, z;
+		Stat x, y, z, r;
 
 		for (int i = 0; i < 1000000; i++) {
 			auto const pos = spallation.GeneratePositionGE();
 			x += pos.getX();
 			y += pos.getY();
 			z += pos.getZ();
+			r += std::sqrt(pos.getX() * pos.getX() + pos.getY() * pos.getY());
 		}
 
 		EXPECT_TRUE(x.Is(0.0 * mm));
@@ -153,6 +155,8 @@ TEST(Spallation, GeneratePositionStatisticsGE)
 		EXPECT_NEAR(eYWidth / FWHM, y.GetStd(), 0.1 * mm);
 
 		EXPECT_DOUBLE_EQ(0.0 * mm, z.GetMean());
+
+		EXPECT_NEAR(expectedRMax[testNo] / FWHM, r.GetStd(), 0.1 * mm);
 
 	}
 

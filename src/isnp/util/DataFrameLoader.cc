@@ -61,7 +61,7 @@ DataFrameLoader::DataFrameLoader(std::set<G4String> const& aFloatColumns,
 
 }
 
-DataFrame DataFrameLoader::load(std::istream& is) throw (LoaderException) {
+DataFrame DataFrameLoader::load(std::istream& is) {
 
 	unsigned lineNo = 0;
 	std::string line;

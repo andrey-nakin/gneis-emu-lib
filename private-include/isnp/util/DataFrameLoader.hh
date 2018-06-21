@@ -67,7 +67,7 @@ public:
 	DataFrameLoader(std::set<G4String> const& aFloatColumns,
 			std::set<G4String> const& aCategoryColumns);
 
-	DataFrame load(std::istream&) throw (LoaderException);
+	DataFrame load(std::istream&);
 
 private:
 
