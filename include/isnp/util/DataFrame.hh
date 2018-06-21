@@ -58,13 +58,10 @@ public:
 	size_type size() const;
 
 	G4String const& categoryName(const G4String& columnName,
-			CategoryId id) const throw (NoSuchColumnException);
-	CategoryVector const& categoryColumn(const G4String& columnName) const
-			throw (NoSuchColumnException);
-	FloatVector const& floatColumn(const G4String& columnName) const
-			throw (NoSuchColumnException);
-	unsigned Precision(const G4String& columnName) const
-			throw (NoSuchColumnException);
+			CategoryId id) const;
+	CategoryVector const& categoryColumn(const G4String& columnName) const;
+	FloatVector const& floatColumn(const G4String& columnName) const;
+	unsigned Precision(const G4String& columnName) const;
 
 private:
 

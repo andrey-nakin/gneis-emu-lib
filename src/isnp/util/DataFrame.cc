@@ -23,7 +23,7 @@ DataFrame::size_type DataFrame::size() const {
 }
 
 G4String const& DataFrame::categoryName(const G4String& columnName,
-		CategoryId const id) const throw (NoSuchColumnException) {
+		CategoryId const id) const {
 
 	auto const it = data->categoryNames.find(columnName);
 	if (it == data->categoryNames.cend()) {
@@ -41,7 +41,7 @@ G4String const& DataFrame::categoryName(const G4String& columnName,
 }
 
 const DataFrame::CategoryVector& DataFrame::categoryColumn(
-		const G4String& columnName) const throw (NoSuchColumnException) {
+		const G4String& columnName) const {
 
 	auto const it = data->categoryColumns.find(columnName);
 	if (it == data->categoryColumns.cend()) {
@@ -53,7 +53,7 @@ const DataFrame::CategoryVector& DataFrame::categoryColumn(
 }
 
 const DataFrame::FloatVector& DataFrame::floatColumn(
-		const G4String& columnName) const throw (NoSuchColumnException) {
+		const G4String& columnName) const {
 
 	auto const it = data->floatColumns.find(columnName);
 	if (it == data->floatColumns.cend()) {
@@ -64,8 +64,7 @@ const DataFrame::FloatVector& DataFrame::floatColumn(
 
 }
 
-unsigned DataFrame::Precision(const G4String& columnName) const
-		throw (NoSuchColumnException) {
+unsigned DataFrame::Precision(const G4String& columnName) const {
 
 	auto const it = data->precisions.find(columnName);
 	if (it == data->precisions.cend()) {
