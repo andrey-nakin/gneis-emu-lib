@@ -205,10 +205,12 @@ TEST(Spallation, GenerateDirection)
 TEST(Spallation, GeneratePosition)
 {
 
-	Spallation spallation;
-	spallation.GetUcProps().SetDiameter(0.0);
+	using namespace isnp::testutil;
 
 	{
+		Spallation spallation;
+		spallation.GetUcProps().SetDiameter(0.0);
+
 		G4Transform3D const zeroTransform;
 		auto const pos = spallation.GeneratePosition(zeroTransform);
 		EXPECT_DOUBLE_EQ(0.0, pos.getX());
@@ -217,15 +219,37 @@ TEST(Spallation, GeneratePosition)
 	}
 
 	{
+		Spallation spallation;
+		spallation.SetMode(Spallation::Mode::UniformCircle);
+
+		G4double const r = spallation.GetUcProps().GetDiameter() / 2;
+
 		G4double const angle = 30.0 * deg;
 		G4RotationMatrix rotm = G4RotationMatrix();
 		rotm.rotateY(angle);
 		G4ThreeVector const position = G4ThreeVector(1.0 * m, 2.0 * m, 3.0 * m);
 		G4Transform3D const transform = G4Transform3D(rotm, position);
-		auto const pos = spallation.GeneratePosition(transform);
-		EXPECT_DOUBLE_EQ(std::sin(angle) * -200 * mm + 1 * m, pos.getX());
-		EXPECT_DOUBLE_EQ(2 * m, pos.getY());
-		EXPECT_DOUBLE_EQ(std::cos(angle) * -200 * mm + 3 * m, pos.getZ());
+
+		Stat x, y, z;
+
+		for (int i = 0; i < 1000000; i++) {
+			auto const pos = spallation.GeneratePosition(transform);
+			x += pos.getX();
+			y += pos.getY();
+			z += pos.getZ();
+		}
+
+		EXPECT_TRUE(x.Is(std::sin(angle) * -200 * mm + 1 * m));
+		EXPECT_NEAR(std::sin(angle) * -200 * mm - std::cos(angle) * r + 1 * m, x.GetMin(), 0.01 * mm);
+		EXPECT_NEAR(std::sin(angle) * -200 * mm + std::cos(angle) * r + 1 * m, x.GetMax(), 0.01 * mm);
+
+		EXPECT_TRUE(y.Is(2 * m));
+		EXPECT_NEAR(-2 * cm + 2 * m, y.GetMin(), 0.001 * cm);
+		EXPECT_NEAR(2 * cm + 2 * m, y.GetMax(), 0.001 * cm);
+
+		EXPECT_TRUE(z.Is(std::cos(angle) * -200 * mm + 3 * m));
+		EXPECT_NEAR(std::cos(angle) * -200 * mm - std::sin(angle) * r + 3 * m, z.GetMin(), 0.01 * mm);
+		EXPECT_NEAR(std::cos(angle) * -200 * mm + std::sin(angle) * r + 3 * m, z.GetMax(), 0.01 * mm);
 	}
 
 }
