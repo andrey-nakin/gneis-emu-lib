@@ -148,6 +148,8 @@ private:
 
 	FRIEND_TEST(Spallation, GeneratePositionStatistics);
 
+	FRIEND_TEST(Spallation, GeneratePositionStatisticsGE);
+
 	FRIEND_TEST(Spallation, ZeroDiameter);
 
 	FRIEND_TEST(Spallation, GeneratePosition);
@@ -165,6 +167,8 @@ private:
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;
+	G4ThreeVector GeneratePositionUC() const;
+	G4ThreeVector GeneratePositionGE() const;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
 

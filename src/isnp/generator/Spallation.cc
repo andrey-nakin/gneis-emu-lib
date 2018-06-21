@@ -18,7 +18,7 @@ Spallation::UniformCircleProps::UniformCircleProps() :
 }
 
 Spallation::GaussianEllipseProps::GaussianEllipseProps() :
-		xWidth(50 * mm), yWidth(200 * mm) {
+		xWidth(200 * mm), yWidth(50 * mm) {
 }
 
 Spallation::Spallation() :
@@ -68,10 +68,31 @@ G4ThreeVector Spallation::GeneratePosition(
 
 	G4ThreeVector position;
 
+	switch (mode) {
+	case Mode::UniformCircle:
+		position = GeneratePositionUC();
+		break;
+
+	default:
+		position = GeneratePositionGE();
+		break;
+	}
+
+	position.setX(position.getX() + positionX);
+	position.setY(position.getY() + positionY);
+	position.setZ(position.getZ() - SpallationTarget::GetHalfLength());
+	position.transform(transform.getRotation());
+	position += transform.getTranslation();
+
+	return position;
+
+}
+
+G4ThreeVector Spallation::GeneratePositionUC() const {
+
 	if (ucProps.GetDiameter() < 1.0 * angstrom) {
 
-		position = G4ThreeVector(positionX, positionY,
-				-SpallationTarget::GetHalfLength());
+		return G4ThreeVector(0, 0, 0);
 
 	} else {
 
@@ -85,15 +106,20 @@ G4ThreeVector Spallation::GeneratePosition(
 			y = CLHEP::RandFlat::shoot(minValue, maxValue);
 		} while (x * x + y * y >= maxValue2);
 
-		position = G4ThreeVector(x + positionX, y + positionY,
-				-SpallationTarget::GetHalfLength());
+		return G4ThreeVector(x, y, 0);
 
 	}
 
-	position.transform(transform.getRotation());
-	position += transform.getTranslation();
+}
 
-	return position;
+G4ThreeVector Spallation::GeneratePositionGE() const {
+
+	// relation between Full Width at High Maximum and sigma parameter of Gauss distribution
+	G4double const static FWHM = 1.0 / (2 * std::sqrt(2 * std::log(2)));
+
+	G4double const x = CLHEP::RandGauss::shoot() * geProps.GetXWidth() * FWHM;
+	G4double const y = CLHEP::RandGauss::shoot() * geProps.GetYWidth() * FWHM;
+	return G4ThreeVector(x, y, 0);
 
 }
 
