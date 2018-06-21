@@ -31,6 +31,32 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDiameter(
 
 }
 
+static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeXWidth(
+		SpallationMessenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithADoubleAndUnit
+			> (DIR "xWidth", inst);
+	result->SetGuidance("Set the FWHM of the beam along X axis");
+	result->SetParameterName("width", false);
+	result->SetUnitCategory(G4UnitDefinition::GetCategory("mm"));
+
+	return result;
+
+}
+
+static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeYWidth(
+		SpallationMessenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithADoubleAndUnit
+			> (DIR "yWidth", inst);
+	result->SetGuidance("Set the FWHM of the beam along Y axis");
+	result->SetParameterName("width", false);
+	result->SetUnitCategory(G4UnitDefinition::GetCategory("mm"));
+
+	return result;
+
+}
+
 static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakePositionX(
 		SpallationMessenger* const inst) {
 
@@ -76,7 +102,8 @@ static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerbose(
 
 SpallationMessenger::SpallationMessenger(Spallation& spallation_) :
 		spallation(spallation_), directory(MakeDirectory()), diameterCmd(
-				MakeDiameter(this)), positionXCmd(MakePositionX(this)), positionYCmd(
+				MakeDiameter(this)), xWidthCmd(MakeXWidth(this)), yWidthCmd(
+				MakeYWidth(this)), positionXCmd(MakePositionX(this)), positionYCmd(
 				MakePositionY(this)), verboseCmd(MakeVerbose(this)) {
 
 }
@@ -90,7 +117,12 @@ G4String SpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
 	G4String ans;
 
 	if (command == diameterCmd.get()) {
-		ans = diameterCmd->ConvertToString(spallation.GetUcProps().GetDiameter());
+		ans = diameterCmd->ConvertToString(
+				spallation.GetUcProps().GetDiameter());
+	} else if (command == xWidthCmd.get()) {
+		ans = xWidthCmd->ConvertToString(spallation.GetGeProps().GetXWidth());
+	} else if (command == yWidthCmd.get()) {
+		ans = yWidthCmd->ConvertToString(spallation.GetGeProps().GetYWidth());
 	} else if (command == positionXCmd.get()) {
 		ans = positionXCmd->ConvertToString(spallation.GetPositionX());
 	} else if (command == positionYCmd.get()) {
@@ -107,7 +139,14 @@ void SpallationMessenger::SetNewValue(G4UIcommand* const command,
 		G4String const newValue) {
 
 	if (command == diameterCmd.get()) {
-		spallation.GetUcProps().SetDiameter(diameterCmd->GetNewDoubleValue(newValue));
+		spallation.GetUcProps().SetDiameter(
+				diameterCmd->GetNewDoubleValue(newValue));
+	} else if (command == xWidthCmd.get()) {
+		spallation.GetGeProps().SetXWidth(
+				xWidthCmd->GetNewDoubleValue(newValue));
+	} else if (command == yWidthCmd.get()) {
+		spallation.GetGeProps().SetYWidth(
+				yWidthCmd->GetNewDoubleValue(newValue));
 	} else if (command == positionXCmd.get()) {
 		spallation.SetPositionX(positionXCmd->GetNewDoubleValue(newValue));
 	} else if (command == positionYCmd.get()) {

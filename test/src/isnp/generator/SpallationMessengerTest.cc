@@ -39,6 +39,54 @@ TEST(SpallationMessenger, SetDiameter)
 
 }
 
+TEST(SpallationMessenger, GetXWidth)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(200 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/xWidth"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	spallation.GetGeProps().SetXWidth(300 * mm);
+	EXPECT_NEAR(300 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/xWidth"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
+TEST(SpallationMessenger, SetXWidth)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_DOUBLE_EQ(200 * mm, spallation.GetGeProps().GetXWidth());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/xWidth 300 mm"));
+	EXPECT_DOUBLE_EQ(300 * mm, spallation.GetGeProps().GetXWidth());
+
+}
+
+TEST(SpallationMessenger, GetYWidth)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_NEAR(50 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/yWidth"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	spallation.GetGeProps().SetYWidth(20 * mm);
+	EXPECT_NEAR(20 * mm, uiManager->GetCurrentDoubleValue("/isnp/spallation/gun/yWidth"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+
+}
+
+TEST(SpallationMessenger, SetYWidth)
+{
+
+	Spallation spallation;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetGeProps().GetYWidth());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/yWidth 20 mm"));
+	EXPECT_DOUBLE_EQ(20 * mm, spallation.GetGeProps().GetYWidth());
+
+}
+
 TEST(SpallationMessenger, GetPositionX)
 {
 
