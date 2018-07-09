@@ -9,12 +9,82 @@ namespace isnp {
 
 namespace dist {
 
-TEST(Spallation, Generate)
+TEST(UniformRectangle, GetXWidth)
+{
+
+	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
+	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
+
+}
+
+TEST(UniformRectangle, SetXWidth)
+{
+
+	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
+	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
+	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
+	EXPECT_EQ(25 * mm, generator.GetProps().GetYHalfWidth());
+
+	generator.GetProps().SetXWidth(200 * mm);
+	EXPECT_EQ(200 * mm, generator.GetProps().GetXWidth());
+	EXPECT_EQ(100 * mm, generator.GetProps().GetXHalfWidth());
+	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
+	EXPECT_EQ(25 * mm, generator.GetProps().GetYHalfWidth());
+
+	generator.GetProps().SetXHalfWidth(140 * mm);
+	EXPECT_EQ(280 * mm, generator.GetProps().GetXWidth());
+	EXPECT_EQ(140 * mm, generator.GetProps().GetXHalfWidth());
+	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
+	EXPECT_EQ(25 * mm, generator.GetProps().GetYHalfWidth());
+
+}
+
+TEST(UniformRectangle, GetYWidth)
+{
+
+	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
+	EXPECT_EQ(25 * mm, generator.GetProps().GetYHalfWidth());
+
+}
+
+TEST(UniformRectangle, SetYWidth)
+{
+
+	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
+	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
+	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
+	EXPECT_EQ(25 * mm, generator.GetProps().GetYHalfWidth());
+
+	generator.GetProps().SetYWidth(100 * mm);
+	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
+	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
+	EXPECT_EQ(100 * mm, generator.GetProps().GetYWidth());
+	EXPECT_EQ(50 * mm, generator.GetProps().GetYHalfWidth());
+
+	generator.GetProps().SetYHalfWidth(140 * mm);
+	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
+	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
+	EXPECT_EQ(280 * mm, generator.GetProps().GetYWidth());
+	EXPECT_EQ(140 * mm, generator.GetProps().GetYHalfWidth());
+
+}
+
+TEST(UniformRectangle, Generate)
 {
 
 	using namespace isnp::testutil;
 
 	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+
+	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
+	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
+	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
+	EXPECT_EQ(25 * mm, generator.GetProps().GetYHalfWidth());
+
 	Stat x, y, z, r;
 
 	for (int i = 0; i < 1000000; i++) {
