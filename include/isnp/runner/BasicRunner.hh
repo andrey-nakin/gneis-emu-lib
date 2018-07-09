@@ -23,7 +23,7 @@ public:
 	int Run(std::function<void(G4RunManager&)> closure);
 
 	virtual G4VUserPhysicsList* DetectPhysicsList(G4String const&) const;
-	virtual void ValidateSettings(G4RunManager&) const;
+	virtual void ValidatePhysicsList(G4RunManager&) const;
 
 private:
 

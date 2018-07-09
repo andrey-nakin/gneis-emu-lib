@@ -14,6 +14,7 @@ namespace mode {
 
 static G4String const GaussianEllipse = "GaussianEllipse";
 static G4String const UniformCircle = "UniformCircle";
+static G4String const UniformRectangle = "UniformRectangle";
 
 }
 
@@ -114,10 +115,12 @@ static std::unique_ptr<G4UIcmdWithAString> MakeMode(
 	result->SetGuidance("Set a beam distribution mode");
 
 	G4String const g = G4String("  mode: ") + mode::GaussianEllipse + ", "
-			+ mode::UniformCircle;
+			+ mode::UniformCircle + ", " + mode::UniformRectangle;
 	result->SetGuidance(g);
 	result->SetParameterName("mode", false);
-	result->SetCandidates("GaussianEllipse UniformCircle");
+	G4String const c = mode::GaussianEllipse + " " + mode::UniformCircle + " "
+			+ mode::UniformRectangle;
+	result->SetCandidates(c);
 
 	return result;
 
@@ -193,6 +196,9 @@ G4String SpallationMessenger::ModeToString(Spallation::Mode mode) {
 
 	case Spallation::Mode::UniformCircle:
 		return mode::UniformCircle;
+
+	case Spallation::Mode::UniformRectangle:
+		return mode::UniformRectangle;
 	}
 
 	return "";
@@ -207,6 +213,10 @@ Spallation::Mode SpallationMessenger::StringToMode(G4String const& mode) {
 
 	if (mode == mode::UniformCircle) {
 		return Spallation::Mode::UniformCircle;
+	}
+
+	if (mode == mode::UniformRectangle) {
+		return Spallation::Mode::UniformRectangle;
 	}
 
 	return Spallation::Mode::GaussianEllipse;

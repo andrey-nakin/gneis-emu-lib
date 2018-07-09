@@ -9,6 +9,8 @@
 
 #include <gtest/gtest_prod.h>
 
+#include "isnp/dist/UniformRectangle.hh"
+
 namespace isnp {
 
 namespace generator {
@@ -22,7 +24,7 @@ class Spallation: public G4VUserPrimaryGeneratorAction {
 public:
 
 	enum class Mode {
-		UniformCircle, GaussianEllipse
+		UniformCircle, GaussianEllipse, UniformRectangle
 	};
 
 	class UniformCircleProps {
@@ -144,6 +146,18 @@ public:
 
 	}
 
+	dist::UniformRectangle const& GetUniformRectangle() const {
+
+		return uniformRectangle;
+
+	}
+
+	dist::UniformRectangle& GetUniformRectangle() {
+
+		return uniformRectangle;
+
+	}
+
 private:
 
 	FRIEND_TEST(Spallation, PositionY);
@@ -168,6 +182,7 @@ private:
 	Mode mode;
 	UniformCircleProps ucProps;
 	GaussianEllipseProps geProps;
+	dist::UniformRectangle uniformRectangle;
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;

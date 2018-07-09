@@ -170,6 +170,8 @@ TEST(SpallationMessenger, GetMode)
 	EXPECT_EQ("UniformCircle", uiManager->GetCurrentStringValue("/isnp/spallation/gun/mode"));
 	spallation.SetMode(Spallation::Mode::GaussianEllipse);
 	EXPECT_EQ("GaussianEllipse", uiManager->GetCurrentStringValue("/isnp/spallation/gun/mode"));
+	spallation.SetMode(Spallation::Mode::UniformRectangle);
+	EXPECT_EQ("UniformRectangle", uiManager->GetCurrentStringValue("/isnp/spallation/gun/mode"));
 
 }
 
@@ -185,6 +187,8 @@ TEST(SpallationMessenger, SetMode)
 	EXPECT_EQ(500, uiManager->ApplyCommand("/isnp/spallation/gun/mode badValue"));
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/mode UniformCircle"));
 	EXPECT_EQ(Spallation::Mode::UniformCircle, spallation.GetMode());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/mode UniformRectangle"));
+	EXPECT_EQ(Spallation::Mode::UniformRectangle, spallation.GetMode());
 
 }
 

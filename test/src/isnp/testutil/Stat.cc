@@ -55,6 +55,6 @@ bool isnp::testutil::Stat::Is(G4double const value) const {
 	auto const mean = GetMean();
 	auto const meanStd = GetMeanStd();
 
-	return value > mean - meanStd * ConfLevel999Quantile
-			&& value < mean + meanStd * ConfLevel999Quantile;
+	return value >= mean - meanStd * ConfLevel999Quantile
+			&& value <= mean + meanStd * ConfLevel999Quantile;
 }

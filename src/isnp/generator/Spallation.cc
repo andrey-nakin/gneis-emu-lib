@@ -24,7 +24,8 @@ Spallation::GaussianEllipseProps::GaussianEllipseProps() :
 Spallation::Spallation() :
 		particleGun(MakeGun()), messenger(
 				std::make_unique < SpallationMessenger > (*this)), positionX(0), positionY(
-				0), counter(0), verboseLevel(1), mode(Mode::UniformCircle) {
+				0), counter(0), verboseLevel(1), mode(Mode::UniformCircle), uniformRectangle(
+				dist::UniformRectangle::Props(120 * mm, 50 * mm)) {
 }
 
 Spallation::~Spallation() {
@@ -71,6 +72,10 @@ G4ThreeVector Spallation::GeneratePosition(
 	switch (mode) {
 	case Mode::UniformCircle:
 		position = GeneratePositionUC();
+		break;
+
+	case Mode::UniformRectangle:
+		position = uniformRectangle.Generate();
 		break;
 
 	default:
