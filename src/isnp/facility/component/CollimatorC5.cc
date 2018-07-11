@@ -21,8 +21,7 @@ G4LogicalVolume* isnp::facility::component::CollimatorC5::AsCylinder(
 		const G4String &name, G4double const outerRadius,
 		G4double const diameter) {
 
-	return MakeLogical(
-			MakeCylinder(name, GetLength(), outerRadius, diameter));
+	return MakeLogical(MakeCylinder(name, GetLength(), outerRadius, diameter));
 }
 
 G4LogicalVolume* isnp::facility::component::CollimatorC5::Instance(
@@ -58,8 +57,8 @@ G4LogicalVolume* isnp::facility::component::CollimatorC5::MakeLogical(
 	const auto nist = G4NistManager::Instance();
 
 	const auto logic = new G4LogicalVolume(solid,
-			nist->FindOrBuildMaterial("G4_BRASS"), solid->GetName());
-	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Brass()));
+			nist->FindOrBuildMaterial("BR05C5S5"), solid->GetName());
+	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Bronze()));
 
 	return logic;
 }

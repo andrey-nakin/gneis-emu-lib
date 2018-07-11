@@ -17,6 +17,7 @@ public:
 
 	static G4Colour Lead();
 	static G4Colour Brass();
+	static G4Colour Bronze();
 	static G4Colour Steel();
 	static G4Colour Concrete();
 

@@ -8,6 +8,10 @@ G4Colour isnp::repository::Colours::Brass() {
 	return FromRGB(218, 162, 15);
 }
 
+G4Colour isnp::repository::Colours::Bronze() {
+	return FromRGB(205, 127, 50);
+}
+
 G4Colour isnp::repository::Colours::Steel() {
 	return FromRGB(188, 197, 204);
 }

@@ -14,6 +14,7 @@
 #include "isnp/runner/BasicRunner.hh"
 #include "isnp/runner/CommandLineParser.hh"
 #include "isnp/util/FileNameBuilder.hh"
+#include "isnp/repository/Materials.hh"
 
 namespace isnp {
 
@@ -48,6 +49,7 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 		}
 	}
 	ValidatePhysicsList(runManager);
+	repository::Materials::GetInstance();
 
 	auto uiManager = G4UImanager::GetUIpointer();
 
