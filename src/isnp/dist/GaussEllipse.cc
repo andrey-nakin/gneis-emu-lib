@@ -10,11 +10,6 @@ namespace dist {
 // relation between Full Width at High Maximum and sigma parameter of Gauss distribution
 G4double const static FWHM = 1.0 / (2 * std::sqrt(2 * std::log(2)));
 
-GaussEllipseProps::GaussEllipseProps(G4double const aXWidth,
-		G4double const aYWidth) :
-		xWidth(aXWidth), yWidth(aYWidth) {
-}
-
 G4ThreeVector GaussEllipse::Generate() const {
 
 	G4double const x = CLHEP::RandGauss::shoot() * GetProps().GetXWidth()

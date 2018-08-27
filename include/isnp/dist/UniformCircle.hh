@@ -3,52 +3,38 @@
 
 #include <G4Types.hh>
 #include "isnp/dist/AbstractDistribution.hh"
+#include "isnp/util/PropertyHolder.hh"
 
 namespace isnp {
 
 namespace dist {
 
-class UniformCircle: public AbstractDistribution {
+class UniformCircleProps {
 public:
 
-	class Props {
-	public:
+	UniformCircleProps(G4double aDiameter);
 
-		Props(G4double aDiameter);
-
-		G4double GetDiameter() const {
-			return diameter;
-		}
-
-		void SetDiameter(G4double const v) {
-			diameter = v;
-		}
-
-	private:
-
-		G4double diameter;
-
-	};
-
-	UniformCircle(const Props& aProps);
-
-	G4ThreeVector Generate() const override;
-
-	Props const& GetProps() const {
-
-		return props;
-
+	G4double GetDiameter() const {
+		return diameter;
 	}
 
-	Props& GetProps() {
-
-		return props;
-
+	void SetDiameter(G4double const v) {
+		diameter = v;
 	}
 
 private:
 
-	Props props;
+	G4double diameter;
+
+};
+
+class UniformCircle: public AbstractDistribution, public util::PropertyHolder<
+		UniformCircleProps> {
+public:
+
+	using util::PropertyHolder<UniformCircleProps>::PropertyHolder;
+
+	G4ThreeVector Generate() const override;
 
 };
 

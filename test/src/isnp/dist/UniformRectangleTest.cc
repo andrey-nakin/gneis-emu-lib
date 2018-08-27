@@ -12,7 +12,7 @@ namespace dist {
 TEST(UniformRectangle, GetXWidth)
 {
 
-	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	UniformRectangle generator(UniformRectangleProps(120 * mm, 50 * mm));
 	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
 	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
 
@@ -21,7 +21,7 @@ TEST(UniformRectangle, GetXWidth)
 TEST(UniformRectangle, SetXWidth)
 {
 
-	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	UniformRectangle generator(UniformRectangleProps(120 * mm, 50 * mm));
 	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
 	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
 	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
@@ -44,7 +44,7 @@ TEST(UniformRectangle, SetXWidth)
 TEST(UniformRectangle, GetYWidth)
 {
 
-	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	UniformRectangle generator(UniformRectangleProps(120 * mm, 50 * mm));
 	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
 	EXPECT_EQ(25 * mm, generator.GetProps().GetYHalfWidth());
 
@@ -53,7 +53,7 @@ TEST(UniformRectangle, GetYWidth)
 TEST(UniformRectangle, SetYWidth)
 {
 
-	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	UniformRectangle generator(UniformRectangleProps(120 * mm, 50 * mm));
 	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
 	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());
 	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
@@ -78,7 +78,7 @@ TEST(UniformRectangle, Generate)
 
 	using namespace isnp::testutil;
 
-	UniformRectangle generator(UniformRectangle::Props(120 * mm, 50 * mm));
+	UniformRectangle generator(UniformRectangleProps(120 * mm, 50 * mm));
 
 	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
 	EXPECT_EQ(60 * mm, generator.GetProps().GetXHalfWidth());

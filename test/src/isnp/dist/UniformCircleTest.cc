@@ -12,7 +12,7 @@ namespace dist {
 TEST(UniformCircle, GetDiameter)
 {
 
-	UniformCircle generator(UniformCircle::Props(120 * mm));
+	UniformCircle generator(UniformCircleProps(120 * mm));
 	EXPECT_EQ(120 * mm, generator.GetProps().GetDiameter());
 
 }
@@ -20,7 +20,7 @@ TEST(UniformCircle, GetDiameter)
 TEST(UniformCircle, SetDiameter)
 {
 
-	UniformCircle generator(UniformCircle::Props(120 * mm));
+	UniformCircle generator(UniformCircleProps(120 * mm));
 	EXPECT_EQ(120 * mm, generator.GetProps().GetDiameter());
 
 	generator.GetProps().SetDiameter(200 * mm);
@@ -33,7 +33,7 @@ TEST(UniformCircle, Generate)
 
 	using namespace isnp::testutil;
 
-	UniformCircle generator(UniformCircle::Props(40 * mm));
+	UniformCircle generator(UniformCircleProps(40 * mm));
 	Stat x, y, z, r;
 
 	for (int i = 0; i < 1000000; i++) {
@@ -64,7 +64,7 @@ TEST(UniformCircle, Generate)
 TEST(UniformCircle, ZeroDiameter)
 {
 
-	UniformCircle generator(UniformCircle::Props(0 * mm));
+	UniformCircle generator(UniformCircleProps(0 * mm));
 
 	auto const pos = generator.Generate();
 	EXPECT_DOUBLE_EQ(0.0, pos.getX());

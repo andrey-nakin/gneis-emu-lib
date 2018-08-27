@@ -12,6 +12,8 @@ class PropertyHolder {
 
 public:
 
+	typedef Properties prop_type;
+
 	PropertyHolder(const Properties& aProps) :
 			props(aProps) {
 	}

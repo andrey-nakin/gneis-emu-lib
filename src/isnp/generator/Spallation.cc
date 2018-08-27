@@ -16,8 +16,8 @@ Spallation::Spallation() :
 		particleGun(MakeGun()), messenger(
 				std::make_unique < SpallationMessenger > (*this)), positionX(0), positionY(
 				0), counter(0), verboseLevel(1), mode(Mode::UniformCircle), uniformRectangle(
-				dist::UniformRectangle::Props(120 * mm, 50 * mm)), uniformCircle(
-				dist::UniformCircle::Props(4.0 * cm)), gaussEllipse(
+				dist::UniformRectangleProps(120 * mm, 50 * mm)), uniformCircle(
+				dist::UniformCircleProps(4.0 * cm)), gaussEllipse(
 				dist::GaussEllipseProps(200 * mm, 50 * mm)) {
 }
 

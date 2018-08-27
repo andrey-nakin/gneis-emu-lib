@@ -6,27 +6,18 @@ namespace isnp {
 
 namespace dist {
 
-UniformRectangle::Props::Props(G4double const aXWidth, G4double const aYWidth) :
-		xWidth(aXWidth), yWidth(aYWidth), xHalfWidth(aXWidth / 2), yHalfWidth(
-				aYWidth / 2) {
-}
-
-UniformRectangle::UniformRectangle(const Props& aProps) :
-		props(aProps) {
-}
-
 G4ThreeVector UniformRectangle::Generate() const {
 
 	G4double const x =
-			props.GetXWidth() < 1.0 * angstrom ?
+			GetProps().GetXWidth() < 1.0 * angstrom ?
 					0.0 :
-					CLHEP::RandFlat::shoot(-props.GetXHalfWidth(),
-							props.GetXHalfWidth());
+					CLHEP::RandFlat::shoot(-GetProps().GetXHalfWidth(),
+							GetProps().GetXHalfWidth());
 	G4double const y =
-			props.GetYWidth() < 1.0 * angstrom ?
+			GetProps().GetYWidth() < 1.0 * angstrom ?
 					0.0 :
-					CLHEP::RandFlat::shoot(-props.GetYHalfWidth(),
-							props.GetYHalfWidth());
+					CLHEP::RandFlat::shoot(-GetProps().GetYHalfWidth(),
+							GetProps().GetYHalfWidth());
 
 	return G4ThreeVector(x, y, 0);
 

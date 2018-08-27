@@ -3,96 +3,27 @@
 
 #include <G4Types.hh>
 #include "isnp/dist/AbstractDistribution.hh"
+#include "isnp/util/PropertyHolder.hh"
+#include "isnp/util/RectangleProps.hh"
 
 namespace isnp {
 
 namespace dist {
 
-class UniformRectangle: public AbstractDistribution {
+class UniformRectangleProps: public util::RectangleProps {
 public:
 
-	class Props {
-	public:
+	using util::RectangleProps::RectangleProps;
 
-		Props(G4double aXWidth, G4double aYWidth);
+};
 
-		G4double GetXWidth() const {
+class UniformRectangle: public AbstractDistribution,
+		public util::PropertyHolder<UniformRectangleProps> {
+public:
 
-			return xWidth;
-
-		}
-
-		void SetXWidth(G4double const aXWidth) {
-
-			xWidth = aXWidth;
-			xHalfWidth = aXWidth / 2;
-
-		}
-
-		G4double GetXHalfWidth() const {
-
-			return xHalfWidth;
-
-		}
-
-		void SetXHalfWidth(G4double const aXHalfWidth) {
-
-			xWidth = aXHalfWidth * 2;
-			xHalfWidth = aXHalfWidth;
-
-		}
-
-		G4double GetYWidth() const {
-
-			return yWidth;
-
-		}
-
-		void SetYWidth(G4double const aYWidth) {
-
-			yWidth = aYWidth;
-			yHalfWidth = aYWidth / 2;
-
-		}
-
-		G4double GetYHalfWidth() const {
-
-			return yHalfWidth;
-
-		}
-
-		void SetYHalfWidth(G4double const aYHalfWidth) {
-
-			yWidth = aYHalfWidth * 2;
-			yHalfWidth = aYHalfWidth;
-
-		}
-
-	private:
-
-		G4double xWidth, yWidth, xHalfWidth, yHalfWidth;
-
-	};
-
-	UniformRectangle(const Props& aProps);
+	using util::PropertyHolder<UniformRectangleProps>::PropertyHolder;
 
 	G4ThreeVector Generate() const override;
-
-	Props const& GetProps() const {
-
-		return props;
-
-	}
-
-	Props& GetProps() {
-
-		return props;
-
-	}
-
-private:
-
-	Props props;
 
 };
 
