@@ -11,6 +11,7 @@
 
 #include "isnp/dist/UniformRectangle.hh"
 #include "isnp/dist/UniformCircle.hh"
+#include "isnp/dist/GaussEllipse.hh"
 
 namespace isnp {
 
@@ -26,41 +27,6 @@ public:
 
 	enum class Mode {
 		UniformCircle, GaussianEllipse, UniformRectangle
-	};
-
-	class GaussianEllipseProps {
-	public:
-
-		GaussianEllipseProps();
-
-		G4double GetXWidth() const {
-
-			return xWidth;
-
-		}
-
-		void SetXWidth(G4double const aXWidth) {
-
-			xWidth = aXWidth;
-
-		}
-
-		G4double GetYWidth() const {
-
-			return yWidth;
-
-		}
-
-		void SetYWidth(G4double const aYWidth) {
-
-			yWidth = aYWidth;
-
-		}
-
-	private:
-
-		G4double xWidth, yWidth;
-
 	};
 
 	Spallation();
@@ -104,18 +70,6 @@ public:
 
 	}
 
-	GaussianEllipseProps& GetGeProps() {
-
-		return geProps;
-
-	}
-
-	GaussianEllipseProps const& GetGeProps() const {
-
-		return geProps;
-
-	}
-
 	dist::UniformRectangle const& GetUniformRectangle() const {
 
 		return uniformRectangle;
@@ -137,6 +91,18 @@ public:
 	dist::UniformCircle& GetUniformCircle() {
 
 		return uniformCircle;
+
+	}
+
+	dist::GaussEllipse const& GetGaussEllipse() const {
+
+		return gaussEllipse;
+
+	}
+
+	dist::GaussEllipse& GetGaussEllipse() {
+
+		return gaussEllipse;
 
 	}
 
@@ -162,13 +128,12 @@ private:
 	unsigned counter;
 	G4int verboseLevel;
 	Mode mode;
-	GaussianEllipseProps geProps;
 	dist::UniformRectangle uniformRectangle;
 	dist::UniformCircle uniformCircle;
+	dist::GaussEllipse gaussEllipse;
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;
-	G4ThreeVector GeneratePositionGE() const;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
 

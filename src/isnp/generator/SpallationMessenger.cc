@@ -147,9 +147,9 @@ G4String SpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
 		ans = diameterCmd->ConvertToString(
 				spallation.GetUniformCircle().GetProps().GetDiameter());
 	} else if (command == xWidthCmd.get()) {
-		ans = xWidthCmd->ConvertToString(spallation.GetGeProps().GetXWidth());
+		ans = xWidthCmd->ConvertToString(spallation.GetGaussEllipse().GetProps().GetXWidth());
 	} else if (command == yWidthCmd.get()) {
-		ans = yWidthCmd->ConvertToString(spallation.GetGeProps().GetYWidth());
+		ans = yWidthCmd->ConvertToString(spallation.GetGaussEllipse().GetProps().GetYWidth());
 	} else if (command == positionXCmd.get()) {
 		ans = positionXCmd->ConvertToString(spallation.GetPositionX());
 	} else if (command == positionYCmd.get()) {
@@ -171,10 +171,10 @@ void SpallationMessenger::SetNewValue(G4UIcommand* const command,
 		spallation.GetUniformCircle().GetProps().SetDiameter(
 				diameterCmd->GetNewDoubleValue(newValue));
 	} else if (command == xWidthCmd.get()) {
-		spallation.GetGeProps().SetXWidth(
+		spallation.GetGaussEllipse().GetProps().SetXWidth(
 				xWidthCmd->GetNewDoubleValue(newValue));
 	} else if (command == yWidthCmd.get()) {
-		spallation.GetGeProps().SetYWidth(
+		spallation.GetGaussEllipse().GetProps().SetYWidth(
 				yWidthCmd->GetNewDoubleValue(newValue));
 	} else if (command == positionXCmd.get()) {
 		spallation.SetPositionX(positionXCmd->GetNewDoubleValue(newValue));

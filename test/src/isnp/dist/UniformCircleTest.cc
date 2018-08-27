@@ -61,6 +61,17 @@ TEST(UniformCircle, Generate)
 
 }
 
+TEST(UniformCircle, ZeroDiameter)
+{
+
+	UniformCircle generator(UniformCircle::Props(0 * mm));
+
+	auto const pos = generator.Generate();
+	EXPECT_DOUBLE_EQ(0.0, pos.getX());
+	EXPECT_DOUBLE_EQ(0.0, pos.getY());
+
+}
+
 }
 
 }

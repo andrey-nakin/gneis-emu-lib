@@ -3,7 +3,6 @@
 #include <G4ParticleTable.hh>
 #include <G4ParticleDefinition.hh>
 #include <G4SystemOfUnits.hh>
-#include <Randomize.hh>
 
 #include "isnp/generator/Spallation.hh"
 #include "isnp/generator/SpallationMessenger.hh"
@@ -13,16 +12,13 @@ namespace isnp {
 
 namespace generator {
 
-Spallation::GaussianEllipseProps::GaussianEllipseProps() :
-		xWidth(200 * mm), yWidth(50 * mm) {
-}
-
 Spallation::Spallation() :
 		particleGun(MakeGun()), messenger(
 				std::make_unique < SpallationMessenger > (*this)), positionX(0), positionY(
 				0), counter(0), verboseLevel(1), mode(Mode::UniformCircle), uniformRectangle(
 				dist::UniformRectangle::Props(120 * mm, 50 * mm)), uniformCircle(
-				dist::UniformCircle::Props(4.0 * cm)) {
+				dist::UniformCircle::Props(4.0 * cm)), gaussEllipse(
+				dist::GaussEllipse::Props(200 * mm, 50 * mm)) {
 }
 
 Spallation::~Spallation() {
@@ -76,7 +72,7 @@ G4ThreeVector Spallation::GeneratePosition(
 		break;
 
 	default:
-		position = GeneratePositionGE();
+		position = gaussEllipse.Generate();
 		break;
 	}
 
@@ -87,17 +83,6 @@ G4ThreeVector Spallation::GeneratePosition(
 	position += transform.getTranslation();
 
 	return position;
-
-}
-
-G4ThreeVector Spallation::GeneratePositionGE() const {
-
-	// relation between Full Width at High Maximum and sigma parameter of Gauss distribution
-	G4double const static FWHM = 1.0 / (2 * std::sqrt(2 * std::log(2)));
-
-	G4double const x = CLHEP::RandGauss::shoot() * geProps.GetXWidth() * FWHM;
-	G4double const y = CLHEP::RandGauss::shoot() * geProps.GetYWidth() * FWHM;
-	return G4ThreeVector(x, y, 0);
 
 }
 
