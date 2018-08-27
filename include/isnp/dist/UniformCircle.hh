@@ -31,7 +31,6 @@ public:
 	};
 
 	UniformCircle(const Props& aProps);
-	virtual ~UniformCircle();
 
 	G4ThreeVector Generate() const override;
 

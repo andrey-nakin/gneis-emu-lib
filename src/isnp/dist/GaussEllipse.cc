@@ -18,9 +18,6 @@ GaussEllipse::GaussEllipse(const Props& aProps) :
 		props(aProps) {
 }
 
-GaussEllipse::~GaussEllipse() {
-}
-
 G4ThreeVector GaussEllipse::Generate() const {
 
 	G4double const x = CLHEP::RandGauss::shoot() * props.GetXWidth() * FWHM;

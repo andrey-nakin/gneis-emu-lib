@@ -75,7 +75,6 @@ public:
 	};
 
 	UniformRectangle(const Props& aProps);
-	virtual ~UniformRectangle();
 
 	G4ThreeVector Generate() const override;
 

@@ -47,7 +47,6 @@ public:
 	};
 
 	GaussEllipse(const Props& aProps);
-	virtual ~GaussEllipse();
 
 	G4ThreeVector Generate() const override;
 

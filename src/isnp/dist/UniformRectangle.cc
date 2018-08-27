@@ -15,10 +15,6 @@ UniformRectangle::UniformRectangle(const Props& aProps) :
 		props(aProps) {
 }
 
-UniformRectangle::~UniformRectangle() {
-
-}
-
 G4ThreeVector UniformRectangle::Generate() const {
 
 	G4double const x =

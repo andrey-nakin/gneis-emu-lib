@@ -14,9 +14,6 @@ UniformCircle::UniformCircle(const Props& aProps) :
 		props(aProps) {
 }
 
-UniformCircle::~UniformCircle() {
-}
-
 G4ThreeVector UniformCircle::Generate() const {
 
 	if (props.GetDiameter() < 1.0 * angstrom) {
