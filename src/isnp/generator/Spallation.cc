@@ -13,10 +13,6 @@ namespace isnp {
 
 namespace generator {
 
-Spallation::UniformCircleProps::UniformCircleProps() :
-		diameter(4.0 * cm) {
-}
-
 Spallation::GaussianEllipseProps::GaussianEllipseProps() :
 		xWidth(200 * mm), yWidth(50 * mm) {
 }
@@ -25,7 +21,8 @@ Spallation::Spallation() :
 		particleGun(MakeGun()), messenger(
 				std::make_unique < SpallationMessenger > (*this)), positionX(0), positionY(
 				0), counter(0), verboseLevel(1), mode(Mode::UniformCircle), uniformRectangle(
-				dist::UniformRectangle::Props(120 * mm, 50 * mm)) {
+				dist::UniformRectangle::Props(120 * mm, 50 * mm)), uniformCircle(
+				dist::UniformCircle::Props(4.0 * cm)) {
 }
 
 Spallation::~Spallation() {
@@ -71,7 +68,7 @@ G4ThreeVector Spallation::GeneratePosition(
 
 	switch (mode) {
 	case Mode::UniformCircle:
-		position = GeneratePositionUC();
+		position = uniformCircle.Generate();
 		break;
 
 	case Mode::UniformRectangle:
@@ -90,30 +87,6 @@ G4ThreeVector Spallation::GeneratePosition(
 	position += transform.getTranslation();
 
 	return position;
-
-}
-
-G4ThreeVector Spallation::GeneratePositionUC() const {
-
-	if (ucProps.GetDiameter() < 1.0 * angstrom) {
-
-		return G4ThreeVector(0, 0, 0);
-
-	} else {
-
-		G4double const maxValue = ucProps.GetDiameter() / 2;
-		G4double const minValue = -maxValue;
-		G4double const maxValue2 = maxValue * maxValue;
-		G4double x, y;
-
-		do {
-			x = CLHEP::RandFlat::shoot(minValue, maxValue);
-			y = CLHEP::RandFlat::shoot(minValue, maxValue);
-		} while (x * x + y * y >= maxValue2);
-
-		return G4ThreeVector(x, y, 0);
-
-	}
 
 }
 

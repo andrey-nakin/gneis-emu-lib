@@ -10,6 +10,7 @@
 #include <gtest/gtest_prod.h>
 
 #include "isnp/dist/UniformRectangle.hh"
+#include "isnp/dist/UniformCircle.hh"
 
 namespace isnp {
 
@@ -25,25 +26,6 @@ public:
 
 	enum class Mode {
 		UniformCircle, GaussianEllipse, UniformRectangle
-	};
-
-	class UniformCircleProps {
-	public:
-
-		UniformCircleProps();
-
-		G4double GetDiameter() const {
-			return diameter;
-		}
-
-		void SetDiameter(G4double const v) {
-			diameter = v;
-		}
-
-	private:
-
-		G4double diameter;
-
 	};
 
 	class GaussianEllipseProps {
@@ -122,18 +104,6 @@ public:
 
 	}
 
-	UniformCircleProps& GetUcProps() {
-
-		return ucProps;
-
-	}
-
-	UniformCircleProps const& GetUcProps() const {
-
-		return ucProps;
-
-	}
-
 	GaussianEllipseProps& GetGeProps() {
 
 		return geProps;
@@ -155,6 +125,18 @@ public:
 	dist::UniformRectangle& GetUniformRectangle() {
 
 		return uniformRectangle;
+
+	}
+
+	dist::UniformCircle const& GetUniformCircle() const {
+
+		return uniformCircle;
+
+	}
+
+	dist::UniformCircle& GetUniformCircle() {
+
+		return uniformCircle;
 
 	}
 
@@ -180,13 +162,12 @@ private:
 	unsigned counter;
 	G4int verboseLevel;
 	Mode mode;
-	UniformCircleProps ucProps;
 	GaussianEllipseProps geProps;
 	dist::UniformRectangle uniformRectangle;
+	dist::UniformCircle uniformCircle;
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;
-	G4ThreeVector GeneratePositionUC() const;
 	G4ThreeVector GeneratePositionGE() const;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();

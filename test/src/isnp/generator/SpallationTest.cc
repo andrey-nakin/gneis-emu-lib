@@ -18,10 +18,10 @@ TEST(Spallation, Diameter)
 
 	Spallation spallation;
 
-	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetUcProps().GetDiameter());
+	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetUniformCircle().GetProps().GetDiameter());
 
-	spallation.GetUcProps().SetDiameter(50 * mm);
-	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetUcProps().GetDiameter());
+	spallation.GetUniformCircle().GetProps().SetDiameter(50 * mm);
+	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetUniformCircle().GetProps().GetDiameter());
 
 }
 
@@ -46,8 +46,8 @@ TEST(Spallation, PositionX)
 	}
 
 	EXPECT_TRUE(x.Is(20.0 * mm));
-	EXPECT_NEAR(x.GetMin(), -spallation.GetUcProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
-	EXPECT_NEAR(x.GetMax(), spallation.GetUcProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(x.GetMin(), -spallation.GetUniformCircle().GetProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(x.GetMax(), spallation.GetUniformCircle().GetProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
 	EXPECT_TRUE(x.GetStd() > 0.99 * cm);
 
 }
@@ -73,8 +73,8 @@ TEST(Spallation, PositionY)
 	}
 
 	EXPECT_TRUE(y.Is(20.0 * mm));
-	EXPECT_NEAR(y.GetMin(), -spallation.GetUcProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
-	EXPECT_NEAR(y.GetMax(), spallation.GetUcProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(y.GetMin(), -spallation.GetUniformCircle().GetProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(y.GetMax(), spallation.GetUniformCircle().GetProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
 	EXPECT_TRUE(y.GetStd() > 0.99 * cm);
 
 }
@@ -166,7 +166,7 @@ TEST(Spallation, ZeroDiameter)
 {
 
 	Spallation spallation;
-	spallation.GetUcProps().SetDiameter(0.0);
+	spallation.GetUniformCircle().GetProps().SetDiameter(0.0);
 	G4Transform3D const zeroTransform;
 
 	auto const pos = spallation.GeneratePosition(zeroTransform);
@@ -209,7 +209,7 @@ TEST(Spallation, GeneratePosition)
 
 	{
 		Spallation spallation;
-		spallation.GetUcProps().SetDiameter(0.0);
+		spallation.GetUniformCircle().GetProps().SetDiameter(0.0);
 
 		G4Transform3D const zeroTransform;
 		auto const pos = spallation.GeneratePosition(zeroTransform);
@@ -222,7 +222,7 @@ TEST(Spallation, GeneratePosition)
 		Spallation spallation;
 		spallation.SetMode(Spallation::Mode::UniformCircle);
 
-		G4double const r = spallation.GetUcProps().GetDiameter() / 2;
+		G4double const r = spallation.GetUniformCircle().GetProps().GetDiameter() / 2;
 
 		G4double const angle = 30.0 * deg;
 		G4RotationMatrix rotm = G4RotationMatrix();
