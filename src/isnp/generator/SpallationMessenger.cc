@@ -173,8 +173,12 @@ void SpallationMessenger::SetNewValue(G4UIcommand* const command,
 	} else if (command == xWidthCmd.get()) {
 		spallation.GetGaussEllipse().GetProps().SetXWidth(
 				xWidthCmd->GetNewDoubleValue(newValue));
+		spallation.GetUniformRectangle().GetProps().SetXWidth(
+				xWidthCmd->GetNewDoubleValue(newValue));
 	} else if (command == yWidthCmd.get()) {
 		spallation.GetGaussEllipse().GetProps().SetYWidth(
+				yWidthCmd->GetNewDoubleValue(newValue));
+		spallation.GetUniformRectangle().GetProps().SetYWidth(
 				yWidthCmd->GetNewDoubleValue(newValue));
 	} else if (command == positionXCmd.get()) {
 		spallation.SetPositionX(positionXCmd->GetNewDoubleValue(newValue));

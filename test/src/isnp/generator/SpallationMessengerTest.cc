@@ -58,8 +58,10 @@ TEST(SpallationMessenger, SetXWidth)
 	auto const uiManager = G4UImanager::GetUIpointer();
 
 	EXPECT_DOUBLE_EQ(200 * mm, spallation.GetGaussEllipse().GetProps().GetXWidth());
+	EXPECT_DOUBLE_EQ(120 * mm, spallation.GetUniformRectangle().GetProps().GetXWidth());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/xWidth 300 mm"));
 	EXPECT_DOUBLE_EQ(300 * mm, spallation.GetGaussEllipse().GetProps().GetXWidth());
+	EXPECT_DOUBLE_EQ(300 * mm, spallation.GetUniformRectangle().GetProps().GetXWidth());
 
 }
 
@@ -82,8 +84,10 @@ TEST(SpallationMessenger, SetYWidth)
 	auto const uiManager = G4UImanager::GetUIpointer();
 
 	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetGaussEllipse().GetProps().GetYWidth());
+	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetUniformRectangle().GetProps().GetYWidth());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/spallation/gun/yWidth 20 mm"));
 	EXPECT_DOUBLE_EQ(20 * mm, spallation.GetGaussEllipse().GetProps().GetYWidth());
+	EXPECT_DOUBLE_EQ(20 * mm, spallation.GetUniformRectangle().GetProps().GetYWidth());
 
 }
 
