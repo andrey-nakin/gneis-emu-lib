@@ -114,10 +114,6 @@ private:
 
 	FRIEND_TEST(Spallation, GeneratePositionStatistics);
 
-	FRIEND_TEST(Spallation, GeneratePositionStatisticsGE);
-
-	FRIEND_TEST(Spallation, ZeroDiameter);
-
 	FRIEND_TEST(Spallation, GeneratePosition);
 
 	FRIEND_TEST(Spallation, GenerateDirection);
