@@ -12,7 +12,7 @@ namespace dist {
 TEST(GaussEllipse, GetXWidth)
 {
 
-	GaussEllipse generator(GaussEllipse::Props(120 * mm, 50 * mm));
+	GaussEllipse generator(GaussEllipseProps(120 * mm, 50 * mm));
 	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
 
 }
@@ -20,7 +20,7 @@ TEST(GaussEllipse, GetXWidth)
 TEST(GaussEllipse, SetXWidth)
 {
 
-	GaussEllipse generator(GaussEllipse::Props(120 * mm, 50 * mm));
+	GaussEllipse generator(GaussEllipseProps(120 * mm, 50 * mm));
 	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
 	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
 
@@ -33,7 +33,7 @@ TEST(GaussEllipse, SetXWidth)
 TEST(GaussEllipse, GetYWidth)
 {
 
-	GaussEllipse generator(GaussEllipse::Props(120 * mm, 50 * mm));
+	GaussEllipse generator(GaussEllipseProps(120 * mm, 50 * mm));
 	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
 
 }
@@ -41,7 +41,7 @@ TEST(GaussEllipse, GetYWidth)
 TEST(GaussEllipse, SetYWidth)
 {
 
-	GaussEllipse generator(GaussEllipse::Props(120 * mm, 50 * mm));
+	GaussEllipse generator(GaussEllipseProps(120 * mm, 50 * mm));
 	EXPECT_EQ(120 * mm, generator.GetProps().GetXWidth());
 	EXPECT_EQ(50 * mm, generator.GetProps().GetYWidth());
 
@@ -65,7 +65,7 @@ TEST(GaussEllipse, Generate)
 
 	for (std::size_t testNo = 0; testNo < nTests; testNo++) {
 
-		GaussEllipse generator(GaussEllipse::Props(200 * mm, 50 * mm));
+		GaussEllipse generator(GaussEllipseProps(200 * mm, 50 * mm));
 
 		if (expectedXWidth[testNo] > 0) {
 			generator.GetProps().SetXWidth(expectedXWidth[testNo]);
