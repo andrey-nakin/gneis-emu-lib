@@ -2,13 +2,13 @@
 #define isnp_dist_UniformRectangle_hh
 
 #include <G4Types.hh>
-#include <G4ThreeVector.hh>
+#include "isnp/dist/AbstractDistribution.hh"
 
 namespace isnp {
 
 namespace dist {
 
-class UniformRectangle {
+class UniformRectangle: public AbstractDistribution {
 public:
 
 	class Props {
@@ -77,7 +77,7 @@ public:
 	UniformRectangle(const Props& aProps);
 	virtual ~UniformRectangle();
 
-	G4ThreeVector Generate() const;
+	G4ThreeVector Generate() const override;
 
 	Props const& GetProps() const {
 

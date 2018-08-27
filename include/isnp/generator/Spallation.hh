@@ -129,6 +129,7 @@ private:
 	dist::GaussEllipse gaussEllipse;
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
+	const dist::AbstractDistribution& ResolveDistribution() const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();

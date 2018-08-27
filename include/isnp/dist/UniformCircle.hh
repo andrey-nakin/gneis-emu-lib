@@ -2,13 +2,13 @@
 #define isnp_dist_UniformCircle_hh
 
 #include <G4Types.hh>
-#include <G4ThreeVector.hh>
+#include "isnp/dist/AbstractDistribution.hh"
 
 namespace isnp {
 
 namespace dist {
 
-class UniformCircle {
+class UniformCircle: public AbstractDistribution {
 public:
 
 	class Props {
@@ -33,7 +33,7 @@ public:
 	UniformCircle(const Props& aProps);
 	virtual ~UniformCircle();
 
-	G4ThreeVector Generate() const;
+	G4ThreeVector Generate() const override;
 
 	Props const& GetProps() const {
 

@@ -55,26 +55,30 @@ G4ThreeVector Spallation::GenerateDirection(
 
 }
 
+const dist::AbstractDistribution& Spallation::ResolveDistribution() const {
+
+	switch (mode) {
+	case Mode::UniformCircle:
+		return uniformCircle;
+		break;
+
+	case Mode::UniformRectangle:
+		return uniformRectangle;
+		break;
+
+	default:
+		return gaussEllipse;
+		break;
+	}
+
+}
+
 G4ThreeVector Spallation::GeneratePosition(
 		G4Transform3D const& transform) const {
 
 	using namespace facility::component;
 
-	G4ThreeVector position;
-
-	switch (mode) {
-	case Mode::UniformCircle:
-		position = uniformCircle.Generate();
-		break;
-
-	case Mode::UniformRectangle:
-		position = uniformRectangle.Generate();
-		break;
-
-	default:
-		position = gaussEllipse.Generate();
-		break;
-	}
+	G4ThreeVector position = ResolveDistribution().Generate();
 
 	position.setX(position.getX() + positionX);
 	position.setY(position.getY() + positionY);
