@@ -16,10 +16,14 @@ protected:
 	NonCopyable(volatile NonCopyable&) = delete;
 	NonCopyable(const volatile NonCopyable&) = delete;
 
+	NonCopyable(NonCopyable&&) = delete;
+
 	NonCopyable& operator=(NonCopyable&) = delete;
 	NonCopyable& operator=(const NonCopyable&) = delete;
 	NonCopyable& operator=(volatile NonCopyable&) = delete;
 	NonCopyable& operator=(const volatile NonCopyable&) = delete;
+
+	NonCopyable& operator=(NonCopyable&&) = delete;
 
 public:
 
