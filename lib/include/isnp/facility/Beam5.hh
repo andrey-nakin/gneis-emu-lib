@@ -43,6 +43,7 @@ private:
 	G4double diameter;
 	G4int verboseLevel;
 	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness;
+	G4String ntubeMaterial, ntubeFlangeMaterial, ntubeInnerMaterial;
 	G4double worldRadius;
 
 	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,

@@ -36,7 +36,9 @@ Beam5::Beam5() :
 				0.5 * m), length(36.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
-				1. * mm), worldRadius(ntubeOuterRadius) {
+				1. * mm), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
+				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), worldRadius(
+				ntubeOuterRadius) {
 }
 
 Beam5::~Beam5() {
