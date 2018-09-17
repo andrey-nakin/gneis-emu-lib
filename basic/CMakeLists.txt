@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(IsnpEmuBasic VERSION 1.0.0 LANGUAGES CXX DESCRIPTION "ISNP Basic Modeling Program")
+project(IsnpBasic VERSION 1.0.0 LANGUAGES CXX DESCRIPTION "ISNP Basic Modeling Program")
 set (CMAKE_CXX_STANDARD 11)
 
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
