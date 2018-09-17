@@ -1,5 +1,5 @@
 # isnp-emu-lib
-ISNP facility emulation library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
+ISNP facility modeling library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
 
 ## Requirements
 
@@ -36,9 +36,16 @@ cmake ~/workspace/isnp-emu-lib
 cmake -DCMAKE_INSTALL_PREFIX=~ ~/workspace/isnp-emu-lib
 ```
 
-7. Build and install library:
+7. Build and install library and executables:
 
 ```bash
 make && make install
+```
+
+8. Run example
+
+```bash
+~/workspace/isnp-emu-lib
+isnp-basic examples/basic.mac
 ```
 
