@@ -5,12 +5,10 @@
 #include <G4VisExecutive.hh>
 #endif
 #endif	//	G4VIS_USE
-#include <QGSP_BERT_HP.hh>
-#include <G4PhysListFactory.hh>
 
 #include "isnp/runner/BasicRunner.hh"
 #include "isnp/runner/CommandLineParser.hh"
-#include "isnp/util/FileNameBuilderMessenger.hh"
+#include "isnp/init/InitMessengers.hh"
 #include "isnp/repository/Materials.hh"
 
 namespace isnp {
@@ -33,15 +31,8 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 	}
 
 	G4RunManager runManager;
-	util::FileNameBuilderMessenger fileNameBuilderMessenger;
+	init::InitMessengers initMessengers(runManager);
 
-	if (!parser->GetPlName().isNull()) {
-		auto const pl = DetectPhysicsList(parser->GetPlName());
-		if (pl) {
-			runManager.SetUserInitialization(pl);
-		}
-	}
-	ValidatePhysicsList(runManager);
 	repository::Materials::GetInstance();
 
 	auto uiManager = G4UImanager::GetUIpointer();
@@ -73,30 +64,6 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 	}
 
 	return 0;
-}
-
-G4VUserPhysicsList* BasicRunner::DetectPhysicsList(G4String const& name) const {
-
-	if (name == "-") {
-		return nullptr;
-	}
-
-	G4PhysListFactory factory;
-
-	if (!name.isNull() && factory.IsReferencePhysList(name)) {
-		return factory.GetReferencePhysList(name);
-	}
-
-	return nullptr;
-
-}
-
-void BasicRunner::ValidatePhysicsList(G4RunManager& runManager) const {
-
-	if (!runManager.GetUserPhysicsList()) {
-		runManager.SetUserInitialization(new QGSP_BERT_HP);
-	}
-
 }
 
 }

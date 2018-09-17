@@ -1,5 +1,5 @@
-#ifndef isnp_util_FileNameBuilderMessenger_hh
-#define isnp_util_FileNameBuilderMessenger_hh
+#ifndef isnp_init_FileNameBuilderMessenger_hh
+#define isnp_init_FileNameBuilderMessenger_hh
 
 #include <memory>
 
@@ -8,11 +8,8 @@
 
 namespace isnp {
 
-namespace util {
+namespace init {
 
-/**
- * Helper class for random number generation.
- */
 class FileNameBuilderMessenger: public G4UImessenger {
 public:
 
@@ -32,4 +29,4 @@ private:
 
 }
 
-#endif	//	isnp_util_FileNameBuilderMessenger_hh
+#endif	//	isnp_init_FileNameBuilderMessenger_hh

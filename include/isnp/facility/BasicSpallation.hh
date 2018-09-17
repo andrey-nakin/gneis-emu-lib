@@ -15,7 +15,7 @@ class BasicSpallationMessenger;
 class BasicSpallation: public G4VUserDetectorConstruction {
 public:
 
-	BasicSpallation(G4VSensitiveDetector* aDetector);
+	BasicSpallation();
 	~BasicSpallation() override;
 
 	G4VPhysicalVolume* Construct() override;
@@ -46,9 +46,12 @@ public:
 	}
 	void SetWorldMaterial(const G4String&);
 
+	G4VSensitiveDetector* GetDetector() const;
+	void SetDetector(G4VSensitiveDetector* aDetector);
+
 private:
 
-	G4VSensitiveDetector* const detector;
+	G4VSensitiveDetector* detector;
 	std::unique_ptr<BasicSpallationMessenger> const messenger;
 	G4double worldRadius, horizontalAngle, verticalAngle, distance,
 			detectorWidth, detectorHeight, detectorLength;
@@ -57,6 +60,7 @@ private:
 	G4LogicalVolume* logicWorld;
 
 	static G4double HalfOf(G4double v);
+	G4VSensitiveDetector* MakeDefaultDetector();
 
 };
 

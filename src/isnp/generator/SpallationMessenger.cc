@@ -8,7 +8,7 @@ namespace isnp {
 
 namespace generator {
 
-#define DIR "/isnp/spallation/gun/"
+#define DIR "/isnp/gun/spallation/"
 
 namespace mode {
 

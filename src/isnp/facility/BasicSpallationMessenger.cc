@@ -8,7 +8,7 @@ namespace isnp {
 
 namespace facility {
 
-#define DIR "/isnp/basicSpallation/"
+#define DIR "/isnp/facility/basicSpallation/"
 
 static std::unique_ptr<G4UIdirectory> MakeDirectory() {
 

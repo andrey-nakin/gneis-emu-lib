@@ -30,11 +30,11 @@ namespace isnp {
 
 namespace facility {
 
-Beam5::Beam5(G4VSensitiveDetector* const aDetector) :
+Beam5::Beam5() :
 		G4VUserDetectorConstruction(), messenger(
-				std::make_unique < Beam5Messenger > (*this)), detector(
-				aDetector), zeroPosition(0.5 * m), length(36.0 * m), worldRadius(
-				200.0 * mm), angle(30.0 * deg), collimatorsHaveDetectors(false), diameter(
+				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
+				0.5 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
+				30.0 * deg), collimatorsHaveDetectors(false), diameter(
 				100 * mm), haveCollimator1(false), haveCollimator2(false), haveCollimator3(
 				false), haveCollimator4(false), haveCollimator5(true), verboseLevel(
 				0) {
@@ -123,24 +123,26 @@ G4VPhysicalVolume* Beam5::Construct() {
 		PlaceCollimator(logicWorld, logicC5, 35 * m);
 	}
 
-	if (detector) {
-		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
-			G4cout << "Beam5: creating detector\n";
-		}
-
-		// Target
-		G4String const name = "Target";
-		const auto solidTarget = new G4Box(name, 50 * mm, 50 * mm, 5 * mm);
-		const auto logicTarget = new G4LogicalVolume(solidTarget,
-				nist->FindOrBuildMaterial("G4_Galactic"), name);
-		logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Red()));
-
-		const auto sdMan = G4SDManager::GetSDMpointer();
-		sdMan->AddNewDetector(detector);
-		logicTarget->SetSensitiveDetector(detector);
-
-		PlaceComponent(logicWorld, logicTarget, 36 * m - 10 * mm);
+	if (!detector) {
+		detector = MakeDefaultDetector();
 	}
+
+	if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
+		G4cout << "Beam5: creating detector\n";
+	}
+
+	// Target
+	G4String const name = "Target";
+	const auto solidTarget = new G4Box(name, 50 * mm, 50 * mm, 5 * mm);
+	const auto logicTarget = new G4LogicalVolume(solidTarget,
+			nist->FindOrBuildMaterial("G4_Galactic"), name);
+	logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Red()));
+
+	const auto sdMan = G4SDManager::GetSDMpointer();
+	sdMan->AddNewDetector(detector);
+	logicTarget->SetSensitiveDetector(detector);
+
+	PlaceComponent(logicWorld, logicTarget, 36 * m - 10 * mm);
 
 	return physWorld;
 
@@ -230,6 +232,18 @@ void Beam5::SetVerboseLevel(G4int const aVerboseLevel) {
 	verboseLevel = aVerboseLevel;
 }
 
+void Beam5::SetDetector(G4VSensitiveDetector* aDetector) {
+
+	detector = aDetector;
+
+}
+
+G4VSensitiveDetector* Beam5::GetDetector() const {
+
+	return detector;
+
+}
+
 void Beam5::PlaceComponent(G4LogicalVolume* const world,
 		G4LogicalVolume* const component, G4double const position) {
 
@@ -263,6 +277,12 @@ void Beam5::PlaceCollimator(G4LogicalVolume* const world,
 G4VSolid* Beam5::MakeCylinder(G4String const &name, G4double const len) {
 
 	return new G4Tubs(name, 0.0, worldRadius, 0.5 * len, 0.0 * deg, 360.0 * deg);
+
+}
+
+G4VSensitiveDetector* Beam5::MakeDefaultDetector() {
+
+	return new isnp::detector::Basic;
 
 }
 

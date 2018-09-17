@@ -12,6 +12,7 @@
 #include "isnp/facility/BasicSpallation.hh"
 #include "isnp/facility/BasicSpallationMessenger.hh"
 #include "isnp/facility/component/SpallationTarget.hh"
+#include "isnp/detector/Basic.hh"
 
 namespace isnp {
 
@@ -23,8 +24,8 @@ static G4double Square(G4double const x) {
 	return std::pow(x, 2);
 }
 
-BasicSpallation::BasicSpallation(G4VSensitiveDetector* const aDetector) :
-		detector(aDetector), messenger(
+BasicSpallation::BasicSpallation() :
+		detector(nullptr), messenger(
 				std::make_unique < BasicSpallationMessenger > (*this)), worldRadius(
 				0.0), horizontalAngle(30.0 * deg), verticalAngle(0.0 * deg), distance(
 				1.0 * m), detectorWidth(10 * cm), detectorHeight(10 * cm), detectorLength(
@@ -91,32 +92,33 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 				logicWorld, single, numOfCopies, checkOverlaps);
 	}
 
-	if (detector) {
-		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
-			G4cout << "BasicSpallation: creating detector, width="
-					<< GetDetectorWidth() / mm << " mm, height="
-					<< GetDetectorHeight() / mm << " mm, length="
-					<< GetDetectorLength() / mm << " mm" << "\n";
-		}
-
-		// Target
-		G4String const name = "Target";
-		const auto solidTarget = new G4Box(name, HalfOf(GetDetectorWidth()),
-				HalfOf(GetDetectorHeight()), HalfOf(GetDetectorLength()));
-		const auto logicTarget = new G4LogicalVolume(solidTarget,
-				nist->FindOrBuildMaterial("G4_Galactic"), name);
-		logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Red()));
-
-		const auto sdMan = G4SDManager::GetSDMpointer();
-		sdMan->AddNewDetector(detector);
-		logicTarget->SetSensitiveDetector(detector);
-
-		new G4PVPlacement(noRotation,
-				G4ThreeVector(0, 0,
-						GetDistance() + HalfOf(GetDetectorLength())),
-				logicTarget, logicTarget->GetName(), logicWorld, single,
-				numOfCopies, checkOverlaps);
+	if (!detector) {
+		detector = MakeDefaultDetector();
 	}
+
+	if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
+		G4cout << "BasicSpallation: creating detector, width="
+				<< GetDetectorWidth() / mm << " mm, height="
+				<< GetDetectorHeight() / mm << " mm, length="
+				<< GetDetectorLength() / mm << " mm" << "\n";
+	}
+
+	// Target
+	G4String const name = "Target";
+	const auto solidTarget = new G4Box(name, HalfOf(GetDetectorWidth()),
+			HalfOf(GetDetectorHeight()), HalfOf(GetDetectorLength()));
+	const auto logicTarget = new G4LogicalVolume(solidTarget,
+			nist->FindOrBuildMaterial("G4_Galactic"), name);
+	logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Red()));
+
+	const auto sdMan = G4SDManager::GetSDMpointer();
+	sdMan->AddNewDetector(detector);
+	logicTarget->SetSensitiveDetector(detector);
+
+	new G4PVPlacement(noRotation,
+			G4ThreeVector(0, 0, GetDistance() + HalfOf(GetDetectorLength())),
+			logicTarget, logicTarget->GetName(), logicWorld, single,
+			numOfCopies, checkOverlaps);
 
 	return physWorld;
 
@@ -200,9 +202,27 @@ void BasicSpallation::SetWorldMaterial(const G4String& aWorldMaterial) {
 
 }
 
+G4VSensitiveDetector* BasicSpallation::GetDetector() const {
+
+	return detector;
+
+}
+
+void BasicSpallation::SetDetector(G4VSensitiveDetector* const aDetector) {
+
+	detector = aDetector;
+
+}
+
 G4double BasicSpallation::HalfOf(G4double const v) {
 
 	return 0.5 * v;
+
+}
+
+G4VSensitiveDetector* BasicSpallation::MakeDefaultDetector() {
+
+	return new isnp::detector::Basic;
 
 }
 

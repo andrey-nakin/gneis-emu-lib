@@ -1,9 +1,9 @@
 #include "isnp/util/FileNameBuilder.hh"
-#include "isnp/util/FileNameBuilderMessenger.hh"
+#include "isnp/init/FileNameBuilderMessenger.hh"
 
 namespace isnp {
 
-namespace util {
+namespace init {
 
 #define DIR "/isnp/fileName/"
 
@@ -32,7 +32,7 @@ G4String FileNameBuilderMessenger::GetCurrentValue(G4UIcommand* const command) {
 	G4String ans;
 
 	if (command == commonSuffixCmd.get()) {
-		ans = FileNameBuilder::GetCommonSuffix();
+		ans = util::FileNameBuilder::GetCommonSuffix();
 	}
 
 	return ans;
@@ -43,7 +43,7 @@ void FileNameBuilderMessenger::SetNewValue(G4UIcommand* const command,
 		G4String const newValue) {
 
 	if (command == commonSuffixCmd.get()) {
-		FileNameBuilder::SetCommonSuffix(newValue);
+		util::FileNameBuilder::SetCommonSuffix(newValue);
 	}
 
 }

@@ -14,7 +14,7 @@ class Beam5Messenger;
 class Beam5: public G4VUserDetectorConstruction {
 public:
 
-	Beam5(G4VSensitiveDetector* aDetector);
+	Beam5();
 	virtual ~Beam5();
 
 	virtual G4VPhysicalVolume* Construct();
@@ -46,10 +46,13 @@ public:
 	G4int GetVerboseLevel() const;
 	void SetVerboseLevel(G4int aVerboseLevel);
 
+	void SetDetector(G4VSensitiveDetector* aDetector);
+	G4VSensitiveDetector* GetDetector() const;
+
 private:
 
 	std::unique_ptr<Beam5Messenger> const messenger;
-	G4VSensitiveDetector* const detector;
+	G4VSensitiveDetector* detector;
 	G4double zeroPosition, length, worldRadius, angle;
 	G4bool collimatorsHaveDetectors;
 	G4double diameter;
@@ -63,6 +66,7 @@ private:
 			G4double position);
 
 	G4VSolid* MakeCylinder(G4String const &name, G4double halfLength);
+	G4VSensitiveDetector* MakeDefaultDetector();
 
 };
 

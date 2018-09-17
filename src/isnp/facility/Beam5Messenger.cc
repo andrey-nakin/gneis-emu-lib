@@ -12,7 +12,7 @@ namespace isnp {
 
 namespace facility {
 
-#define DIR "/isnp/beam5/"
+#define DIR "/isnp/facility/beam5/"
 
 static std::unique_ptr<G4UIdirectory> MakeDirectory() {
 

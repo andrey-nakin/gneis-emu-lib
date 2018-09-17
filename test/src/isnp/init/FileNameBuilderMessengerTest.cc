@@ -4,7 +4,7 @@
 
 namespace isnp {
 
-namespace util {
+namespace init {
 
 TEST(FileNameBuilderMessenger, GetSuffix)
 {
