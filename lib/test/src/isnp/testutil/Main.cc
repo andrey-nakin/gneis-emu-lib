@@ -3,6 +3,7 @@
 #include <G4RunManager.hh>
 #include <G4UImanager.hh>
 #include <QGSP_INCLXX_HP.hh>
+#include <G4PhysListFactory.hh>
 #include <isnp/init/InitMessengers.hh>
 
 int main(int argc, char* argv[]) {
