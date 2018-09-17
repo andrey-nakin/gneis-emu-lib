@@ -56,7 +56,7 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 		closure(runManager);
 
 		uiManager->ApplyCommand("/control/execute vis.mac");
-		uiManager->ApplyCommand("/run/initialize");
+//		uiManager->ApplyCommand("/run/initialize");
 		ui->SessionStart();
 		delete ui;
 #endif
