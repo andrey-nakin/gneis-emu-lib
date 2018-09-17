@@ -8,6 +8,10 @@
 int main(int argc, char* argv[]) {
 	G4RunManager runManager;
 
+	G4PhysListFactory factory;
+	factory.AvailablePhysLists();
+	factory.IsReferencePhysList("");
+
 	auto const uiManager = G4UImanager::GetUIpointer();
 	EXPECT_EQ(0, uiManager->ApplyCommand("/random/setSeeds 12345 12345"));
 
