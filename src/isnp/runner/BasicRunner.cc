@@ -11,6 +11,7 @@
 #include "isnp/runner/BasicRunner.hh"
 #include "isnp/runner/CommandLineParser.hh"
 #include "isnp/util/FileNameBuilder.hh"
+#include "isnp/util/FileNameBuilderMessenger.hh"
 #include "isnp/repository/Materials.hh"
 
 namespace isnp {
@@ -35,6 +36,7 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 	isnp::util::FileNameBuilder::SetCommonSuffix(parser->GetFileSuffix());
 
 	G4RunManager runManager;
+	util::FileNameBuilderMessenger fileNameBuilderMessenger;
 
 	if (!parser->GetPlName().isNull()) {
 		auto const pl = DetectPhysicsList(parser->GetPlName());

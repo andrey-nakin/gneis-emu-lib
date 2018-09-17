@@ -86,7 +86,7 @@ TEST(GaussEllipse, Generate)
 
 		EXPECT_TRUE(x.Is(0.0 * mm));
 		G4double const eXWidth = expectedXWidth[testNo] > 0 ? expectedXWidth[testNo] : 200 * mm;
-		EXPECT_NEAR(eXWidth / FWHM, x.GetStd(), 0.1 * mm);
+		EXPECT_NEAR(eXWidth / FWHM, x.GetStd(), 0.2 * mm);
 
 		EXPECT_TRUE(y.Is(0.0 * mm));
 		G4double const eYWidth = expectedYWidth[testNo] > 0 ? expectedYWidth[testNo] : 50 * mm;

@@ -17,6 +17,13 @@ public:
 
 	static G4String Make(char const* base, char const* suffix = nullptr);
 	static G4String Make(G4String const& base, char const* suffix = nullptr);
+
+	static G4String const& GetCommonSuffix() {
+
+		return commonSuffix;
+
+	}
+
 	static void SetCommonSuffix(G4String const& s);
 
 private:

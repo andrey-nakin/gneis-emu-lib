@@ -7,12 +7,14 @@ namespace util {
 
 TEST(FileNameBuilder, Make_pch_pch)
 {
+	FileNameBuilder::SetCommonSuffix("");
 	G4String const res = FileNameBuilder::Make("base", ".txt");
 	EXPECT_EQ("base.txt", res);
 }
 
 TEST(FileNameBuilder, Make_s_pch)
 {
+	FileNameBuilder::SetCommonSuffix("");
 	G4String const res = FileNameBuilder::Make(G4String("base"), ".txt");
 	EXPECT_EQ("base.txt", res);
 }
