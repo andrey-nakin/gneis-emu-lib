@@ -15,10 +15,11 @@ static std::unique_ptr<G4UIcmdWithAString> MakePhysList(
 	auto physLists = factory.AvailablePhysLists();
 
 	std::string candidates;
-	std::for_each(std::begin(physLists), std::end(physLists), [&candidates](G4String& pl) {
-		candidates += pl;
-		candidates += ' ';
-	});
+	std::for_each(std::begin(physLists), std::end(physLists),
+			[&candidates](G4String& pl) {
+				candidates += pl;
+				candidates += ' ';
+			});
 
 	auto result = std::make_unique < G4UIcmdWithAString
 			> (DIR "physList", inst);

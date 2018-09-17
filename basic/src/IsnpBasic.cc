@@ -8,14 +8,16 @@
 int main(int argc, char* argv[]) {
 	isnp::runner::BasicRunner runner(argc, argv);
 
-	return runner.Run(
-			[](G4RunManager& runManager) {
-				if (rand() < 0) {
-					G4PhysListFactory factory;
-					runManager.SetUserInitialization(new QGSP_BERT_HP);
-					runManager.SetUserInitialization(new QGSP_BIC_HP);
-					runManager.SetUserInitialization(new QGSP_INCLXX_HP);
-				}
+	return runner.Run([](G4RunManager& runManager) {
+		if (rand() < 0) {
+			G4PhysListFactory factory;
+			factory.AvailablePhysLists();
+			factory.IsReferencePhysList("");
 
-			});
+			runManager.SetUserInitialization(new QGSP_BERT_HP);
+			runManager.SetUserInitialization(new QGSP_BIC_HP);
+			runManager.SetUserInitialization(new QGSP_INCLXX_HP);
+		}
+
+	});
 }
