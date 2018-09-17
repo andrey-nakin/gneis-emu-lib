@@ -39,9 +39,6 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 
 	G4RunManager runManager;
 
-	G4Random::setTheSeed(
-			parser->IsRandomSeedSet() ? parser->GetRandomSeed() : SystemTime());
-
 	if (!parser->GetPlName().isNull()) {
 		auto const pl = DetectPhysicsList(parser->GetPlName());
 		if (pl) {
