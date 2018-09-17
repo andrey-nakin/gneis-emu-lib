@@ -12,6 +12,7 @@ ISNP facility modeling library based on [Geant4](http://geant4.web.cern.ch/) too
 
 * `lib` - library itself.
 * `basic` - a very basic executable that invokes library.
+* `examples` - macro files with ISNP-related examples.
 
 ## Prerequisites
 
