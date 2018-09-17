@@ -33,7 +33,7 @@ G4VSolid* BoxComponent::SolidWithAperture(const G4String &name,
 	auto const ap = new G4Box(util::NameBuilder::Make(name, "Aperture"),
 			aperture.GetHalfWidth(), aperture.GetHalfHeight(),
 			aperture.GetHalfLength() + 1.0 * mm);
-	auto solid = new G4SubtractionSolid(
+	auto const solid = new G4SubtractionSolid(
 			util::NameBuilder::Make(name, "WithAperture"), outer, ap);
 
 	return solid;
