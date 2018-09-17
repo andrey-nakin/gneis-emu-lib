@@ -30,9 +30,6 @@ private:
 	Beam5& facility;
 	std::unique_ptr<G4UIdirectory> const directory;
 	std::unique_ptr<G4UIcmdWithADoubleAndUnit> const diameterCmd, angleCmd;
-	std::unique_ptr<G4UIcmdWithABool> const haveCollimator1Cmd,
-			haveCollimator2Cmd, haveCollimator3Cmd, haveCollimator4Cmd,
-			haveCollimator5Cmd;
 	std::unique_ptr<G4UIcmdWithAnInteger> const verboseCmd;
 
 };

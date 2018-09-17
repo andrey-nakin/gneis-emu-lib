@@ -51,26 +51,6 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeAngle(
 
 }
 
-static std::unique_ptr<G4UIcmdWithABool> MakeHaveCollimator(
-		Beam5Messenger* const inst, int const collimatorNo) {
-
-	std::ostringstream nameStream;
-	nameStream << DIR "haveCollimator" << collimatorNo;
-	std::string const name = nameStream.str();
-
-	std::ostringstream guidanceStream;
-	guidanceStream << "Set the presense of collimator #" << collimatorNo << ".";
-	std::string const guidance = guidanceStream.str();
-
-	auto result = std::make_unique < G4UIcmdWithABool > (name.c_str(), inst);
-	result->SetGuidance(guidance.c_str());
-	result->SetParameterName("have", false);
-	result->AvailableForStates(G4State_PreInit);
-
-	return result;
-
-}
-
 static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerboseLevel(
 		Beam5Messenger* const inst) {
 
@@ -90,12 +70,8 @@ static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerboseLevel(
 
 Beam5Messenger::Beam5Messenger(Beam5& facility_) :
 		facility(facility_), directory(MakeDirectory()), diameterCmd(
-				MakeDiameter(this)), angleCmd(MakeAngle(this)), haveCollimator1Cmd(
-				MakeHaveCollimator(this, 1)), haveCollimator2Cmd(
-				MakeHaveCollimator(this, 2)), haveCollimator3Cmd(
-				MakeHaveCollimator(this, 3)), haveCollimator4Cmd(
-				MakeHaveCollimator(this, 4)), haveCollimator5Cmd(
-				MakeHaveCollimator(this, 5)), verboseCmd(MakeVerboseLevel(this)) {
+				MakeDiameter(this)), angleCmd(MakeAngle(this)), verboseCmd(
+				MakeVerboseLevel(this)) {
 
 }
 
@@ -110,21 +86,6 @@ void Beam5Messenger::SetNewValue(G4UIcommand* const command,
 		facility.SetDiameter(diameterCmd->GetNewDoubleValue(newValue));
 	} else if (command == angleCmd.get()) {
 		facility.SetAngle(angleCmd->GetNewDoubleValue(newValue));
-	} else if (command == haveCollimator1Cmd.get()) {
-		facility.SetHaveCollimator1(
-				haveCollimator1Cmd->GetNewBoolValue(newValue));
-	} else if (command == haveCollimator2Cmd.get()) {
-		facility.SetHaveCollimator2(
-				haveCollimator2Cmd->GetNewBoolValue(newValue));
-	} else if (command == haveCollimator3Cmd.get()) {
-		facility.SetHaveCollimator3(
-				haveCollimator3Cmd->GetNewBoolValue(newValue));
-	} else if (command == haveCollimator4Cmd.get()) {
-		facility.SetHaveCollimator4(
-				haveCollimator4Cmd->GetNewBoolValue(newValue));
-	} else if (command == haveCollimator5Cmd.get()) {
-		facility.SetHaveCollimator5(
-				haveCollimator5Cmd->GetNewBoolValue(newValue));
 	} else if (command == verboseCmd.get()) {
 		facility.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
 	}

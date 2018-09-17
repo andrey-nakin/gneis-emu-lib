@@ -33,11 +33,10 @@ namespace facility {
 Beam5::Beam5() :
 		G4VUserDetectorConstruction(), messenger(
 				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
-				0.5 * m), length(36.0 * m), worldRadius(260.0 * mm), angle(
-				30.0 * deg), collimatorsHaveDetectors(false), diameter(
-				100 * mm), haveCollimator1(false), haveCollimator2(false), haveCollimator3(
-				false), haveCollimator4(false), haveCollimator5(true), verboseLevel(
-				0) {
+				0.5 * m), length(36.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
+				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
+				120 * mm), ntubeOuterRadius(130 * mm), worldRadius(
+				ntubeOuterRadius) {
 }
 
 Beam5::~Beam5() {
@@ -76,7 +75,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 				logicWorld, single, numOfCopies, checkOverlaps);
 	}
 
-	if (haveCollimator1) {
+	{
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #1\n";
 		}
@@ -85,7 +84,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		PlaceCollimator(logicWorld, logicC1, 6 * m);
 	}
 
-	if (haveCollimator2) {
+	{
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #2\n";
 		}
@@ -94,7 +93,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		PlaceCollimator(logicWorld, logicC2, 12 * m);
 	}
 
-	if (haveCollimator3) {
+	{
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #3\n";
 		}
@@ -103,7 +102,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		PlaceCollimator(logicWorld, logicC3, 23 * m);
 	}
 
-	if (haveCollimator4) {
+	{
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #4\n";
 		}
@@ -112,7 +111,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		PlaceCollimator(logicWorld, logicC4, 29 * m);
 	}
 
-	if (haveCollimator5) {
+	{
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #5 with diameter "
 					<< diameter / mm << " mm \n";
@@ -182,46 +181,6 @@ void Beam5::SetDiameter(G4double const aDiameter) {
 
 	this->diameter = aDiameter;
 
-}
-
-G4bool Beam5::GetHaveCollimator1() const {
-	return haveCollimator1;
-}
-
-void Beam5::SetHaveCollimator1(G4bool const haveC1) {
-	this->haveCollimator1 = haveC1;
-}
-
-G4bool Beam5::GetHaveCollimator2() const {
-	return haveCollimator2;
-}
-
-void Beam5::SetHaveCollimator2(G4bool const haveC2) {
-	this->haveCollimator2 = haveC2;
-}
-
-G4bool Beam5::GetHaveCollimator3() const {
-	return haveCollimator3;
-}
-
-void Beam5::SetHaveCollimator3(G4bool const haveC3) {
-	this->haveCollimator3 = haveC3;
-}
-
-G4bool Beam5::GetHaveCollimator4() const {
-	return haveCollimator4;
-}
-
-void Beam5::SetHaveCollimator4(G4bool const haveC4) {
-	this->haveCollimator4 = haveC4;
-}
-
-G4bool Beam5::GetHaveCollimator5() const {
-	return haveCollimator5;
-}
-
-void Beam5::SetHaveCollimator5(G4bool const haveC5) {
-	this->haveCollimator5 = haveC5;
 }
 
 G4int Beam5::GetVerboseLevel() const {

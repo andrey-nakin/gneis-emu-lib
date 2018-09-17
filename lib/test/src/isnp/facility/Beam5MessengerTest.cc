@@ -34,66 +34,6 @@ TEST(Beam5Messenger, SetAngle)
 
 }
 
-TEST(Beam5Messenger, SetHaveCollimator1)
-{
-
-	Beam5 facility;
-	auto const uiManager = G4UImanager::GetUIpointer();
-
-	EXPECT_FALSE(facility.GetHaveCollimator1());
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/haveCollimator1 true"));
-	EXPECT_TRUE(facility.GetHaveCollimator1());
-
-}
-
-TEST(Beam5Messenger, SetHaveCollimator2)
-{
-
-	Beam5 facility;
-	auto const uiManager = G4UImanager::GetUIpointer();
-
-	EXPECT_FALSE(facility.GetHaveCollimator2());
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/haveCollimator2 true"));
-	EXPECT_TRUE(facility.GetHaveCollimator2());
-
-}
-
-TEST(Beam5Messenger, SetHaveCollimator3)
-{
-
-	Beam5 facility;
-	auto const uiManager = G4UImanager::GetUIpointer();
-
-	EXPECT_FALSE(facility.GetHaveCollimator3());
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/haveCollimator3 true"));
-	EXPECT_TRUE(facility.GetHaveCollimator3());
-
-}
-
-TEST(Beam5Messenger, SetHaveCollimator4)
-{
-
-	Beam5 facility;
-	auto const uiManager = G4UImanager::GetUIpointer();
-
-	EXPECT_FALSE(facility.GetHaveCollimator4());
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/haveCollimator4 true"));
-	EXPECT_TRUE(facility.GetHaveCollimator4());
-
-}
-
-TEST(Beam5Messenger, SetHaveCollimator5)
-{
-
-	Beam5 facility;
-	auto const uiManager = G4UImanager::GetUIpointer();
-
-	EXPECT_TRUE(facility.GetHaveCollimator5());
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/haveCollimator5 false"));
-	EXPECT_FALSE(facility.GetHaveCollimator5());
-
-}
-
 TEST(Beam5Messenger, SetVerbose)
 {
 
