@@ -33,7 +33,7 @@ namespace facility {
 Beam5::Beam5() :
 		G4VUserDetectorConstruction(), messenger(
 				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
-				0.5 * m), length(36.0 * m), worldRadius(200.0 * mm), angle(
+				0.5 * m), length(36.0 * m), worldRadius(260.0 * mm), angle(
 				30.0 * deg), collimatorsHaveDetectors(false), diameter(
 				100 * mm), haveCollimator1(false), haveCollimator2(false), haveCollimator3(
 				false), haveCollimator4(false), haveCollimator5(true), verboseLevel(
