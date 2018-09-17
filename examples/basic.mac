@@ -1,0 +1,21 @@
+/random/setSeeds 1 2
+
+/isnp/physList QGSP_INCLXX_HP
+
+/isnp/facility basicSpallation
+/isnp/facility/basicSpallation/horizontalAngle 30 deg
+/isnp/facility/basicSpallation/verticalAngle 0 deg
+/isnp/facility/basicSpallation/distance 1 m
+/isnp/facility/basicSpallation/detectorWidth 50 cm
+/isnp/facility/basicSpallation/detectorHeight 50 cm
+/isnp/facility/basicSpallation/detectorLength 1 cm
+/isnp/facility/basicSpallation/worldMaterial G4_Galactic
+
+/isnp/gun spallation
+/isnp/gun/spallation/mode GaussianEllipse
+/isnp/gun/spallation/xWidth 60 mm
+/isnp/gun/spallation/yWidth 25 mm
+
+/run/initialize
+/run/beamOn 100
+
