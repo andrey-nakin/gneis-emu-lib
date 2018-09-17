@@ -8,6 +8,11 @@ ISNP facility modeling library based on [Geant4](http://geant4.web.cern.ch/) too
 * Geant4 10.4 or higher
 * Google Test 1.7 or higher
 
+## Content
+
+* `lib` - library itself.
+* `basic` - a very basic executable that invokes library.
+
 ## Prerequisites
 
 * Geant4 installed and configured
