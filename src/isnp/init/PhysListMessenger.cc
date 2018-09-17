@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <G4PhysListFactory.hh>
 #include "isnp/init/PhysListMessenger.hh"
 
@@ -10,11 +11,21 @@ namespace init {
 static std::unique_ptr<G4UIcmdWithAString> MakePhysList(
 		PhysListMessenger* const inst) {
 
+	G4PhysListFactory factory;
+	auto physLists = factory.AvailablePhysLists();
+
+	std::string candidates;
+	std::for_each(std::begin(physLists), std::end(physLists), [&candidates](G4String& pl) {
+		candidates += pl;
+		candidates += ' ';
+	});
+
 	auto result = std::make_unique < G4UIcmdWithAString
 			> (DIR "physList", inst);
 	result->SetGuidance("Set physics list");
 	result->SetParameterName("physList", false);
 	result->AvailableForStates(G4State_PreInit);
+	result->SetCandidates(candidates.c_str());
 
 	return result;
 
