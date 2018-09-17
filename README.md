@@ -45,7 +45,7 @@ make && make install
 8. Run example
 
 ```bash
-~/workspace/isnp-emu-lib
+cd ~/workspace/isnp-emu-lib
 isnp-basic examples/basic.mac
 ```
 
