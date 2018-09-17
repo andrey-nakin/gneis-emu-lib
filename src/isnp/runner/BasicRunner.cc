@@ -1,8 +1,5 @@
-#include <chrono>
-
 #include <G4UImanager.hh>
 #include <G4UIExecutive.hh>
-#include <Randomize.hh>
 #ifdef G4VIS_USE
 #ifndef	ISNPEMULIB_NO_VIS
 #include <G4VisExecutive.hh>
@@ -77,13 +74,6 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 	}
 
 	return 0;
-}
-
-long BasicRunner::SystemTime() {
-	using namespace std::chrono;
-	auto const now = time_point_cast < milliseconds > (system_clock::now());
-	auto const value = now.time_since_epoch();
-	return value.count();
 }
 
 G4VUserPhysicsList* BasicRunner::DetectPhysicsList(G4String const& name) const {
