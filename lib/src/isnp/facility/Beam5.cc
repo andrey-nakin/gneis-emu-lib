@@ -35,8 +35,8 @@ Beam5::Beam5() :
 				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
 				0.5 * m), length(36.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
-				120 * mm), ntubeOuterRadius(130 * mm), worldRadius(
-				ntubeOuterRadius) {
+				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
+				1. * mm), worldRadius(ntubeOuterRadius) {
 }
 
 Beam5::~Beam5() {
@@ -80,7 +80,8 @@ G4VPhysicalVolume* Beam5::Construct() {
 			G4cout << "Beam5: creating collimator #1\n";
 		}
 
-		auto const logicC1 = component::CollimatorC1::AsCylinder(worldRadius);
+		component::CollimatorC1 const c;
+		auto const logicC1 = c.AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC1, 6 * m);
 	}
 
@@ -89,7 +90,8 @@ G4VPhysicalVolume* Beam5::Construct() {
 			G4cout << "Beam5: creating collimator #2\n";
 		}
 
-		auto const logicC2 = component::CollimatorC2::AsCylinder(worldRadius);
+		component::CollimatorC2 const c;
+		auto const logicC2 = c.AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC2, 12 * m);
 	}
 

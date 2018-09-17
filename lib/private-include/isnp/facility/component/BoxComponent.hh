@@ -15,9 +15,6 @@ namespace component {
 class BoxComponent {
 protected:
 
-	BoxComponent(BoxComponent const&) = delete;
-	BoxComponent& operator=(BoxComponent const&) = delete;
-
 	static G4double HalfOf(G4double v);
 
 	static G4VSolid* MakeCylinder(G4String const &name, G4double len,

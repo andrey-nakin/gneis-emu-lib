@@ -42,7 +42,7 @@ private:
 	G4bool collimatorsHaveDetectors;
 	G4double diameter;
 	G4int verboseLevel;
-	G4double ntubeInnerRadius, ntubeOuterRadius;
+	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness;
 	G4double worldRadius;
 
 	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,

@@ -4,6 +4,7 @@
 #include <G4LogicalVolume.hh>
 #include <G4VSolid.hh>
 #include "BoxComponent.hh"
+#include "isnp/util/Box.hh"
 
 namespace isnp {
 
@@ -17,34 +18,20 @@ namespace component {
 class CollimatorC1 final : private BoxComponent {
 public:
 
-	/**
-	 * Disable class instantiation.
-	 */
-	CollimatorC1() = delete;
+	CollimatorC1();
 
-	/**
-	 * Creates an instance of the lead target.
-	 */
-	static G4LogicalVolume* AsCylinder(G4double outerRadius);
-	static G4LogicalVolume* AsCylinder(const G4String &name, G4double outerRadius);
+	G4LogicalVolume* AsCylinder(G4double outerRadius) const;
+	G4LogicalVolume* AsCylinder(const G4String &name,
+			G4double outerRadius) const;
 
-	static G4LogicalVolume* Instance(G4VSolid *outer);
-	static G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer);
+	G4LogicalVolume* Instance(G4VSolid *outer) const;
+	G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer) const;
 
 	static G4String GetDefaultName();
 
-	static G4double GetWidth();
-	static G4double GetHalfWidth();
-
-	static G4double GetHeight();
-	static G4double GetHalfHeight();
-
-	static G4double GetLength();
-	static G4double GetHalfLength();
-
 private:
 
-	const static G4double width, height, length;
+	util::Box const aperture;
 
 };
 
