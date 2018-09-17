@@ -1,9 +1,7 @@
 #include <G4SystemOfUnits.hh>
 #include <G4NistManager.hh>
-#include <G4Box.hh>
 #include <G4LogicalVolume.hh>
 #include <G4VisAttributes.hh>
-#include <G4SubtractionSolid.hh>
 
 #include "isnp/facility/component/CollimatorC1.hh"
 #include "isnp/repository/Colours.hh"
@@ -46,10 +44,7 @@ G4LogicalVolume* CollimatorC1::Instance(const G4String &name,
 
 	const auto nist = G4NistManager::Instance();
 
-	const auto ap = new G4Box("", aperture.GetHalfWidth(),
-			aperture.GetHalfHeight(), aperture.GetHalfLength() + 1 * mm);
-	const auto solid = new G4SubtractionSolid(
-			util::NameBuilder::Make(name, "WithAperture"), outer, ap);
+	const auto solid = SolidWithAperture(name, outer, aperture);
 	const auto logic = new G4LogicalVolume(solid,
 			nist->FindOrBuildMaterial("G4_BRASS"), name);
 	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Brass()));

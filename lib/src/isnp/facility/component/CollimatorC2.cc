@@ -1,9 +1,7 @@
 #include <G4SystemOfUnits.hh>
 #include <G4NistManager.hh>
-#include <G4Box.hh>
 #include <G4LogicalVolume.hh>
 #include <G4VisAttributes.hh>
-#include <G4SubtractionSolid.hh>
 
 #include "isnp/facility/component/CollimatorC2.hh"
 #include "isnp/repository/Colours.hh"
@@ -45,11 +43,7 @@ G4LogicalVolume* CollimatorC2::Instance(const G4String &name,
 
 	const auto nist = G4NistManager::Instance();
 
-	const auto ap = new G4Box(util::NameBuilder::Make(name, "Aperture"),
-			aperture.GetHalfWidth(), aperture.GetHalfHeight(),
-			aperture.GetHalfLength() + 1.0 * mm);
-	const auto solid = new G4SubtractionSolid(
-			util::NameBuilder::Make(name, "WithAperture"), outer, ap);
+	const auto solid = SolidWithAperture(name, outer, aperture);
 	const auto logic = new G4LogicalVolume(solid,
 			nist->FindOrBuildMaterial("G4_STAINLESS-STEEL"), name);
 	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Steel()));
