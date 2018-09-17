@@ -7,15 +7,14 @@
 
 isnp::runner::CommandLineParser::CommandLineParser(int argc_, char* argv_[],
 		bool const silent) :
-		returnCode(0), fileSuffix(""), plName(""), parsedArgc(0), parsedArgv(
-				nullptr) {
+		returnCode(0), plName(""), parsedArgc(0), parsedArgv(nullptr) {
 	Parse(argc_, argv_, silent);
 }
 
 isnp::runner::CommandLineParser::CommandLineParser(
 		CommandLineParser const & src) :
-		returnCode(src.returnCode), fileSuffix(src.fileSuffix), parsedArgc(
-				src.parsedArgc), parsedArgv(Dup(src.parsedArgc, src.parsedArgv)) {
+		returnCode(src.returnCode), parsedArgc(src.parsedArgc), parsedArgv(
+				Dup(src.parsedArgc, src.parsedArgv)) {
 
 }
 
@@ -33,14 +32,10 @@ void isnp::runner::CommandLineParser::Parse(int argc, char* argv[],
 	}
 
 	::optind = 1;	//	reset getopt
-	while ((res = ::getopt(argc, argv, "p:s:h?")) != -1) {
+	while ((res = ::getopt(argc, argv, "p:h?")) != -1) {
 		switch (res) {
 		case 'p':
 			plName = ::optarg;
-			break;
-
-		case 's':
-			fileSuffix = ::optarg;
 			break;
 
 		case 'h':

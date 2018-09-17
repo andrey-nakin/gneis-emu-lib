@@ -23,10 +23,6 @@ public:
 		return returnCode;
 	}
 
-	G4String GetFileSuffix() const {
-		return fileSuffix;
-	}
-
 	G4String GetPlName() const {
 		return plName;
 	}
@@ -42,7 +38,7 @@ public:
 private:
 
 	int returnCode;
-	G4String fileSuffix, plName;
+	G4String plName;
 	int parsedArgc;
 	char** parsedArgv;
 
