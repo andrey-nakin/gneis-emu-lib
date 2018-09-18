@@ -9,60 +9,53 @@
 #include "isnp/repository/Colours.hh"
 #include "isnp/util/NameBuilder.hh"
 
-const G4double isnp::facility::component::CollimatorC3::diameter = 120 * mm;
-const G4double isnp::facility::component::CollimatorC3::length = 600 * mm;
+namespace isnp {
 
-G4LogicalVolume* isnp::facility::component::CollimatorC3::AsCylinder(
-		G4double const outerRadius) {
+namespace facility {
 
-	return AsCylinder(GetDefaultName(), outerRadius);
+namespace component {
+
+CollimatorC3::CollimatorC3() :
+		innerDiameter(120. * mm), outerDiameter(160. * mm), length(600. * mm) {
+
 }
 
-G4LogicalVolume* isnp::facility::component::CollimatorC3::AsCylinder(
-		const G4String &name, G4double const outerRadius) {
+G4LogicalVolume* CollimatorC3::AsCylinder() const {
+
+	return AsCylinder(GetDefaultName());
+
+}
+
+G4LogicalVolume* CollimatorC3::AsCylinder(const G4String &name) const {
 
 	return MakeLogical(
-			MakeCylinder(name, GetLength(), outerRadius, GetDiameter()));
+			MakeCylinder(name, GetLength(), GetOuterRadius(),
+					GetInnerDiameter()));
+
 }
 
-G4LogicalVolume* isnp::facility::component::CollimatorC3::Instance(
-		G4VSolid* const outer) {
+G4LogicalVolume* CollimatorC3::Instance(G4VSolid* const outer) const {
 
 	return Instance(GetDefaultName(), outer);
+
 }
 
-G4LogicalVolume* isnp::facility::component::CollimatorC3::Instance(
-		const G4String &name, G4VSolid* const outer) {
+G4LogicalVolume* CollimatorC3::Instance(const G4String &name,
+		G4VSolid* const outer) const {
 
-	const auto aperture = new G4Tubs(name, 0.0, HalfOf(diameter),
-			HalfOf(GetLength()), 0.0 * deg, 360.0 * deg);
+	const auto aperture = new G4Tubs(name, 0.0, HalfOf(GetInnerDiameter()),
+			HalfOf(GetLength()) + 1. * mm, 0.0 * deg, 360.0 * deg);
 	const auto solid = new G4SubtractionSolid(name, outer, aperture);
 
 	return MakeLogical(solid);
+
 }
 
-G4String isnp::facility::component::CollimatorC3::GetDefaultName() {
+G4String CollimatorC3::GetDefaultName() {
 	return util::NameBuilder::Make("c", "3");
 }
 
-G4double isnp::facility::component::CollimatorC3::GetLength() {
-	return length;
-}
-
-G4double isnp::facility::component::CollimatorC3::GetHalfLength() {
-	return HalfOf(GetLength());
-}
-
-G4double isnp::facility::component::CollimatorC3::GetDiameter() {
-	return diameter;
-}
-
-G4double isnp::facility::component::CollimatorC3::GetHalfDiameter() {
-	return HalfOf(GetDiameter());
-}
-
-G4LogicalVolume* isnp::facility::component::CollimatorC3::MakeLogical(
-		G4VSolid * const solid) {
+G4LogicalVolume* CollimatorC3::MakeLogical(G4VSolid * const solid) {
 
 	const auto nist = G4NistManager::Instance();
 
@@ -71,4 +64,10 @@ G4LogicalVolume* isnp::facility::component::CollimatorC3::MakeLogical(
 	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Steel()));
 
 	return logic;
+}
+
+}
+
+}
+
 }

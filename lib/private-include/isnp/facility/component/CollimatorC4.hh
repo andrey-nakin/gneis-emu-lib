@@ -17,32 +17,28 @@ namespace component {
 class CollimatorC4 final : private BoxComponent {
 public:
 
-	/**
-	 * Disable class instantiation.
-	 */
-	CollimatorC4() = delete;
+	CollimatorC4();
 
-	/**
-	 * Creates an instance of the lead target.
-	 */
-	static G4LogicalVolume* AsCylinder(G4double outerRadius);
-	static G4LogicalVolume* AsCylinder(const G4String &name,
+	G4LogicalVolume* AsCylinder(G4double outerRadius);
+	G4LogicalVolume* AsCylinder(const G4String &name,
 			G4double outerRadius);
 
-	static G4LogicalVolume* Instance(G4VSolid *outer);
-	static G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer);
+	G4LogicalVolume* Instance(G4VSolid *outer);
+	G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer);
 
 	static G4String GetDefaultName();
 
-	static G4double GetLength();
-	static G4double GetHalfLength();
+	G4double GetLength() const;
 
-	static G4double GetDiameter();
-	static G4double GetHalfDiameter();
+	G4double GetInnerDiameter() const{
+
+		return innerDiameter;
+
+	}
 
 private:
 
-	const static G4double diameter, length;
+	G4double const innerDiameter, outerDiameter, length;
 
 	static G4LogicalVolume* MakeLogical(G4VSolid *solid);
 

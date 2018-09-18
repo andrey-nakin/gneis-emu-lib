@@ -17,31 +17,49 @@ namespace component {
 class CollimatorC3 final : private BoxComponent {
 public:
 
-	/**
-	 * Disable class instantiation.
-	 */
-	CollimatorC3() = delete;
+	CollimatorC3();
 
-	/**
-	 * Creates an instance of the lead target.
-	 */
-	static G4LogicalVolume* AsCylinder(G4double outerRadius);
-	static G4LogicalVolume* AsCylinder(const G4String &name, G4double outerRadius);
+	G4LogicalVolume* AsCylinder() const;
+	G4LogicalVolume* AsCylinder(const G4String &name) const;
 
-	static G4LogicalVolume* Instance(G4VSolid *outer);
-	static G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer);
+	G4LogicalVolume* Instance(G4VSolid *outer) const;
+	G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer) const;
 
 	static G4String GetDefaultName();
 
-	static G4double GetLength();
-	static G4double GetHalfLength();
+	G4double GetInnerDiameter() const {
 
-	static G4double GetDiameter();
-	static G4double GetHalfDiameter();
+		return innerDiameter;
+
+	}
+
+	G4double GetInnerRadius() const {
+
+		return GetInnerDiameter() / 2;
+
+	}
+
+	G4double GetOuterDiameter() const {
+
+		return outerDiameter;
+
+	}
+
+	G4double GetOuterRadius() const {
+
+		return GetOuterDiameter() / 2;
+
+	}
+
+	G4double GetLength() const {
+
+		return length;
+
+	}
 
 private:
 
-	const static G4double diameter, length;
+	G4double const innerDiameter, outerDiameter, length;
 
 	static G4LogicalVolume* MakeLogical(G4VSolid *solid);
 

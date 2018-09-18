@@ -59,7 +59,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	G4String const nameWorld = "World";
 	auto const solidWorld = MakeCylinder(nameWorld, zeroPosition + length);
 	auto const logicWorld = new G4LogicalVolume(solidWorld,
-			nist->FindOrBuildMaterial("G4_Galactic"), nameWorld);
+			nist->FindOrBuildMaterial("G4_AIR"), nameWorld);
 	logicWorld->SetVisAttributes(
 			G4VisAttributes(true, repository::Colours::Air()));
 
@@ -124,13 +124,71 @@ G4VPhysicalVolume* Beam5::Construct() {
 		zPos += ntube2Length;
 	}
 
+	zPos = 23. * m;
+
 	{
+		// Collimator #3
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
-			G4cout << "Beam5: creating collimator #3\n";
+			G4cout << "Beam5: creating collimator #3" << G4endl;
 		}
 
-		auto const logicC3 = component::CollimatorC3::AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC3, 23 * m, 600. * mm);
+		component::CollimatorC3 const c;
+		auto const logicC3 = c.AsCylinder();
+		PlaceCollimator(logicWorld, logicC3, zPos, c.GetLength());
+
+		{
+			G4String const sInner = util::NameBuilder::Make("c", 3, "inner");
+			auto const solidInner = new G4Tubs(sInner, 0, c.GetInnerRadius(),
+					c.GetLength() / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicInner = new G4LogicalVolume(solidInner,
+					nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
+			logicInner->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Air()));
+			PlaceComponent(logicWorld, logicInner, zPos, c.GetLength());
+		}
+
+		{
+			G4String const sOuter = util::NameBuilder::Make("c", 3, "outer");
+			auto const solidOuter = new G4Tubs(sOuter, c.GetOuterRadius(),
+					worldRadius, c.GetLength() / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicOuter = new G4LogicalVolume(solidOuter,
+					nist->FindOrBuildMaterial("G4_CONCRETE"), sOuter);
+			logicOuter->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Concrete()));
+			PlaceComponent(logicWorld, logicOuter, zPos, c.GetLength());
+		}
+
+		zPos += c.GetLength();
+
+		G4double const wall1Length = 3. * m - c.GetLength();
+
+		// Concrete wall, first part
+		{
+			G4String const sInner = util::NameBuilder::Make("ntube", "3.1",
+					"inner");
+			auto const solidInner = new G4Tubs(sInner, 0, c.GetOuterRadius(),
+					wall1Length / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicInner = new G4LogicalVolume(solidInner,
+					nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
+			logicInner->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Air()));
+			PlaceComponent(logicWorld, logicInner, zPos, wall1Length);
+		}
+
+		{
+			G4String const sOuter = util::NameBuilder::Make("ntube", "3.1",
+					"outer");
+			auto const solidOuter = new G4Tubs(sOuter, c.GetOuterRadius(),
+					worldRadius, wall1Length / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicOuter = new G4LogicalVolume(solidOuter,
+					nist->FindOrBuildMaterial("G4_CONCRETE"), sOuter);
+			logicOuter->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Concrete()));
+			PlaceComponent(logicWorld, logicOuter, zPos, wall1Length);
+		}
+
+		zPos += wall1Length;
+
 	}
 
 	{
@@ -138,8 +196,40 @@ G4VPhysicalVolume* Beam5::Construct() {
 			G4cout << "Beam5: creating collimator #4\n";
 		}
 
-		auto const logicC4 = component::CollimatorC4::AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC4, 29 * m, 875. * mm);
+		component::CollimatorC4 const c;
+		G4double const wall1Length = 3. * m - c.GetLength();
+
+		// Concrete wall, first part
+		{
+			G4String const sInner = util::NameBuilder::Make("ntube", "3.2",
+					"inner");
+			auto const solidInner = new G4Tubs(sInner, 0, c.GetOuterRadius(),
+					wall1Length / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicInner = new G4LogicalVolume(solidInner,
+					nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
+			logicInner->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Air()));
+			PlaceComponent(logicWorld, logicInner, zPos, wall1Length);
+		}
+
+		{
+			G4String const sOuter = util::NameBuilder::Make("ntube", "3.2",
+					"outer");
+			auto const solidOuter = new G4Tubs(sOuter, c.GetOuterRadius(),
+					worldRadius, wall1Length / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicOuter = new G4LogicalVolume(solidOuter,
+					nist->FindOrBuildMaterial("G4_CONCRETE"), sOuter);
+			logicOuter->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Concrete()));
+			PlaceComponent(logicWorld, logicOuter, zPos, wall1Length);
+		}
+
+		zPos += wall2Length;
+
+		auto const logicC4 = c.AsCylinder(worldRadius);
+		PlaceCollimator(logicWorld, logicC4, zPos, c.GetLength());
+
+		zPos += c.GetLength();
 	}
 
 	{
