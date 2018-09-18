@@ -37,9 +37,10 @@ Beam5::Beam5() :
 				0.5 * m), length(36.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
-				1. * mm), ntube1Length(4. * m), ntube2Length(10. * m), ntubeMaterial(
-				"DUR_AMG3"), ntubeFlangeMaterial("G4_Al"), ntubeInnerMaterial(
-				"FOREVACUUM_100"), worldRadius(190. * mm) {
+				1. * mm), ntube1Length(4. * m), ntube2Length(10. * m), wallLength(
+				6. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
+				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
+				"G4_CONCRETE"), worldRadius(190. * mm) {
 }
 
 Beam5::~Beam5() {
@@ -127,6 +128,13 @@ G4VPhysicalVolume* Beam5::Construct() {
 	zPos = 23. * m;
 
 	{
+		// concrete wall with collimatots #3 and #4
+
+		// first flange
+		PlaceComponent(logicWorld, MakeFlange(3, 1), zPos,
+				ntubeFlangeThickness);
+		zPos += ntubeFlangeThickness;
+
 		// Collimator #3
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #3" << G4endl;
@@ -137,7 +145,8 @@ G4VPhysicalVolume* Beam5::Construct() {
 		PlaceCollimator(logicWorld, logicC3, zPos, c.GetLength());
 
 		{
-			G4String const sInner = util::NameBuilder::Make("c", 3, "inner");
+			G4String const sInner = util::NameBuilder::Make(c.GetDefaultName(),
+					"inner");
 			auto const solidInner = new G4Tubs(sInner, 0, c.GetInnerRadius(),
 					c.GetLength() / 2, 0.0 * deg, 360.0 * deg);
 			auto const logicInner = new G4LogicalVolume(solidInner,
@@ -148,11 +157,12 @@ G4VPhysicalVolume* Beam5::Construct() {
 		}
 
 		{
-			G4String const sOuter = util::NameBuilder::Make("c", 3, "outer");
+			G4String const sOuter = util::NameBuilder::Make(c.GetDefaultName(),
+					"outer");
 			auto const solidOuter = new G4Tubs(sOuter, c.GetOuterRadius(),
 					worldRadius, c.GetLength() / 2, 0.0 * deg, 360.0 * deg);
 			auto const logicOuter = new G4LogicalVolume(solidOuter,
-					nist->FindOrBuildMaterial("G4_CONCRETE"), sOuter);
+					nist->FindOrBuildMaterial(wallMaterial), sOuter);
 			logicOuter->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Concrete()));
 			PlaceComponent(logicWorld, logicOuter, zPos, c.GetLength());
@@ -160,7 +170,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 		zPos += c.GetLength();
 
-		G4double const wall1Length = 3. * m - c.GetLength();
+		G4double const wall1Length = wallLength / 2 - c.GetLength();
 
 		// Concrete wall, first part
 		{
@@ -181,7 +191,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 			auto const solidOuter = new G4Tubs(sOuter, c.GetOuterRadius(),
 					worldRadius, wall1Length / 2, 0.0 * deg, 360.0 * deg);
 			auto const logicOuter = new G4LogicalVolume(solidOuter,
-					nist->FindOrBuildMaterial("G4_CONCRETE"), sOuter);
+					nist->FindOrBuildMaterial(wallMaterial), sOuter);
 			logicOuter->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Concrete()));
 			PlaceComponent(logicWorld, logicOuter, zPos, wall1Length);
@@ -197,39 +207,69 @@ G4VPhysicalVolume* Beam5::Construct() {
 		}
 
 		component::CollimatorC4 const c;
-		G4double const wall1Length = 3. * m - c.GetLength();
+		G4double const wall2Length = wallLength / 2 - c.GetLength();
 
-		// Concrete wall, first part
+		// Concrete wall, second part
 		{
 			G4String const sInner = util::NameBuilder::Make("ntube", "3.2",
 					"inner");
 			auto const solidInner = new G4Tubs(sInner, 0, c.GetOuterRadius(),
-					wall1Length / 2, 0.0 * deg, 360.0 * deg);
+					wall2Length / 2, 0.0 * deg, 360.0 * deg);
 			auto const logicInner = new G4LogicalVolume(solidInner,
 					nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
 			logicInner->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Air()));
-			PlaceComponent(logicWorld, logicInner, zPos, wall1Length);
+			PlaceComponent(logicWorld, logicInner, zPos, wall2Length);
 		}
 
 		{
 			G4String const sOuter = util::NameBuilder::Make("ntube", "3.2",
 					"outer");
 			auto const solidOuter = new G4Tubs(sOuter, c.GetOuterRadius(),
-					worldRadius, wall1Length / 2, 0.0 * deg, 360.0 * deg);
+					worldRadius, wall2Length / 2, 0.0 * deg, 360.0 * deg);
 			auto const logicOuter = new G4LogicalVolume(solidOuter,
-					nist->FindOrBuildMaterial("G4_CONCRETE"), sOuter);
+					nist->FindOrBuildMaterial(wallMaterial), sOuter);
 			logicOuter->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Concrete()));
-			PlaceComponent(logicWorld, logicOuter, zPos, wall1Length);
+			PlaceComponent(logicWorld, logicOuter, zPos, wall2Length);
 		}
 
 		zPos += wall2Length;
 
-		auto const logicC4 = c.AsCylinder(worldRadius);
+		auto const logicC4 = c.AsCylinder();
 		PlaceCollimator(logicWorld, logicC4, zPos, c.GetLength());
 
+		{
+			G4String const sInner = util::NameBuilder::Make(c.GetDefaultName(),
+					"inner");
+			auto const solidInner = new G4Tubs(sInner, 0, c.GetInnerRadius(),
+					c.GetLength() / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicInner = new G4LogicalVolume(solidInner,
+					nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
+			logicInner->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Air()));
+			PlaceComponent(logicWorld, logicInner, zPos, c.GetLength());
+		}
+
+		{
+			G4String const sOuter = util::NameBuilder::Make(c.GetDefaultName(),
+					"outer");
+			auto const solidOuter = new G4Tubs(sOuter, c.GetOuterRadius(),
+					worldRadius, c.GetLength() / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicOuter = new G4LogicalVolume(solidOuter,
+					nist->FindOrBuildMaterial(wallMaterial), sOuter);
+			logicOuter->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Concrete()));
+			PlaceComponent(logicWorld, logicOuter, zPos, c.GetLength());
+		}
+
 		zPos += c.GetLength();
+
+		// second flange
+		PlaceComponent(logicWorld, MakeFlange(3, 2), zPos,
+				ntubeFlangeThickness);
+		zPos += ntubeFlangeThickness;
+
 	}
 
 	{

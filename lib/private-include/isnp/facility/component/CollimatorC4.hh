@@ -1,9 +1,7 @@
-#ifndef CollimatorC4_hh
-#define CollimatorC4_hh
+#ifndef isnp_facility_component_CollimatorC4_hh
+#define isnp_facility_component_CollimatorC4_hh
 
-#include <G4LogicalVolume.hh>
-#include <G4VSolid.hh>
-#include "BoxComponent.hh"
+#include "CylindricComponent.hh"
 
 namespace isnp {
 
@@ -14,33 +12,12 @@ namespace component {
 /**
  * Fourth collimator on beams #1 - #5
  */
-class CollimatorC4 final : private BoxComponent {
+class CollimatorC4 final : public CylindricComponent {
 public:
 
 	CollimatorC4();
 
-	G4LogicalVolume* AsCylinder(G4double outerRadius);
-	G4LogicalVolume* AsCylinder(const G4String &name,
-			G4double outerRadius);
-
-	G4LogicalVolume* Instance(G4VSolid *outer);
-	G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer);
-
-	static G4String GetDefaultName();
-
-	G4double GetLength() const;
-
-	G4double GetInnerDiameter() const{
-
-		return innerDiameter;
-
-	}
-
-private:
-
-	G4double const innerDiameter, outerDiameter, length;
-
-	static G4LogicalVolume* MakeLogical(G4VSolid *solid);
+	G4String GetDefaultName() const override;
 
 };
 
@@ -50,4 +27,4 @@ private:
 
 }
 
-#endif	//	CollimatorC4_hh
+#endif	//	isnp_facility_component_CollimatorC4_hh
