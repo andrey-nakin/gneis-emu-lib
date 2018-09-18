@@ -34,14 +34,15 @@ namespace facility {
 Beam5::Beam5() :
 		G4VUserDetectorConstruction(), messenger(
 				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
-				0.5 * m), worldLength(46.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
+				0.5 * m), worldLength(50.5 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
-				1. * mm), ntube1Length(4. * m), ntube2Length(10. * m), ntube4Length(
-				5. * m), ntube5Length(8. * m), wallLength(6. * m), ntubeMaterial(
-				"DUR_AMG3"), ntubeFlangeMaterial("G4_Al"), ntubeInnerMaterial(
-				"FOREVACUUM_100"), wallMaterial("G4_CONCRETE"), worldMaterial(
-				"G4_AIR"), worldRadius(190. * mm) {
+				1. * mm), ntube1Length(4.5 * m), ntube2Length(7.7 * m), ntube4Length(
+				5.8 * m), ntube5Length(8.6 * m), wallLength(6. * m), windowThickness(
+				2. * mm), detectorZPosition(36. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
+				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
+				"G4_CONCRETE"), worldMaterial("G4_AIR"), windowMaterial(
+				"G4_Al"), worldRadius(190. * mm) {
 }
 
 Beam5::~Beam5() {
@@ -81,7 +82,35 @@ G4VPhysicalVolume* Beam5::Construct() {
 				logicWorld, single, numOfCopies, checkOverlaps);
 	}
 
-	G4double zPos = 6. * m;
+	G4double zPos = 5.4 * m;
+
+	{
+		// vacuum chamber
+
+		G4String const sChamber = "chamber";
+		auto const solidChamber = new G4Tubs(sChamber, 0, worldRadius, zPos / 2,
+				0.0 * deg, 360.0 * deg);
+		auto const logicChamber = new G4LogicalVolume(solidChamber,
+				nist->FindOrBuildMaterial("G4_Galactic"), sChamber);
+		logicChamber->SetVisAttributes(G4VisAttributes(false));
+		PlaceComponent(logicWorld, logicChamber, 0., zPos, false);
+
+	}
+
+	{
+		// neutron window
+
+		G4String const sWindow = "window";
+		auto const solidWindow = new G4Tubs(sWindow, 0, worldRadius,
+				windowThickness / 2, 0.0 * deg, 360.0 * deg);
+		auto const logicWindow = new G4LogicalVolume(solidWindow,
+				nist->FindOrBuildMaterial(windowMaterial), sWindow);
+		logicWindow->SetVisAttributes(
+				G4VisAttributes(repository::Colours::Aluminium()));
+		PlaceComponent(logicWorld, logicWindow, zPos, windowThickness);
+	}
+
+	zPos = 5.9 * m;
 
 	{
 		// Collimator #1
@@ -126,7 +155,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		zPos += ntube2Length;
 	}
 
-	zPos = 23. * m;
+	zPos = 23.2 * m;
 
 	{
 		// concrete wall with collimatots #3 and #4
@@ -343,9 +372,11 @@ G4VPhysicalVolume* Beam5::Construct() {
 		zPos += ntubeFlangeThickness;
 	}
 
+	zPos = 37.4 * m;
+
 	{
 		// neutron tube #5
-		AddNTube(logicWorld, ntube5Length, 37.5 * m, 5);
+		AddNTube(logicWorld, ntube5Length, zPos, 5);
 	}
 
 	if (!detector) {
@@ -356,19 +387,21 @@ G4VPhysicalVolume* Beam5::Construct() {
 		G4cout << "Beam5: creating detector\n";
 	}
 
-	// Target
-	G4String const name = "Target";
-	const auto solidTarget = new G4Tubs(name, 0, worldRadius, 5 * mm, 0.0 * deg,
-			360.0 * deg);
-	const auto logicTarget = new G4LogicalVolume(solidTarget,
-			nist->FindOrBuildMaterial("G4_Galactic"), name);
-	logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Green()));
+	{
+		// Detector
+		G4String const name = "detector";
+		const auto solidTarget = new G4Tubs(name, 0, worldRadius, 5 * mm,
+				0.0 * deg, 360.0 * deg);
+		const auto logicTarget = new G4LogicalVolume(solidTarget,
+				nist->FindOrBuildMaterial("G4_Galactic"), name);
+		logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Green()));
 
-	const auto sdMan = G4SDManager::GetSDMpointer();
-	sdMan->AddNewDetector(detector);
-	logicTarget->SetSensitiveDetector(detector);
+		const auto sdMan = G4SDManager::GetSDMpointer();
+		sdMan->AddNewDetector(detector);
+		logicTarget->SetSensitiveDetector(detector);
 
-	PlaceComponent(logicWorld, logicTarget, 36 * m - 10 * mm, 10. * mm);
+		PlaceComponent(logicWorld, logicTarget, detectorZPosition, 10. * mm);
+	}
 
 	return physWorld;
 
@@ -410,6 +443,18 @@ void Beam5::SetDiameter(G4double const aDiameter) {
 
 }
 
+G4double Beam5::GetDetectorZPosition() const {
+
+	return detectorZPosition;
+
+}
+
+void Beam5::SetDetectorZPosition(G4double const pos) {
+
+	detectorZPosition = pos;
+
+}
+
 G4int Beam5::GetVerboseLevel() const {
 	return verboseLevel;
 }
@@ -432,12 +477,11 @@ G4VSensitiveDetector* Beam5::GetDetector() const {
 
 void Beam5::PlaceComponent(G4LogicalVolume* const world,
 		G4LogicalVolume* const component, G4double const position,
-		G4double const componentLength) {
+		G4double const componentLength, G4bool const checkOverlaps) {
 
 	G4RotationMatrix* const noRotation = nullptr;
 	G4bool const single = false;
 	G4int const numOfCopies = 0;
-	G4bool const checkOverlaps = true;
 
 	new G4PVPlacement(noRotation,
 			G4ThreeVector(0, 0,

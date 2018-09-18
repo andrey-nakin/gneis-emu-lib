@@ -28,6 +28,9 @@ public:
 	G4double GetDiameter() const;
 	void SetDiameter(G4double angle);
 
+	G4double GetDetectorZPosition() const;
+	void SetDetectorZPosition(G4double pos);
+
 	G4int GetVerboseLevel() const;
 	void SetVerboseLevel(G4int aVerboseLevel);
 
@@ -43,13 +46,14 @@ private:
 	G4double diameter;
 	G4int verboseLevel;
 	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness,
-			ntube1Length, ntube2Length, ntube4Length, ntube5Length, wallLength;
+			ntube1Length, ntube2Length, ntube4Length, ntube5Length, wallLength,
+			windowThickness, detectorZPosition;
 	G4String ntubeMaterial, ntubeFlangeMaterial, ntubeInnerMaterial,
-			wallMaterial, worldMaterial;
+			wallMaterial, worldMaterial, windowMaterial;
 	G4double worldRadius;
 
 	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,
-			G4double position, G4double componentLength);
+			G4double position, G4double componentLength, G4bool checkOverlaps = true);
 	void PlaceCollimator(G4LogicalVolume *world, G4LogicalVolume *collimator,
 			G4double position, G4double collimatorLength);
 
