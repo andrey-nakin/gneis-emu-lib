@@ -34,13 +34,14 @@ namespace facility {
 Beam5::Beam5() :
 		G4VUserDetectorConstruction(), messenger(
 				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
-				0.5 * m), length(36.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
+				0.5 * m), worldLength(46.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
 				1. * mm), ntube1Length(4. * m), ntube2Length(10. * m), ntube4Length(
-				5. * m), wallLength(6. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
-				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
-				"G4_CONCRETE"), worldMaterial("G4_AIR"), worldRadius(190. * mm) {
+				5. * m), ntube5Length(8. * m), wallLength(6. * m), ntubeMaterial(
+				"DUR_AMG3"), ntubeFlangeMaterial("G4_Al"), ntubeInnerMaterial(
+				"FOREVACUUM_100"), wallMaterial("G4_CONCRETE"), worldMaterial(
+				"G4_AIR"), worldRadius(190. * mm) {
 }
 
 Beam5::~Beam5() {
@@ -58,7 +59,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	G4bool const checkOverlaps = true;
 
 	G4String const nameWorld = "World";
-	auto const solidWorld = MakeCylinder(nameWorld, zeroPosition + length);
+	auto const solidWorld = MakeCylinder(nameWorld, zeroPosition + worldLength);
 	auto const logicWorld = new G4LogicalVolume(solidWorld,
 			nist->FindOrBuildMaterial(worldMaterial), nameWorld);
 	logicWorld->SetVisAttributes(
@@ -73,7 +74,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		G4RotationMatrix rotm = G4RotationMatrix();
 		rotm.rotateY(angle);
 		G4ThreeVector const position = G4ThreeVector(0, 0,
-				0.5 * (zeroPosition - length));
+				0.5 * (zeroPosition - worldLength));
 		G4Transform3D const transform = G4Transform3D(rotm, position);
 		component::SpallationTarget::SetTransform(transform);
 		new G4PVPlacement(transform, logicSpTarget, logicSpTarget->GetName(),
@@ -342,6 +343,11 @@ G4VPhysicalVolume* Beam5::Construct() {
 		zPos += ntubeFlangeThickness;
 	}
 
+	{
+		// neutron tube #5
+		AddNTube(logicWorld, ntube5Length, 37.5 * m, 5);
+	}
+
 	if (!detector) {
 		detector = MakeDefaultDetector();
 	}
@@ -435,7 +441,7 @@ void Beam5::PlaceComponent(G4LogicalVolume* const world,
 
 	new G4PVPlacement(noRotation,
 			G4ThreeVector(0, 0,
-					0.5 * (zeroPosition - length) + position
+					0.5 * (zeroPosition - worldLength) + position
 							+ componentLength / 2), component,
 			component->GetName(), world, single, numOfCopies, checkOverlaps);
 

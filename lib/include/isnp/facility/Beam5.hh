@@ -38,12 +38,12 @@ private:
 
 	std::unique_ptr<Beam5Messenger> const messenger;
 	G4VSensitiveDetector* detector;
-	G4double zeroPosition, length, angle;
+	G4double zeroPosition, worldLength, angle;
 	G4bool collimatorsHaveDetectors;
 	G4double diameter;
 	G4int verboseLevel;
 	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness,
-			ntube1Length, ntube2Length, ntube4Length, wallLength;
+			ntube1Length, ntube2Length, ntube4Length, ntube5Length, wallLength;
 	G4String ntubeMaterial, ntubeFlangeMaterial, ntubeInnerMaterial,
 			wallMaterial, worldMaterial;
 	G4double worldRadius;
