@@ -37,10 +37,10 @@ Beam5::Beam5() :
 				0.5 * m), length(36.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
-				1. * mm), ntube1Length(4. * m), ntube2Length(10. * m), wallLength(
-				6. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
+				1. * mm), ntube1Length(4. * m), ntube2Length(10. * m), ntube4Length(
+				5. * m), wallLength(6. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
 				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
-				"G4_CONCRETE"), worldRadius(190. * mm) {
+				"G4_CONCRETE"), worldMaterial("G4_AIR"), worldRadius(190. * mm) {
 }
 
 Beam5::~Beam5() {
@@ -60,7 +60,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	G4String const nameWorld = "World";
 	auto const solidWorld = MakeCylinder(nameWorld, zeroPosition + length);
 	auto const logicWorld = new G4LogicalVolume(solidWorld,
-			nist->FindOrBuildMaterial("G4_AIR"), nameWorld);
+			nist->FindOrBuildMaterial(worldMaterial), nameWorld);
 	logicWorld->SetVisAttributes(
 			G4VisAttributes(true, repository::Colours::Air()));
 
@@ -273,14 +273,73 @@ G4VPhysicalVolume* Beam5::Construct() {
 	}
 
 	{
+		// Neutron tube #4 and collimator #5
+
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
 			G4cout << "Beam5: creating collimator #5 with diameter "
-					<< diameter / mm << " mm \n";
+					<< diameter / mm << " mm" << G4endl;
 		}
 
-		auto const logicC5 = component::CollimatorC5::AsCylinder(
-				ntubeInnerRadius, diameter);
-		PlaceCollimator(logicWorld, logicC5, 35 * m, 1000. * mm);
+		component::CollimatorC5 const c(diameter);
+
+		// first flange
+		PlaceComponent(logicWorld, MakeFlange(4, 1), zPos,
+				ntubeFlangeThickness);
+		zPos += ntubeFlangeThickness;
+
+		{
+			// neutron tube #4
+
+			G4String const sOuter = util::NameBuilder::Make("ntube", 4,
+					"outer");
+			auto const solidOuter = new G4Tubs(sOuter, ntubeInnerRadius,
+					ntubeOuterRadius, ntube4Length / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicOuter = new G4LogicalVolume(solidOuter,
+					nist->FindOrBuildMaterial(ntubeMaterial), sOuter);
+			logicOuter->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Aluminium()));
+			PlaceComponent(logicWorld, logicOuter, zPos, ntube4Length);
+		}
+
+		G4double const innerLength = ntube4Length - c.GetLength();
+
+		{
+			// neutron tube #4 inner space
+
+			G4String const sInner = util::NameBuilder::Make("ntube", 4,
+					"inner");
+			auto const solidInner = new G4Tubs(sInner, 0, ntubeInnerRadius,
+					innerLength / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicInner = new G4LogicalVolume(solidInner,
+					nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
+			logicInner->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Air()));
+			PlaceComponent(logicWorld, logicInner, zPos, innerLength);
+		}
+
+		zPos += innerLength;
+
+		auto const logicC5 = c.AsCylinder();
+		PlaceCollimator(logicWorld, logicC5, zPos, c.GetLength());
+
+		{
+			G4String const sInner = util::NameBuilder::Make(c.GetDefaultName(),
+					"inner");
+			auto const solidInner = new G4Tubs(sInner, 0, c.GetInnerRadius(),
+					c.GetLength() / 2, 0.0 * deg, 360.0 * deg);
+			auto const logicInner = new G4LogicalVolume(solidInner,
+					nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
+			logicInner->SetVisAttributes(
+					G4VisAttributes(repository::Colours::Air()));
+			PlaceComponent(logicWorld, logicInner, zPos, c.GetLength());
+		}
+
+		zPos += c.GetLength();
+
+		// second flange
+		PlaceComponent(logicWorld, MakeFlange(4, 2), zPos,
+				ntubeFlangeThickness);
+		zPos += ntubeFlangeThickness;
 	}
 
 	if (!detector) {
@@ -297,7 +356,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 			360.0 * deg);
 	const auto logicTarget = new G4LogicalVolume(solidTarget,
 			nist->FindOrBuildMaterial("G4_Galactic"), name);
-	logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Red()));
+	logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Green()));
 
 	const auto sdMan = G4SDManager::GetSDMpointer();
 	sdMan->AddNewDetector(detector);

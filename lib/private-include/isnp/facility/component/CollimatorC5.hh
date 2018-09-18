@@ -1,9 +1,7 @@
-#ifndef CollimatorC5_hh
-#define CollimatorC5_hh
+#ifndef isnp_facility_component_CollimatorC5_hh
+#define isnp_facility_component_CollimatorC5_hh
 
-#include <G4LogicalVolume.hh>
-#include <G4VSolid.hh>
-#include "BoxComponent.hh"
+#include "CylindricComponent.hh"
 
 namespace isnp {
 
@@ -12,37 +10,14 @@ namespace facility {
 namespace component {
 
 /**
- * First collimator on beams #1 - #5
+ * Fiveth collimator on beam #5
  */
-class CollimatorC5 final : private BoxComponent {
+class CollimatorC5 final : public CylindricComponent {
 public:
 
-	/**
-	 * Disable class instantiation.
-	 */
-	CollimatorC5() = delete;
+	CollimatorC5(G4double innerDiameter);
 
-	/**
-	 * Creates an instance of the lead target.
-	 */
-	static G4LogicalVolume* AsCylinder(G4double outerRadius, G4double diameter);
-	static G4LogicalVolume* AsCylinder(const G4String &name,
-			G4double outerRadius, G4double diameter);
-
-	static G4LogicalVolume* Instance(G4VSolid *outer, G4double diameter);
-	static G4LogicalVolume* Instance(const G4String &name, G4VSolid *outer,
-			G4double diameter);
-
-	static G4String GetDefaultName();
-
-	static G4double GetLength();
-	static G4double GetHalfLength();
-
-private:
-
-	const static G4double length;
-
-	static G4LogicalVolume* MakeLogical(G4VSolid *solid);
+	G4String GetDefaultName() const override;
 
 };
 
@@ -52,4 +27,4 @@ private:
 
 }
 
-#endif	//	CollimatorC5_hh
+#endif	//	isnp_facility_component_CollimatorC5_hh
