@@ -25,6 +25,7 @@
 #include "isnp/facility/component/CollimatorC5.hh"
 #include "isnp/detector/Basic.hh"
 #include "isnp/util/NameBuilder.hh"
+#include "isnp/repository/Colours.hh"
 
 namespace isnp {
 
@@ -36,9 +37,9 @@ Beam5::Beam5() :
 				0.5 * m), length(36.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
-				1. * mm), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
+				1. * mm), ntube1Length(4. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
 				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), worldRadius(
-				ntubeOuterRadius) {
+				190. * mm) {
 }
 
 Beam5::~Beam5() {
@@ -77,14 +78,28 @@ G4VPhysicalVolume* Beam5::Construct() {
 				logicWorld, single, numOfCopies, checkOverlaps);
 	}
 
+	G4double zPos = 6. * m;
+
 	{
+		// Collimator #1
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
-			G4cout << "Beam5: creating collimator #1\n";
+			G4cout << "Beam5: creating collimator #1" << G4endl;
 		}
 
 		component::CollimatorC1 const c;
 		auto const logicC1 = c.AsCylinder(worldRadius);
 		PlaceCollimator(logicWorld, logicC1, 6 * m);
+		zPos += c.GetLength();
+	}
+
+	{
+		// Neutron tube #1
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
+			G4cout << "Beam5: creating neutron tube #1" << G4endl;
+		}
+
+		AddNTube(logicWorld, ntube1Length, zPos, 1);
+		zPos += ntube1Length;
 	}
 
 	{
@@ -121,8 +136,8 @@ G4VPhysicalVolume* Beam5::Construct() {
 					<< diameter / mm << " mm \n";
 		}
 
-		auto const logicC5 = component::CollimatorC5::AsCylinder(worldRadius,
-				diameter);
+		auto const logicC5 = component::CollimatorC5::AsCylinder(
+				ntubeInnerRadius, diameter);
 		PlaceCollimator(logicWorld, logicC5, 35 * m);
 	}
 
@@ -247,6 +262,61 @@ G4VSolid* Beam5::MakeCylinder(G4String const &name, G4double const len) {
 G4VSensitiveDetector* Beam5::MakeDefaultDetector() {
 
 	return new isnp::detector::Basic;
+
+}
+
+G4LogicalVolume* Beam5::MakeFlange(G4int const ntubeNo, G4int const flangeNo) {
+
+	auto const nist = G4NistManager::Instance();
+
+	G4String const sFlange = util::NameBuilder::Make("ntube", ntubeNo, "flange",
+			flangeNo);
+	auto const solidFlange = new G4Tubs(sFlange, 0, ntubeOuterRadius,
+			ntubeFlangeThickness / 2, 0.0 * deg, 360.0 * deg);
+	auto const logicFlange = new G4LogicalVolume(solidFlange,
+			nist->FindOrBuildMaterial(ntubeFlangeMaterial), sFlange);
+	logicFlange->SetVisAttributes(
+			G4VisAttributes(repository::Colours::Aluminium()));
+	return logicFlange;
+
+}
+
+void Beam5::AddNTube(G4LogicalVolume* const logicWorld,
+		G4double const tubeLength, G4double const zPos, G4int const ntubeNo) {
+
+	auto const nist = G4NistManager::Instance();
+
+	{
+		PlaceComponent(logicWorld, MakeFlange(ntubeNo, 1), zPos);
+	}
+
+	{
+		G4String const sInner = util::NameBuilder::Make("ntube", ntubeNo,
+				"inner");
+		auto const solidInner = new G4Tubs(sInner, 0, ntubeInnerRadius,
+				tubeLength / 2, 0.0 * deg, 360.0 * deg);
+		auto const logicInner = new G4LogicalVolume(solidInner,
+				nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
+		logicInner->SetVisAttributes(
+				G4VisAttributes(repository::Colours::Air()));
+		PlaceComponent(logicWorld, logicInner, zPos);
+	}
+
+	{
+		G4String const sOuter = util::NameBuilder::Make("ntube", ntubeNo,
+				"outer");
+		auto const solidOuter = new G4Tubs(sOuter, ntubeInnerRadius,
+				ntubeOuterRadius, tubeLength / 2, 0.0 * deg, 360.0 * deg);
+		auto const logicOuter = new G4LogicalVolume(solidOuter,
+				nist->FindOrBuildMaterial(ntubeMaterial), sOuter);
+		logicOuter->SetVisAttributes(
+				G4VisAttributes(repository::Colours::Aluminium()));
+		PlaceComponent(logicWorld, logicOuter, zPos);
+	}
+
+	{
+		PlaceComponent(logicWorld, MakeFlange(ntubeNo, 2), zPos);
+	}
 
 }
 

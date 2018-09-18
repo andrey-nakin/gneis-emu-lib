@@ -21,10 +21,12 @@ public:
 	static G4Colour Steel();
 	static G4Colour Aluminium();
 	static G4Colour Concrete();
+	static G4Colour Air();
 
 private:
 
 	static G4Colour FromRGB(short red, short green, short blue);
+	static G4Colour FromRGBA(short red, short green, short blue, short alpha);
 
 };
 

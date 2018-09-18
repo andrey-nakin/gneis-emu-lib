@@ -42,7 +42,8 @@ private:
 	G4bool collimatorsHaveDetectors;
 	G4double diameter;
 	G4int verboseLevel;
-	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness;
+	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness,
+			ntube1Length;
 	G4String ntubeMaterial, ntubeFlangeMaterial, ntubeInnerMaterial;
 	G4double worldRadius;
 
@@ -53,6 +54,9 @@ private:
 
 	G4VSolid* MakeCylinder(G4String const &name, G4double halfLength);
 	G4VSensitiveDetector* MakeDefaultDetector();
+	G4LogicalVolume* MakeFlange(G4int ntubeNo, G4int flangeNo);
+	void AddNTube(G4LogicalVolume* logicWorld, G4double length, G4double zPos,
+			G4int ntubeNo);
 
 };
 

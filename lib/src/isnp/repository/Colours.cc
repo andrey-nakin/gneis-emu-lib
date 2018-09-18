@@ -28,10 +28,20 @@ G4Colour Colours::Concrete() {
 	return FromRGB(127, 128, 118);
 }
 
+G4Colour Colours::Air() {
+	return FromRGBA(116, 231, 238, 32);
+}
+
 G4Colour Colours::FromRGB(short const red, short const green,
 		short const blue) {
 	const G4double m = 1.0 / 255.0;
 	return G4Colour(m * red, m * green, m * blue);
+}
+
+G4Colour Colours::FromRGBA(short const red, short const green, short const blue,
+		short const alpha) {
+	const G4double m = 1.0 / 255.0;
+	return G4Colour(m * red, m * green, m * blue, m * alpha);
 }
 
 }

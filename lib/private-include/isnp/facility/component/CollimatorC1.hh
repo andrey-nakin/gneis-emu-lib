@@ -29,6 +29,12 @@ public:
 
 	static G4String GetDefaultName();
 
+	G4double GetLength() const {
+
+		return aperture.GetLength();
+
+	}
+
 private:
 
 	util::Box const aperture;
