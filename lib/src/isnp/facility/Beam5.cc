@@ -136,7 +136,8 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 	// Target
 	G4String const name = "Target";
-	const auto solidTarget = new G4Box(name, 50 * mm, 50 * mm, 5 * mm);
+	const auto solidTarget = new G4Tubs(name, 0, worldRadius, 5 * mm, 0.0 * deg,
+			360.0 * deg);
 	const auto logicTarget = new G4LogicalVolume(solidTarget,
 			nist->FindOrBuildMaterial("G4_Galactic"), name);
 	logicTarget->SetVisAttributes(G4VisAttributes(G4Colour::Red()));
