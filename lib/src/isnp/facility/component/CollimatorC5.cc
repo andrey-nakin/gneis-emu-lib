@@ -40,7 +40,7 @@ G4LogicalVolume* isnp::facility::component::CollimatorC5::Instance(
 }
 
 G4String isnp::facility::component::CollimatorC5::GetDefaultName() {
-	return util::NameBuilder::Make("Collimator", "C5");
+	return util::NameBuilder::Make("c", "5");
 }
 
 G4double isnp::facility::component::CollimatorC5::GetLength() {

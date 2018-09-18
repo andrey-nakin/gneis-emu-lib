@@ -37,9 +37,9 @@ Beam5::Beam5() :
 				0.5 * m), length(36.0 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
-				1. * mm), ntube1Length(4. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
-				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), worldRadius(
-				190. * mm) {
+				1. * mm), ntube1Length(4. * m), ntube2Length(10. * m), ntubeMaterial(
+				"DUR_AMG3"), ntubeFlangeMaterial("G4_Al"), ntubeInnerMaterial(
+				"FOREVACUUM_100"), worldRadius(190. * mm) {
 }
 
 Beam5::~Beam5() {
@@ -88,7 +88,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 		component::CollimatorC1 const c;
 		auto const logicC1 = c.AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC1, 6 * m);
+		PlaceCollimator(logicWorld, logicC1, zPos, c.GetLength());
 		zPos += c.GetLength();
 	}
 
@@ -104,12 +104,23 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 	{
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
-			G4cout << "Beam5: creating collimator #2\n";
+			G4cout << "Beam5: creating collimator #2" << G4endl;
 		}
 
 		component::CollimatorC2 const c;
 		auto const logicC2 = c.AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC2, 12 * m);
+		PlaceCollimator(logicWorld, logicC2, zPos, c.GetLength());
+		zPos += c.GetLength();
+	}
+
+	{
+		// Neutron tube #2
+		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
+			G4cout << "Beam5: creating neutron tube #2" << G4endl;
+		}
+
+		AddNTube(logicWorld, ntube2Length, zPos, 2);
+		zPos += ntube2Length;
 	}
 
 	{
@@ -118,7 +129,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		}
 
 		auto const logicC3 = component::CollimatorC3::AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC3, 23 * m);
+		PlaceCollimator(logicWorld, logicC3, 23 * m, 600. * mm);
 	}
 
 	{
@@ -127,7 +138,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 		}
 
 		auto const logicC4 = component::CollimatorC4::AsCylinder(worldRadius);
-		PlaceCollimator(logicWorld, logicC4, 29 * m);
+		PlaceCollimator(logicWorld, logicC4, 29 * m, 875. * mm);
 	}
 
 	{
@@ -138,7 +149,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 		auto const logicC5 = component::CollimatorC5::AsCylinder(
 				ntubeInnerRadius, diameter);
-		PlaceCollimator(logicWorld, logicC5, 35 * m);
+		PlaceCollimator(logicWorld, logicC5, 35 * m, 1000. * mm);
 	}
 
 	if (!detector) {
@@ -161,7 +172,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 	sdMan->AddNewDetector(detector);
 	logicTarget->SetSensitiveDetector(detector);
 
-	PlaceComponent(logicWorld, logicTarget, 36 * m - 10 * mm);
+	PlaceComponent(logicWorld, logicTarget, 36 * m - 10 * mm, 10. * mm);
 
 	return physWorld;
 
@@ -224,7 +235,8 @@ G4VSensitiveDetector* Beam5::GetDetector() const {
 }
 
 void Beam5::PlaceComponent(G4LogicalVolume* const world,
-		G4LogicalVolume* const component, G4double const position) {
+		G4LogicalVolume* const component, G4double const position,
+		G4double const componentLength) {
 
 	G4RotationMatrix* const noRotation = nullptr;
 	G4bool const single = false;
@@ -232,14 +244,16 @@ void Beam5::PlaceComponent(G4LogicalVolume* const world,
 	G4bool const checkOverlaps = true;
 
 	new G4PVPlacement(noRotation,
-			G4ThreeVector(0, 0, 0.5 * (zeroPosition - length) + position),
-			component, component->GetName(), world, single, numOfCopies,
-			checkOverlaps);
+			G4ThreeVector(0, 0,
+					0.5 * (zeroPosition - length) + position
+							+ componentLength / 2), component,
+			component->GetName(), world, single, numOfCopies, checkOverlaps);
 
 }
 
 void Beam5::PlaceCollimator(G4LogicalVolume* const world,
-		G4LogicalVolume* const collimator, G4double const position) {
+		G4LogicalVolume* const collimator, G4double const position,
+		G4double const collimatorLength) {
 
 	if (collimatorsHaveDetectors) {
 		const auto sdMan = G4SDManager::GetSDMpointer();
@@ -249,7 +263,7 @@ void Beam5::PlaceCollimator(G4LogicalVolume* const world,
 		collimator->SetSensitiveDetector(det);
 	}
 
-	PlaceComponent(world, collimator, position);
+	PlaceComponent(world, collimator, position, collimatorLength);
 
 }
 
@@ -287,35 +301,40 @@ void Beam5::AddNTube(G4LogicalVolume* const logicWorld,
 	auto const nist = G4NistManager::Instance();
 
 	{
-		PlaceComponent(logicWorld, MakeFlange(ntubeNo, 1), zPos);
+		PlaceComponent(logicWorld, MakeFlange(ntubeNo, 1), zPos,
+				ntubeFlangeThickness);
 	}
+
+	G4double const innerLength = tubeLength - ntubeFlangeThickness * 2;
+	G4double const innerPos = zPos + ntubeFlangeThickness;
 
 	{
 		G4String const sInner = util::NameBuilder::Make("ntube", ntubeNo,
 				"inner");
 		auto const solidInner = new G4Tubs(sInner, 0, ntubeInnerRadius,
-				tubeLength / 2, 0.0 * deg, 360.0 * deg);
+				innerLength / 2, 0.0 * deg, 360.0 * deg);
 		auto const logicInner = new G4LogicalVolume(solidInner,
 				nist->FindOrBuildMaterial(ntubeInnerMaterial), sInner);
 		logicInner->SetVisAttributes(
 				G4VisAttributes(repository::Colours::Air()));
-		PlaceComponent(logicWorld, logicInner, zPos);
+		PlaceComponent(logicWorld, logicInner, innerPos, innerLength);
 	}
 
 	{
 		G4String const sOuter = util::NameBuilder::Make("ntube", ntubeNo,
 				"outer");
 		auto const solidOuter = new G4Tubs(sOuter, ntubeInnerRadius,
-				ntubeOuterRadius, tubeLength / 2, 0.0 * deg, 360.0 * deg);
+				ntubeOuterRadius, innerLength / 2, 0.0 * deg, 360.0 * deg);
 		auto const logicOuter = new G4LogicalVolume(solidOuter,
 				nist->FindOrBuildMaterial(ntubeMaterial), sOuter);
 		logicOuter->SetVisAttributes(
 				G4VisAttributes(repository::Colours::Aluminium()));
-		PlaceComponent(logicWorld, logicOuter, zPos);
+		PlaceComponent(logicWorld, logicOuter, innerPos, innerLength);
 	}
 
 	{
-		PlaceComponent(logicWorld, MakeFlange(ntubeNo, 2), zPos);
+		PlaceComponent(logicWorld, MakeFlange(ntubeNo, 2),
+				zPos + tubeLength - ntubeFlangeThickness, ntubeFlangeThickness);
 	}
 
 }

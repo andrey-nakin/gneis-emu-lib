@@ -54,7 +54,7 @@ G4LogicalVolume* CollimatorC2::Instance(const G4String &name,
 
 G4String CollimatorC2::GetDefaultName() {
 
-	return util::NameBuilder::Make("Collimator", "C2");
+	return util::NameBuilder::Make("c", "2");
 
 }
 

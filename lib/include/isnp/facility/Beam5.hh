@@ -43,14 +43,14 @@ private:
 	G4double diameter;
 	G4int verboseLevel;
 	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness,
-			ntube1Length;
+			ntube1Length, ntube2Length;
 	G4String ntubeMaterial, ntubeFlangeMaterial, ntubeInnerMaterial;
 	G4double worldRadius;
 
 	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,
-			G4double position);
+			G4double position, G4double componentLength);
 	void PlaceCollimator(G4LogicalVolume *world, G4LogicalVolume *collimator,
-			G4double position);
+			G4double position, G4double collimatorLength);
 
 	G4VSolid* MakeCylinder(G4String const &name, G4double halfLength);
 	G4VSensitiveDetector* MakeDefaultDetector();

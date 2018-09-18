@@ -1,3 +1,4 @@
+#include <sstream>
 #include "isnp/util/NameBuilder.hh"
 
 G4String isnp::util::NameBuilder::Make(const char *parent, const char *child) {
@@ -23,7 +24,11 @@ G4String isnp::util::NameBuilder::Make(const char *s1, int const s2,
 	G4String s = "";
 	s += s1;
 	s += GetSeparator();
-	s += s2;
+	{
+		std::stringstream ss;
+		ss << s2;
+		s += ss.str();
+	}
 	s += GetSeparator();
 	s += s3;
 	return s;
@@ -51,11 +56,19 @@ G4String isnp::util::NameBuilder::Make(const char *s1, int const s2,
 	G4String s = "";
 	s += s1;
 	s += GetSeparator();
-	s += s2;
+	{
+		std::stringstream ss;
+		ss << s2;
+		s += ss.str();
+	}
 	s += GetSeparator();
 	s += s3;
 	s += GetSeparator();
-	s += s4;
+	{
+		std::stringstream ss;
+		ss << s4;
+		s += ss.str();
+	}
 	return s;
 
 }
