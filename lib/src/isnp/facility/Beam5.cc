@@ -60,7 +60,8 @@ G4VPhysicalVolume* Beam5::Construct() {
 	auto const solidWorld = MakeCylinder(nameWorld, zeroPosition + length);
 	auto const logicWorld = new G4LogicalVolume(solidWorld,
 			nist->FindOrBuildMaterial("G4_Galactic"), nameWorld);
-	logicWorld->SetVisAttributes(G4VisAttributes::Invisible);
+	logicWorld->SetVisAttributes(
+			G4VisAttributes(true, repository::Colours::Air()));
 
 	auto const physWorld = new G4PVPlacement(noRotation, G4ThreeVector(),
 			logicWorld, nameWorld, nullptr, single, numOfCopies, checkOverlaps);
