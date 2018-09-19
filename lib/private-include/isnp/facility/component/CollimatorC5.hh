@@ -16,6 +16,7 @@ class CollimatorC5 final : public CylindricComponent {
 public:
 
 	CollimatorC5(G4double innerDiameter);
+	CollimatorC5(G4double innerDiameter, G4String const& material);
 
 	G4String GetDefaultName() const override;
 

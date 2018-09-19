@@ -68,14 +68,45 @@ static std::unique_ptr<G4UIcmdWithAnInteger> MakeVerboseLevel(
 
 }
 
+static std::unique_ptr<G4UIcmdWithAString> MakeC5Material(
+		Beam5Messenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithAString
+			> (DIR "c5/material", inst);
+	result->SetGuidance("Set a material of collimator #5");
+	result->SetParameterName("material", false);
+	result->AvailableForStates(G4State_PreInit);
+
+	return result;
+
+}
+
 Beam5Messenger::Beam5Messenger(Beam5& facility_) :
 		facility(facility_), directory(MakeDirectory()), diameterCmd(
 				MakeDiameter(this)), angleCmd(MakeAngle(this)), verboseCmd(
-				MakeVerboseLevel(this)) {
+				MakeVerboseLevel(this)), c5MaterialCmd(MakeC5Material(this)) {
 
 }
 
 Beam5Messenger::~Beam5Messenger() {
+
+}
+
+G4String Beam5Messenger::GetCurrentValue(G4UIcommand* const command) {
+
+	G4String ans;
+
+	if (command == diameterCmd.get()) {
+		ans = diameterCmd->ConvertToString(facility.GetDiameter());
+	} else if (command == angleCmd.get()) {
+		ans = angleCmd->ConvertToString(facility.GetAngle());
+	} else if (command == verboseCmd.get()) {
+		ans = verboseCmd->ConvertToString(facility.GetVerboseLevel());
+	} else if (command == c5MaterialCmd.get()) {
+		ans = facility.GetC5Material();
+	}
+
+	return ans;
 
 }
 
@@ -88,6 +119,8 @@ void Beam5Messenger::SetNewValue(G4UIcommand* const command,
 		facility.SetAngle(angleCmd->GetNewDoubleValue(newValue));
 	} else if (command == verboseCmd.get()) {
 		facility.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
+	} else if (command == c5MaterialCmd.get()) {
+		facility.SetC5Material(newValue);
 	}
 
 }

@@ -42,7 +42,7 @@ Beam5::Beam5() :
 				2. * mm), detectorZPosition(36. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
 				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
 				"G4_CONCRETE"), worldMaterial("G4_AIR"), windowMaterial(
-				"G4_Al"), worldRadius(190. * mm) {
+				"G4_Al"), c5Material("BR05C5S5"), worldRadius(190. * mm) {
 }
 
 Beam5::~Beam5() {
@@ -310,7 +310,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 					<< diameter / mm << " mm" << G4endl;
 		}
 
-		component::CollimatorC5 const c(diameter);
+		component::CollimatorC5 const c(diameter, c5Material);
 
 		// first flange
 		PlaceComponent(logicWorld, MakeFlange(4, 1), zPos,
@@ -466,6 +466,18 @@ void Beam5::SetVerboseLevel(G4int const aVerboseLevel) {
 void Beam5::SetDetector(G4VSensitiveDetector* aDetector) {
 
 	detector = aDetector;
+
+}
+
+G4String const& Beam5::GetC5Material() const {
+
+	return c5Material;
+
+}
+
+void Beam5::SetC5Material(G4String const& aMaterial) {
+
+	c5Material = aMaterial;
 
 }
 

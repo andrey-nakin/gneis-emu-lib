@@ -37,6 +37,9 @@ public:
 	void SetDetector(G4VSensitiveDetector* aDetector);
 	G4VSensitiveDetector* GetDetector() const;
 
+	G4String const& GetC5Material() const;
+	void SetC5Material(G4String const& aMaterial);
+
 private:
 
 	std::unique_ptr<Beam5Messenger> const messenger;
@@ -49,11 +52,12 @@ private:
 			ntube1Length, ntube2Length, ntube4Length, ntube5Length, wallLength,
 			windowThickness, detectorZPosition;
 	G4String ntubeMaterial, ntubeFlangeMaterial, ntubeInnerMaterial,
-			wallMaterial, worldMaterial, windowMaterial;
+			wallMaterial, worldMaterial, windowMaterial, c5Material;
 	G4double worldRadius;
 
 	void PlaceComponent(G4LogicalVolume *world, G4LogicalVolume *component,
-			G4double position, G4double componentLength, G4bool checkOverlaps = true);
+			G4double position, G4double componentLength, G4bool checkOverlaps =
+					true);
 	void PlaceCollimator(G4LogicalVolume *world, G4LogicalVolume *collimator,
 			G4double position, G4double collimatorLength);
 
