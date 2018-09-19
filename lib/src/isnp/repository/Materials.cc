@@ -65,7 +65,8 @@ void Materials::CreateMaterials() {
 		elements.push_back("Si");
 		fractionMass.push_back(0.0005);
 
-		nist->ConstructNewMaterial("BR05C5S5", elements, fractionMass, 8.800);
+		nist->ConstructNewMaterial("BR05C5S5", elements, fractionMass,
+				8.800 * g / cm3);
 	}
 
 	{
@@ -101,11 +102,12 @@ void Materials::CreateMaterials() {
 		elements.push_back("Al");
 		fractionMass.push_back(0.9445);
 
-		nist->ConstructNewMaterial("DUR_AMG3", elements, fractionMass, 2.660);
+		nist->ConstructNewMaterial("DUR_AMG3", elements, fractionMass,
+				2.660 * g / cm3);
 	}
 
 	{
-		nist->ConstructNewGasMaterial("FOREVACUUM_100", "G4_AIR", 293. * kelvin,
+		nist->ConstructNewGasMaterial("FOREVACUUM_100", "G4_AIR", 293.150 * kelvin,
 				0.01 * atmosphere);
 	}
 

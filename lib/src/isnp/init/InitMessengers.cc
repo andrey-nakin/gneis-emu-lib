@@ -3,6 +3,7 @@
 #include "isnp/init/PhysListMessenger.hh"
 #include "isnp/init/FacilityMessenger.hh"
 #include "isnp/init/UserActionMessenger.hh"
+#include "isnp/repository/Materials.hh"
 
 namespace isnp {
 
@@ -14,6 +15,7 @@ InitMessengers::InitMessengers(G4RunManager& aRunManager) :
 				new FacilityMessenger(aRunManager)), userActionMessenger(
 				new UserActionMessenger(aRunManager)) {
 
+	repository::Materials::GetInstance();
 }
 
 InitMessengers::~InitMessengers() {

@@ -9,7 +9,6 @@
 #include "isnp/runner/BasicRunner.hh"
 #include "isnp/runner/CommandLineParser.hh"
 #include "isnp/init/InitMessengers.hh"
-#include "isnp/repository/Materials.hh"
 
 namespace isnp {
 
@@ -33,8 +32,6 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 	G4RunManager runManager;
 	init::InitMessengers initMessengers(runManager);
 
-	repository::Materials::GetInstance();
-
 	auto uiManager = G4UImanager::GetUIpointer();
 
 	if (parser->GetArgc() > 1) {
@@ -56,7 +53,6 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 		closure(runManager);
 
 		uiManager->ApplyCommand("/control/execute vis.mac");
-//		uiManager->ApplyCommand("/run/initialize");
 		ui->SessionStart();
 		delete ui;
 #endif
