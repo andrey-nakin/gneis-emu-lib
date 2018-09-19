@@ -25,9 +25,6 @@ public:
 	G4double GetAngle() const;
 	void SetAngle(G4double angle);
 
-	G4double GetDiameter() const;
-	void SetDiameter(G4double angle);
-
 	G4double GetDetectorZPosition() const;
 	void SetDetectorZPosition(G4double pos);
 
@@ -36,6 +33,9 @@ public:
 
 	void SetDetector(G4VSensitiveDetector* aDetector);
 	G4VSensitiveDetector* GetDetector() const;
+
+	G4double GetC5Diameter() const;
+	void SetC5Diameter(G4double angle);
 
 	G4String const& GetC5Material() const;
 	void SetC5Material(G4String const& aMaterial);
@@ -46,7 +46,7 @@ private:
 	G4VSensitiveDetector* detector;
 	G4double zeroPosition, worldLength, angle;
 	G4bool collimatorsHaveDetectors;
-	G4double diameter;
+	G4double c5Diameter;
 	G4int verboseLevel;
 	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness,
 			ntube1Length, ntube2Length, ntube4Length, ntube5Length, wallLength,

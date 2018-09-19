@@ -35,7 +35,7 @@ Beam5::Beam5() :
 		G4VUserDetectorConstruction(), messenger(
 				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
 				0.5 * m), worldLength(50.5 * m), angle(30.0 * deg), collimatorsHaveDetectors(
-				false), diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
+				false), c5Diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
 				1. * mm), ntube1Length(4.5 * m), ntube2Length(7.7 * m), ntube4Length(
 				5.8 * m), ntube5Length(8.6 * m), wallLength(6. * m), windowThickness(
@@ -306,11 +306,11 @@ G4VPhysicalVolume* Beam5::Construct() {
 		// Neutron tube #4 and collimator #5
 
 		if (verboseLevel >= 1 && G4Threading::IsMasterThread()) {
-			G4cout << "Beam5: creating collimator #5 with diameter "
-					<< diameter / mm << " mm" << G4endl;
+			G4cout << "Beam5: creating collimator #5 of " << c5Material
+					<< " with diameter " << c5Diameter / mm << " mm" << G4endl;
 		}
 
-		component::CollimatorC5 const c(diameter, c5Material);
+		component::CollimatorC5 const c(c5Diameter, c5Material);
 
 		// first flange
 		PlaceComponent(logicWorld, MakeFlange(4, 1), zPos,
@@ -431,18 +431,6 @@ void Beam5::SetAngle(G4double const aAngle) {
 
 }
 
-G4double Beam5::GetDiameter() const {
-
-	return diameter;
-
-}
-
-void Beam5::SetDiameter(G4double const aDiameter) {
-
-	this->diameter = aDiameter;
-
-}
-
 G4double Beam5::GetDetectorZPosition() const {
 
 	return detectorZPosition;
@@ -466,6 +454,18 @@ void Beam5::SetVerboseLevel(G4int const aVerboseLevel) {
 void Beam5::SetDetector(G4VSensitiveDetector* aDetector) {
 
 	detector = aDetector;
+
+}
+
+G4double Beam5::GetC5Diameter() const {
+
+	return c5Diameter;
+
+}
+
+void Beam5::SetC5Diameter(G4double const aDiameter) {
+
+	this->c5Diameter = aDiameter;
 
 }
 

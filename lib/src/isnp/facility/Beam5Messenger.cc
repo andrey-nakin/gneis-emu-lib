@@ -22,12 +22,12 @@ static std::unique_ptr<G4UIdirectory> MakeDirectory() {
 
 }
 
-static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeDiameter(
+static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeC5Diameter(
 		Beam5Messenger* const inst) {
 
 	auto result = std::make_unique < G4UIcmdWithADoubleAndUnit
-			> (DIR "diameter", inst);
-	result->SetGuidance("Set the final collimator's diameter");
+			> (DIR "c5/diameter", inst);
+	result->SetGuidance("Set the 5th collimator's diameter");
 	result->SetParameterName("diameter", false);
 	result->SetUnitCategory(G4UnitDefinition::GetCategory("mm"));
 	result->AvailableForStates(G4State_PreInit);
@@ -82,8 +82,8 @@ static std::unique_ptr<G4UIcmdWithAString> MakeC5Material(
 }
 
 Beam5Messenger::Beam5Messenger(Beam5& facility_) :
-		facility(facility_), directory(MakeDirectory()), diameterCmd(
-				MakeDiameter(this)), angleCmd(MakeAngle(this)), verboseCmd(
+		facility(facility_), directory(MakeDirectory()), c5DiameterCmd(
+				MakeC5Diameter(this)), angleCmd(MakeAngle(this)), verboseCmd(
 				MakeVerboseLevel(this)), c5MaterialCmd(MakeC5Material(this)) {
 
 }
@@ -96,8 +96,8 @@ G4String Beam5Messenger::GetCurrentValue(G4UIcommand* const command) {
 
 	G4String ans;
 
-	if (command == diameterCmd.get()) {
-		ans = diameterCmd->ConvertToString(facility.GetDiameter());
+	if (command == c5DiameterCmd.get()) {
+		ans = c5DiameterCmd->ConvertToString(facility.GetC5Diameter());
 	} else if (command == angleCmd.get()) {
 		ans = angleCmd->ConvertToString(facility.GetAngle());
 	} else if (command == verboseCmd.get()) {
@@ -113,8 +113,8 @@ G4String Beam5Messenger::GetCurrentValue(G4UIcommand* const command) {
 void Beam5Messenger::SetNewValue(G4UIcommand* const command,
 		G4String const newValue) {
 
-	if (command == diameterCmd.get()) {
-		facility.SetDiameter(diameterCmd->GetNewDoubleValue(newValue));
+	if (command == c5DiameterCmd.get()) {
+		facility.SetC5Diameter(c5DiameterCmd->GetNewDoubleValue(newValue));
 	} else if (command == angleCmd.get()) {
 		facility.SetAngle(angleCmd->GetNewDoubleValue(newValue));
 	} else if (command == verboseCmd.get()) {

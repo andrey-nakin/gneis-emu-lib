@@ -9,20 +9,6 @@ namespace isnp {
 
 namespace facility {
 
-TEST(Beam5Messenger, SetDiameter) {
-
-	Beam5 facility;
-	auto const uiManager = G4UImanager::GetUIpointer();
-
-	EXPECT_DOUBLE_EQ(100 * mm, facility.GetDiameter());
-	EXPECT_EQ(0,
-			uiManager->ApplyCommand("/isnp/facility/beam5/diameter 50 mm"));
-	EXPECT_DOUBLE_EQ(50 * mm, facility.GetDiameter());
-	EXPECT_EQ(0x18f,
-			uiManager->ApplyCommand("/isnp/facility/beam5/diameter 0 mm"));
-
-}
-
 TEST(Beam5Messenger, SetAngle) {
 
 	Beam5 facility;
@@ -45,6 +31,20 @@ TEST(Beam5Messenger, SetVerbose) {
 	EXPECT_EQ(0x18f,
 			uiManager->ApplyCommand("/isnp/facility/beam5/verbose -1"));
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/facility/beam5/verbose 4"));
+
+}
+
+TEST(Beam5Messenger, SetC5Diameter) {
+
+	Beam5 facility;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_DOUBLE_EQ(100 * mm, facility.GetC5Diameter());
+	EXPECT_EQ(0,
+			uiManager->ApplyCommand("/isnp/facility/beam5/c5/diameter 50 mm"));
+	EXPECT_DOUBLE_EQ(50 * mm, facility.GetC5Diameter());
+	EXPECT_EQ(0x18f,
+			uiManager->ApplyCommand("/isnp/facility/beam5/c5/diameter 0 mm"));
 
 }
 
