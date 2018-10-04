@@ -3,6 +3,7 @@
 #include <G4Box.hh>
 #include <G4LogicalVolume.hh>
 #include <G4VisAttributes.hh>
+#include <G4PVPlacement.hh>
 
 #include "isnp/facility/component/SpallationTarget.hh"
 #include "isnp/repository/Colours.hh"
@@ -14,51 +15,44 @@ namespace facility {
 
 namespace component {
 
-const G4double SpallationTarget::width = 200.0 * mm;
-const G4double SpallationTarget::height = 50.0 * mm;
-const G4double SpallationTarget::length = 400.0 * mm;
 G4Transform3D SpallationTarget::transform;
+
+SpallationTarget::SpallationTarget() :
+		util::Box(200.0 * mm, 50.0 * mm, 400.0 * mm) {
+}
 
 G4LogicalVolume* SpallationTarget::Instance() {
 	return Instance(util::NameBuilder::Make("Spallation", "Target"));
 }
 
-G4LogicalVolume* SpallationTarget::Instance(
-		const G4String &name) {
+G4LogicalVolume* SpallationTarget::Instance(const G4String &name) {
 
 	const auto nist = G4NistManager::Instance();
 
 	const auto solid = new G4Box(name, GetHalfWidth(), GetHalfHeight(),
 			GetHalfLength());
 
-	const auto logic = new G4LogicalVolume(solid, nist->FindOrBuildMaterial("G4_Pb"), name);
+	const auto logic = new G4LogicalVolume(solid,
+			nist->FindOrBuildMaterial("G4_Pb"), name);
 	logic->SetVisAttributes(G4VisAttributes(repository::Colours::Lead()));
 
 	return logic;
 }
 
-G4double SpallationTarget::GetWidth() {
-	return width;
-}
+void SpallationTarget::Place(G4LogicalVolume* const destination,
+		G4Transform3D const& transform) {
 
-G4double SpallationTarget::GetHeight() {
-	return height;
-}
+	G4bool const single = false;
+	G4int const numOfCopies = 0;
+	G4bool const checkOverlaps = true;
 
-G4double SpallationTarget::GetLength() {
-	return length;
-}
+	SetTransform(transform);
 
-G4double SpallationTarget::GetHalfWidth() {
-	return HalfOf(GetWidth());
-}
+	auto const logicSpTarget = Instance();
 
-G4double SpallationTarget::GetHalfHeight() {
-	return HalfOf(GetHeight());
-}
+	new G4PVPlacement(transform, logicSpTarget, logicSpTarget->GetName(),
+			destination, single, numOfCopies, checkOverlaps);
 
-G4double SpallationTarget::GetHalfLength() {
-	return HalfOf(GetLength());
 }
 
 }

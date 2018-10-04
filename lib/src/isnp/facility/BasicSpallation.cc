@@ -51,12 +51,14 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 	G4int const numOfCopies = 0;
 	G4bool const checkOverlaps = true;
 
+	SpallationTarget spTarget;
+
 	if (worldRadius < 1 * mm) {
 		// auto-calculate
 		auto targetBounds = std::sqrt(
-				Square(SpallationTarget::GetHalfWidth())
-						+ Square(SpallationTarget::GetHalfHeight())
-						+ Square(SpallationTarget::GetHalfLength()));
+				Square(spTarget.GetHalfWidth())
+						+ Square(spTarget.GetHalfHeight())
+						+ Square(spTarget.GetHalfLength()));
 		auto detectorBounds = std::sqrt(
 				Square(HalfOf(GetDetectorWidth()))
 						+ Square(HalfOf(GetDetectorHeight())));
@@ -81,15 +83,13 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 	{
 		// Neutron source
-		auto const logicSpTarget = SpallationTarget::Instance();
 		G4RotationMatrix rotm = G4RotationMatrix();
 		rotm.rotateY(GetHorizontalAngle());
 		rotm.rotateX(GetVerticalAngle());
 		G4Transform3D const transform = G4Transform3D(rotm,
 				G4ThreeVector(0, 0, 0));
-		component::SpallationTarget::SetTransform(transform);
-		new G4PVPlacement(transform, logicSpTarget, logicSpTarget->GetName(),
-				logicWorld, single, numOfCopies, checkOverlaps);
+
+		spTarget.Place(logicWorld, transform);
 	}
 
 	if (!detector) {

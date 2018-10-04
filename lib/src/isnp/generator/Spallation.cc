@@ -82,7 +82,7 @@ G4ThreeVector Spallation::GeneratePosition(
 
 	position.setX(position.getX() + positionX);
 	position.setY(position.getY() + positionY);
-	position.setZ(position.getZ() - SpallationTarget::GetHalfLength());
+	position.setZ(position.getZ() - 200 * mm);
 	position.transform(transform.getRotation());
 	position += transform.getTranslation();
 

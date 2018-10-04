@@ -71,15 +71,14 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 	{
 		// Neutron source
-		auto const logicSpTarget = component::SpallationTarget::Instance();
 		G4RotationMatrix rotm = G4RotationMatrix();
 		rotm.rotateY(angle);
 		G4ThreeVector const position = G4ThreeVector(0, 0,
 				0.5 * (zeroPosition - worldLength));
 		G4Transform3D const transform = G4Transform3D(rotm, position);
-		component::SpallationTarget::SetTransform(transform);
-		new G4PVPlacement(transform, logicSpTarget, logicSpTarget->GetName(),
-				logicWorld, single, numOfCopies, checkOverlaps);
+
+		component::SpallationTarget spTarget;
+		spTarget.Place(logicWorld, transform);
 	}
 
 	G4double zPos = 5.4 * m;
