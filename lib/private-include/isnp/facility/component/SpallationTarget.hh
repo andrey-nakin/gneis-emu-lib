@@ -21,10 +21,6 @@ class SpallationTargetMessenger;
  * used as source of neutrons in the spallation process.
  */
 class SpallationTarget final : private BoxComponent, public util::Box {
-
-	G4LogicalVolume* Instance();
-	G4LogicalVolume* Instance(const G4String &name);
-
 public:
 
 	SpallationTarget();
@@ -49,6 +45,7 @@ public:
 private:
 
 	std::unique_ptr<SpallationTargetMessenger> const messenger;
+	G4double const coolerInnerRadius, coolerOuterRadius, coolerTorusMinRadius;
 	G4bool hasCooler;
 
 	static G4Transform3D transform;

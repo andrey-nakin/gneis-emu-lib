@@ -20,8 +20,10 @@ public:
 	static G4Colour Bronze();
 	static G4Colour Steel();
 	static G4Colour Aluminium();
+	static G4Colour Copper();
 	static G4Colour Concrete();
 	static G4Colour Air();
+	static G4Colour Water();
 
 private:
 

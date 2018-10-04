@@ -24,12 +24,20 @@ G4Colour Colours::Aluminium() {
 	return FromRGB(136, 137, 139);
 }
 
+G4Colour Colours::Copper() {
+	return FromRGB(184, 115, 51);
+}
+
 G4Colour Colours::Concrete() {
 	return FromRGB(127, 128, 118);
 }
 
 G4Colour Colours::Air() {
 	return FromRGBA(116, 231, 238, 32);
+}
+
+G4Colour Colours::Water() {
+	return FromRGBA(219, 230, 232, 64);
 }
 
 G4Colour Colours::FromRGB(short const red, short const green,
