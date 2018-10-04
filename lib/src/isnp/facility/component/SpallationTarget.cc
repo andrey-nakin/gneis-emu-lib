@@ -107,44 +107,48 @@ void SpallationTarget::Place(G4LogicalVolume* const destination,
 		// support
 		auto const supMaterial = nist->FindOrBuildMaterial(supportMaterial);
 
-		auto const holeSolid = new G4DisplacedSolid("",
-				new G4Tubs("", 0., 5. * mm, GetHalfHeight(), 0.0 * deg,
-						360.0 * deg), G4RotateX3D(90. * deg));
-
 		{
 			// screw 1
-			auto const hole = new G4DisplacedSolid("", holeSolid,
-					G4TranslateZ3D(-140. * mm));
-			auto const logic = new G4LogicalVolume(hole, supMaterial,
-					NameBuilder::Make(solidTarget->GetName(), "screw1"));
+			auto const solid = new G4DisplacedSolid(
+					NameBuilder::Make(solidTarget->GetName(), "screw1"),
+					new G4Tubs("", 0., 5. * mm, GetHalfHeight(), 0.0 * deg,
+							360.0 * deg), G4RotateX3D(90. * deg));
+			auto const logic = new G4LogicalVolume(solid, supMaterial,
+					solid->GetName());
 			logic->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Aluminium()));
-			new G4PVPlacement(zeroTransform, logic, logic->GetName(),
-					logicTarget, single, numOfCopies, checkOverlaps);
+			new G4PVPlacement(transform * G4TranslateZ3D(-140. * mm), logic,
+					logic->GetName(), destination, single, numOfCopies,
+					checkOverlaps);
 		}
 
 		{
 			// screw 2
-			auto const hole = new G4DisplacedSolid("", holeSolid,
-					G4TranslateZ3D(140. * mm));
-			auto const logic = new G4LogicalVolume(hole, supMaterial,
-					NameBuilder::Make(solidTarget->GetName(), "screw2"));
+			auto const solid = new G4DisplacedSolid(
+					NameBuilder::Make(solidTarget->GetName(), "screw2"),
+					new G4Tubs("", 0., 5. * mm, GetHalfHeight(), 0.0 * deg,
+							360.0 * deg), G4RotateX3D(90. * deg));
+			auto const logic = new G4LogicalVolume(solid, supMaterial,
+					solid->GetName());
 			logic->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Aluminium()));
-			new G4PVPlacement(zeroTransform, logic, logic->GetName(),
-					logicTarget, single, numOfCopies, checkOverlaps);
+			new G4PVPlacement(transform * G4TranslateZ3D(140. * mm), logic,
+					logic->GetName(), destination, single, numOfCopies,
+					checkOverlaps);
 		}
 
 		{
 			// plane
-			auto const solid = new G4Box("", GetHalfWidth() + 5. * mm, 5. * mm,
+			auto const solid = new G4Box(
+					NameBuilder::Make(logicTarget->GetName(), "plane"),
+					GetHalfWidth() + 5. * mm, 5. * mm,
 					GetHalfLength() + 5. * mm);
 			auto const logic = new G4LogicalVolume(solid, supMaterial,
 					solid->GetName());
 			logic->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Aluminium()));
-			new G4PVPlacement(G4TranslateY3D(-30. * mm), logic,
-					logic->GetName(), logicTarget, single, numOfCopies,
+			new G4PVPlacement(transform * G4TranslateY3D(-30. * mm), logic,
+					logic->GetName(), destination, single, numOfCopies,
 					checkOverlaps);
 		}
 	}
@@ -163,8 +167,8 @@ void SpallationTarget::Place(G4LogicalVolume* const destination,
 					nist->FindOrBuildMaterial("G4_WATER"), solid->GetName());
 			logic->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Water()));
-			new G4PVPlacement(zeroTransform, logic, logic->GetName(),
-					logicTarget, single, numOfCopies, checkOverlaps);
+			new G4PVPlacement(transform, logic, logic->GetName(), destination,
+					single, numOfCopies, checkOverlaps);
 		}
 
 		{
@@ -178,8 +182,8 @@ void SpallationTarget::Place(G4LogicalVolume* const destination,
 					nist->FindOrBuildMaterial("G4_Cu"), solid->GetName());
 			logic->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Copper()));
-			new G4PVPlacement(zeroTransform, logic, logic->GetName(),
-					logicTarget, single, numOfCopies, checkOverlaps);
+			new G4PVPlacement(transform, logic, logic->GetName(), destination,
+					single, numOfCopies, checkOverlaps);
 		}
 	}
 
