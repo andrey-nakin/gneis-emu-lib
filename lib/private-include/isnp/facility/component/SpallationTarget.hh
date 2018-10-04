@@ -46,6 +46,7 @@ private:
 
 	std::unique_ptr<SpallationTargetMessenger> const messenger;
 	G4double const coolerInnerRadius, coolerOuterRadius, coolerTorusMinRadius;
+	G4String const supportMaterial;
 	G4bool hasCooler;
 
 	static G4Transform3D transform;
