@@ -55,10 +55,7 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 	if (worldRadius < 1 * mm) {
 		// auto-calculate
-		auto targetBounds = std::sqrt(
-				Square(spallationTarget->GetHalfWidth())
-						+ Square(spallationTarget->GetHalfHeight())
-						+ Square(spallationTarget->GetHalfLength()));
+		auto targetBounds = 250. * mm;
 		auto detectorBounds = std::sqrt(
 				Square(HalfOf(GetDetectorWidth()))
 						+ Square(HalfOf(GetDetectorHeight())));
