@@ -1,4 +1,7 @@
 # isnp-emu-lib
+
+[url=https://www.openhub.net/accounts/andrey-nakin?ref=sample' target='_blank][img]https://www.openhub.net/accounts/andrey-nakin/widgets/account_detailed?format=gif&ref=sample[/img]][/url]
+
 ISNP facility modeling library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
 
 ## Requirements
