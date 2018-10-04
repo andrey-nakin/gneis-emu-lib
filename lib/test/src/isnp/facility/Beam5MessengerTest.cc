@@ -14,7 +14,7 @@ TEST(Beam5Messenger, SetAngle) {
 	Beam5 facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
 
-	EXPECT_DOUBLE_EQ(30 * deg, facility.GetAngle());
+	EXPECT_DOUBLE_EQ(32 * deg, facility.GetAngle());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/angle 25 deg"));
 	EXPECT_DOUBLE_EQ(25 * deg, facility.GetAngle());
 

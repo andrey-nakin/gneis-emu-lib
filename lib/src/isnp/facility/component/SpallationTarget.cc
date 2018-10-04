@@ -6,6 +6,7 @@
 #include <G4VisAttributes.hh>
 #include <G4PVPlacement.hh>
 #include <G4SubtractionSolid.hh>
+#include <G4ExtrudedSolid.hh>
 
 #include "isnp/facility/component/SpallationTarget.hh"
 #include "isnp/facility/component/SpallationTargetMessenger.hh"
@@ -43,6 +44,27 @@ void SpallationTarget::Place(G4LogicalVolume* const destination,
 
 	G4VSolid* solidTarget = new G4Box(NameBuilder::Make("spallation", "target"),
 			GetHalfWidth(), GetHalfHeight(), GetHalfLength());
+
+	{
+		// face cut
+		std::vector<G4TwoVector> polygon;
+		polygon.push_back(G4TwoVector(-100. * mm, -300. * mm));
+		polygon.push_back(G4TwoVector(200. * mm, -300. * mm));
+		polygon.push_back(G4TwoVector(200. * mm, 0. * mm));
+
+		std::vector<G4ExtrudedSolid::ZSection> zsections;
+		zsections.push_back(
+				G4ExtrudedSolid::ZSection(-50. * mm, G4TwoVector(), 1.0));
+		zsections.push_back(
+				G4ExtrudedSolid::ZSection(50. * mm, G4TwoVector(), 1.0));
+
+		G4Transform3D const t = G4RotateX3D(90. * deg);
+		auto const face = new G4DisplacedSolid("",
+				new G4ExtrudedSolid("", polygon, zsections), t);
+
+		solidTarget = new G4SubtractionSolid(solidTarget->GetName(),
+				solidTarget, face);
+	}
 
 	G4Transform3D const coolerTransform = G4RotateX3D(90. * deg);
 

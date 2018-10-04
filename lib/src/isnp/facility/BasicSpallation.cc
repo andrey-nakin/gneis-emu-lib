@@ -29,7 +29,7 @@ BasicSpallation::BasicSpallation() :
 		detector(nullptr), messenger(
 				std::make_unique < BasicSpallationMessenger > (*this)), spallationTarget(
 				std::make_unique<component::SpallationTarget>()), worldRadius(
-				0.0), horizontalAngle(30.0 * deg), verticalAngle(0.0 * deg), distance(
+				0.0), horizontalAngle(32.0 * deg), verticalAngle(0.0 * deg), distance(
 				1.0 * m), detectorWidth(10 * cm), detectorHeight(10 * cm), detectorLength(
 				1.0 * cm), verboseLevel(0), worldMaterial(
 				DEFAULT_WORLD_MATERIAL), logicWorld(nullptr) {

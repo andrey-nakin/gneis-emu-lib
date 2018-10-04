@@ -17,7 +17,7 @@ TEST(BasicSpallationMessenger, GetHorizontalAngle)
 	BasicSpallation facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
 
-	EXPECT_NEAR(30 * deg, uiManager->GetCurrentDoubleValue("/isnp/facility/basicSpallation/horizontalAngle"), GET_CURRENT_DOUBLE_VALUE_DELTA);
+	EXPECT_NEAR(32 * deg, uiManager->GetCurrentDoubleValue("/isnp/facility/basicSpallation/horizontalAngle"), GET_CURRENT_DOUBLE_VALUE_DELTA);
 	facility.SetHorizontalAngle(25 * deg);
 	EXPECT_NEAR(25 * deg, uiManager->GetCurrentDoubleValue("/isnp/facility/basicSpallation/horizontalAngle"), GET_CURRENT_DOUBLE_VALUE_DELTA);
 
@@ -29,7 +29,7 @@ TEST(BasicSpallationMessenger, SetHorizontalAngle)
 	BasicSpallation facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
 
-	EXPECT_DOUBLE_EQ(30 * deg, facility.GetHorizontalAngle());
+	EXPECT_DOUBLE_EQ(32 * deg, facility.GetHorizontalAngle());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/basicSpallation/horizontalAngle 25 deg"));
 	EXPECT_DOUBLE_EQ(25 * deg, facility.GetHorizontalAngle());
 
