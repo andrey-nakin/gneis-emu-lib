@@ -1,12 +1,13 @@
 # isnp-emu-lib
 
 [![Project Stats](https://www.openhub.net/p/isnp-emu-lib/widgets/project_thin_badge.gif)](https://www.openhub.net/p/isnp-emu-lib)
+[![Project Stats](https://www.openhub.net/p/isnp-emu-lib/widgets/project_thin_badge.gif)](https://www.openhub.net/p/isnp-emu-lib)
 
 ISNP facility modeling library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
 
 ## Requirements
 
-* C++14 compiler or higher
+* GCC 4.9.2 or higher
 * CMake 3.1 or higher
 * Geant4 10.4 or higher
 * Google Test 1.7 or higher
