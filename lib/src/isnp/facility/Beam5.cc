@@ -18,6 +18,7 @@
 #include "isnp/facility/Beam5.hh"
 #include "isnp/facility/Beam5Messenger.hh"
 #include "isnp/facility/component/SpallationTarget.hh"
+#include "isnp/facility/component/SpallationTargetMessenger.hh"
 #include "isnp/facility/component/CollimatorC1.hh"
 #include "isnp/facility/component/CollimatorC2.hh"
 #include "isnp/facility/component/CollimatorC3.hh"
@@ -33,7 +34,8 @@ namespace facility {
 
 Beam5::Beam5() :
 		G4VUserDetectorConstruction(), messenger(
-				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
+				std::make_unique < Beam5Messenger > (*this)), spallationTarget(
+						std::make_unique<component::SpallationTarget>()), detector(nullptr), zeroPosition(
 				0.5 * m), worldLength(50.5 * m), angle(30.0 * deg), collimatorsHaveDetectors(
 				false), c5Diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
 				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
@@ -77,8 +79,7 @@ G4VPhysicalVolume* Beam5::Construct() {
 				0.5 * (zeroPosition - worldLength));
 		G4Transform3D const transform = G4Transform3D(rotm, position);
 
-		component::SpallationTarget spTarget;
-		spTarget.Place(logicWorld, transform);
+		spallationTarget->Place(logicWorld, transform);
 	}
 
 	G4double zPos = 5.4 * m;

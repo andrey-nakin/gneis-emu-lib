@@ -12,6 +12,7 @@
 #include "isnp/facility/BasicSpallation.hh"
 #include "isnp/facility/BasicSpallationMessenger.hh"
 #include "isnp/facility/component/SpallationTarget.hh"
+#include "isnp/facility/component/SpallationTargetMessenger.hh"
 #include "isnp/detector/Basic.hh"
 
 namespace isnp {
@@ -26,7 +27,8 @@ static G4double Square(G4double const x) {
 
 BasicSpallation::BasicSpallation() :
 		detector(nullptr), messenger(
-				std::make_unique < BasicSpallationMessenger > (*this)), worldRadius(
+				std::make_unique < BasicSpallationMessenger > (*this)), spallationTarget(
+				std::make_unique<component::SpallationTarget>()), worldRadius(
 				0.0), horizontalAngle(30.0 * deg), verticalAngle(0.0 * deg), distance(
 				1.0 * m), detectorWidth(10 * cm), detectorHeight(10 * cm), detectorLength(
 				1.0 * cm), verboseLevel(0), worldMaterial(
@@ -51,14 +53,12 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 	G4int const numOfCopies = 0;
 	G4bool const checkOverlaps = true;
 
-	SpallationTarget spTarget;
-
 	if (worldRadius < 1 * mm) {
 		// auto-calculate
 		auto targetBounds = std::sqrt(
-				Square(spTarget.GetHalfWidth())
-						+ Square(spTarget.GetHalfHeight())
-						+ Square(spTarget.GetHalfLength()));
+				Square(spallationTarget->GetHalfWidth())
+						+ Square(spallationTarget->GetHalfHeight())
+						+ Square(spallationTarget->GetHalfLength()));
 		auto detectorBounds = std::sqrt(
 				Square(HalfOf(GetDetectorWidth()))
 						+ Square(HalfOf(GetDetectorHeight())));
@@ -89,7 +89,7 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 		G4Transform3D const transform = G4Transform3D(rotm,
 				G4ThreeVector(0, 0, 0));
 
-		spTarget.Place(logicWorld, transform);
+		spallationTarget->Place(logicWorld, transform);
 	}
 
 	if (!detector) {
@@ -211,6 +211,12 @@ G4VSensitiveDetector* BasicSpallation::GetDetector() const {
 void BasicSpallation::SetDetector(G4VSensitiveDetector* const aDetector) {
 
 	detector = aDetector;
+
+}
+
+std::unique_ptr<component::SpallationTarget> const& BasicSpallation::GetSpallationTarget() {
+
+	return spallationTarget;
 
 }
 

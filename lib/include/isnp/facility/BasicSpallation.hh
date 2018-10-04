@@ -10,6 +10,12 @@ namespace isnp {
 
 namespace facility {
 
+namespace component {
+
+class SpallationTarget;
+
+}
+
 class BasicSpallationMessenger;
 
 class BasicSpallation: public G4VUserDetectorConstruction {
@@ -49,10 +55,13 @@ public:
 	G4VSensitiveDetector* GetDetector() const;
 	void SetDetector(G4VSensitiveDetector* aDetector);
 
+	std::unique_ptr<component::SpallationTarget> const& GetSpallationTarget();
+
 private:
 
 	G4VSensitiveDetector* detector;
 	std::unique_ptr<BasicSpallationMessenger> const messenger;
+	std::unique_ptr<component::SpallationTarget> const spallationTarget;
 	G4double worldRadius, horizontalAngle, verticalAngle, distance,
 			detectorWidth, detectorHeight, detectorLength;
 	G4int verboseLevel;

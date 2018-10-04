@@ -1,5 +1,7 @@
 #ifndef isnp_facility_component_SpallationTarget_hh
-#define spallation_target_hh
+#define isnp_facility_component_SpallationTarget_hh
+
+#include <memory>
 
 #include <G4Transform3D.hh>
 #include <G4LogicalVolume.hh>
@@ -11,6 +13,8 @@ namespace isnp {
 namespace facility {
 
 namespace component {
+
+class SpallationTargetMessenger;
 
 /**
  * Class encapsulates an information about the lead target
@@ -39,7 +43,13 @@ public:
 
 	void Place(G4LogicalVolume* destination, G4Transform3D const& transform);
 
+	G4bool GetHasCooler() const;
+	void SetHasCooler(G4bool v);
+
 private:
+
+	std::unique_ptr<SpallationTargetMessenger> const messenger;
+	G4bool hasCooler;
 
 	static G4Transform3D transform;
 
@@ -51,4 +61,4 @@ private:
 
 }
 
-#endif	//	spallation_target_hh
+#endif	//	isnp_facility_component_SpallationTarget_hh

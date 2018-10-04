@@ -9,6 +9,12 @@ namespace isnp {
 
 namespace facility {
 
+namespace component {
+
+class SpallationTarget;
+
+}
+
 class Beam5Messenger;
 
 class Beam5: public G4VUserDetectorConstruction {
@@ -43,6 +49,7 @@ public:
 private:
 
 	std::unique_ptr<Beam5Messenger> const messenger;
+	std::unique_ptr<component::SpallationTarget> const spallationTarget;
 	G4VSensitiveDetector* detector;
 	G4double zeroPosition, worldLength, angle;
 	G4bool collimatorsHaveDetectors;

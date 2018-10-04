@@ -6,6 +6,7 @@
 #include <G4PVPlacement.hh>
 
 #include "isnp/facility/component/SpallationTarget.hh"
+#include "isnp/facility/component/SpallationTargetMessenger.hh"
 #include "isnp/repository/Colours.hh"
 #include "isnp/util/NameBuilder.hh"
 
@@ -18,7 +19,9 @@ namespace component {
 G4Transform3D SpallationTarget::transform;
 
 SpallationTarget::SpallationTarget() :
-		util::Box(200.0 * mm, 50.0 * mm, 400.0 * mm) {
+		util::Box(200.0 * mm, 50.0 * mm, 400.0 * mm), messenger(
+				std::make_unique < SpallationTargetMessenger > (*this)), hasCooler(
+				true) {
 }
 
 G4LogicalVolume* SpallationTarget::Instance() {
@@ -52,6 +55,18 @@ void SpallationTarget::Place(G4LogicalVolume* const destination,
 
 	new G4PVPlacement(transform, logicSpTarget, logicSpTarget->GetName(),
 			destination, single, numOfCopies, checkOverlaps);
+
+}
+
+G4bool SpallationTarget::GetHasCooler() const {
+
+	return hasCooler;
+
+}
+
+void SpallationTarget::SetHasCooler(G4bool const v) {
+
+	hasCooler = v;
 
 }
 
