@@ -2,7 +2,7 @@
 
 [![Project Stats](https://www.openhub.net/p/isnp-emu-lib/widgets/project_thin_badge.gif)](https://www.openhub.net/p/isnp-emu-lib)
 
-ISNP facility modeling library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
+An [ISNP](https://www.researchgate.net/publication/303380880_ISNPGNEIS_Facility_in_Gatchina_for_Neutron_Testing_with_Atmospheric-Like_Spectrum) facility modeling library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
 
 ## Requirements
 
