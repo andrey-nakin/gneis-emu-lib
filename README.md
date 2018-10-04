@@ -1,6 +1,6 @@
 # isnp-emu-lib
 
-[![Project Stats](https://www.openhub.net/accounts/andrey-nakin/widgets/account_detailed?format=gif&ref=sample)](https://www.openhub.net/accounts/andrey-nakin?ref=sample)
+[![Project Stats](https://www.openhub.net/p/isnp-emu-lib/widgets/project_thin_badge.gif)](https://www.openhub.net/p/isnp-emu-lib)
 
 ISNP facility modeling library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
 
