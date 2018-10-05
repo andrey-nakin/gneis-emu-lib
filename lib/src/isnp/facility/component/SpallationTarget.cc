@@ -141,13 +141,13 @@ void SpallationTarget::Place(G4LogicalVolume* const destination,
 			// plane
 			auto const solid = new G4Box(
 					NameBuilder::Make(logicTarget->GetName(), "plane"),
-					GetHalfWidth() + 5. * mm, 5. * mm,
+					GetHalfWidth() + 5. * mm, 2.5 * mm,
 					GetHalfLength() + 5. * mm);
 			auto const logic = new G4LogicalVolume(solid, supMaterial,
 					solid->GetName());
 			logic->SetVisAttributes(
 					G4VisAttributes(repository::Colours::Aluminium()));
-			new G4PVPlacement(transform * G4TranslateY3D(-30. * mm), logic,
+			new G4PVPlacement(transform * G4TranslateY3D(-27.5 * mm), logic,
 					logic->GetName(), destination, single, numOfCopies,
 					checkOverlaps);
 		}
