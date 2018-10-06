@@ -160,8 +160,8 @@ G4double Resampling::ShootNumber(G4String const& column,
 
 }
 
-G4ThreeVector Resampling::ShootVector(const G4String& columnX,
-		G4String const& columnY, const G4String& columnZ,
+G4ThreeVector Resampling::ShootVector(G4String const & columnX,
+		G4String const& columnY, G4String const & columnZ,
 		util::DataFrame::size_type const rowNo) const {
 
 	return G4ThreeVector(ShootNumber(columnX, rowNo),

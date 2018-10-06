@@ -71,8 +71,8 @@ private:
 	void LoadSampleFile();
 	G4double ShootNumber(G4String const& column,
 			util::DataFrame::size_type rowNo) const;
-	G4ThreeVector ShootVector(G4String const& columnX, const G4String& columnY,
-			const G4String& columnZ, util::DataFrame::size_type rowNo) const;
+	G4ThreeVector ShootVector(G4String const& columnX, G4String const & columnY,
+			G4String const & columnZ, util::DataFrame::size_type rowNo) const;
 
 };
 
