@@ -33,7 +33,7 @@ private:
 
 	Beam5& facility;
 	std::unique_ptr<G4UIdirectory> const directory;
-	std::unique_ptr<G4UIcmdWithADoubleAndUnit> const c5DiameterCmd, angleCmd;
+	std::unique_ptr<G4UIcmdWithADoubleAndUnit> const c5DiameterCmd, xAngleCmd, yAngleCmd;
 	std::unique_ptr<G4UIcmdWithAnInteger> const verboseCmd;
 	std::unique_ptr<G4UIcmdWithAString> const c5MaterialCmd;
 

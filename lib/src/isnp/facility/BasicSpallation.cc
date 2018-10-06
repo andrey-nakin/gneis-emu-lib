@@ -29,7 +29,7 @@ BasicSpallation::BasicSpallation() :
 		detector(nullptr), messenger(
 				std::make_unique < BasicSpallationMessenger > (*this)), spallationTarget(
 				std::make_unique<component::SpallationTarget>()), worldRadius(
-				0.0), horizontalAngle(32.0 * deg), verticalAngle(0.0 * deg), distance(
+				0.0), xAngle(-2.0 * deg), yAngle(-32.0 * deg), distance(
 				1.0 * m), detectorWidth(10 * cm), detectorHeight(10 * cm), detectorLength(
 				1.0 * cm), verboseLevel(0), worldMaterial(
 				DEFAULT_WORLD_MATERIAL), logicWorld(nullptr) {
@@ -81,8 +81,8 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 	{
 		// Neutron source
 		G4RotationMatrix rotm = G4RotationMatrix();
-		rotm.rotateY(GetHorizontalAngle());
-		rotm.rotateX(GetVerticalAngle());
+		rotm.rotateX(-GetXAngle());
+		rotm.rotateY(-GetYAngle());
 		G4Transform3D const transform = G4Transform3D(rotm,
 				G4ThreeVector(0, 0, 0));
 
@@ -121,20 +121,20 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 }
 
-G4double BasicSpallation::GetHorizontalAngle() const {
-	return horizontalAngle;
+G4double BasicSpallation::GetXAngle() const {
+	return xAngle;
 }
 
-void BasicSpallation::SetHorizontalAngle(G4double const anAngle) {
-	horizontalAngle = anAngle;
+void BasicSpallation::SetXAngle(G4double const anAngle) {
+	xAngle = anAngle;
 }
 
-G4double BasicSpallation::GetVerticalAngle() const {
-	return verticalAngle;
+G4double BasicSpallation::GetYAngle() const {
+	return yAngle;
 }
 
-void BasicSpallation::SetVerticalAngle(G4double const anAngle) {
-	verticalAngle = anAngle;
+void BasicSpallation::SetYAngle(G4double const anAngle) {
+	yAngle = anAngle;
 }
 
 G4double BasicSpallation::GetDistance() const {

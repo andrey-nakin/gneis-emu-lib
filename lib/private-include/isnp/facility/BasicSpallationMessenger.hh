@@ -30,9 +30,8 @@ private:
 
 	BasicSpallation& facility;
 	std::unique_ptr<G4UIdirectory> const directory;
-	std::unique_ptr<G4UIcmdWithADoubleAndUnit> const horizontalAngleCmd,
-			verticalAngleCmd, distanceCmd, detectorWidthCmd, detectorHeightCmd,
-			detectorLengthCmd;
+	std::unique_ptr<G4UIcmdWithADoubleAndUnit> const xAngleCmd, yAngleCmd,
+			distanceCmd, detectorWidthCmd, detectorHeightCmd, detectorLengthCmd;
 	std::unique_ptr<G4UIcmdWithAnInteger> const verboseCmd;
 	std::unique_ptr<G4UIcmdWithAString> const worldMaterialCmd;
 

@@ -18,12 +18,12 @@ static std::unique_ptr<G4UIdirectory> MakeDirectory() {
 
 }
 
-static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeHorizontalAngle(
+static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeXAngle(
 		BasicSpallationMessenger* const inst) {
 
 	auto result = std::make_unique < G4UIcmdWithADoubleAndUnit
-			> (DIR "horizontalAngle", inst);
-	result->SetGuidance("Set horizontal rotation");
+			> (DIR "xAngle", inst);
+	result->SetGuidance("Set rotation around X axis");
 	result->SetParameterName("angle", false);
 	result->SetUnitCategory(G4UnitDefinition::GetCategory("deg"));
 	result->AvailableForStates(G4State_PreInit);
@@ -32,12 +32,12 @@ static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeHorizontalAngle(
 
 }
 
-static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeVerticalAngle(
+static std::unique_ptr<G4UIcmdWithADoubleAndUnit> MakeYAngle(
 		BasicSpallationMessenger* const inst) {
 
 	auto result = std::make_unique < G4UIcmdWithADoubleAndUnit
-			> (DIR "verticalAngle", inst);
-	result->SetGuidance("Set vertical rotation");
+			> (DIR "yAngle", inst);
+	result->SetGuidance("Set rotation around Y axis");
 	result->SetParameterName("angle", false);
 	result->SetUnitCategory(G4UnitDefinition::GetCategory("deg"));
 	result->AvailableForStates(G4State_PreInit);
@@ -138,10 +138,9 @@ static std::unique_ptr<G4UIcmdWithAString> MakeWorldMaterial(
 }
 
 BasicSpallationMessenger::BasicSpallationMessenger(BasicSpallation& aFacility) :
-		facility(aFacility), directory(MakeDirectory()), horizontalAngleCmd(
-				MakeHorizontalAngle(this)), verticalAngleCmd(
-				MakeVerticalAngle(this)), distanceCmd(MakeDistance(this)), detectorWidthCmd(
-				MakeDetectorWidth(this)), detectorHeightCmd(
+		facility(aFacility), directory(MakeDirectory()), xAngleCmd(
+				MakeXAngle(this)), yAngleCmd(MakeYAngle(this)), distanceCmd(
+				MakeDistance(this)), detectorWidthCmd(MakeDetectorWidth(this)), detectorHeightCmd(
 				MakeDetectorHeight(this)), detectorLengthCmd(
 				MakeDetectorLength(this)), verboseCmd(MakeVerbose(this)), worldMaterialCmd(
 				MakeWorldMaterial(this)) {
@@ -156,11 +155,10 @@ G4String BasicSpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
 
 	G4String ans;
 
-	if (command == horizontalAngleCmd.get()) {
-		ans = horizontalAngleCmd->ConvertToString(
-				facility.GetHorizontalAngle());
-	} else if (command == verticalAngleCmd.get()) {
-		ans = verticalAngleCmd->ConvertToString(facility.GetVerticalAngle());
+	if (command == xAngleCmd.get()) {
+		ans = xAngleCmd->ConvertToString(facility.GetXAngle());
+	} else if (command == yAngleCmd.get()) {
+		ans = yAngleCmd->ConvertToString(facility.GetYAngle());
 	} else if (command == distanceCmd.get()) {
 		ans = distanceCmd->ConvertToString(facility.GetDistance());
 	} else if (command == detectorWidthCmd.get()) {
@@ -182,12 +180,10 @@ G4String BasicSpallationMessenger::GetCurrentValue(G4UIcommand* const command) {
 void BasicSpallationMessenger::SetNewValue(G4UIcommand* const command,
 		G4String const newValue) {
 
-	if (command == horizontalAngleCmd.get()) {
-		facility.SetHorizontalAngle(
-				horizontalAngleCmd->GetNewDoubleValue(newValue));
-	} else if (command == verticalAngleCmd.get()) {
-		facility.SetVerticalAngle(
-				verticalAngleCmd->GetNewDoubleValue(newValue));
+	if (command == xAngleCmd.get()) {
+		facility.SetXAngle(xAngleCmd->GetNewDoubleValue(newValue));
+	} else if (command == yAngleCmd.get()) {
+		facility.SetYAngle(yAngleCmd->GetNewDoubleValue(newValue));
 	} else if (command == distanceCmd.get()) {
 		facility.SetDistance(distanceCmd->GetNewDoubleValue(newValue));
 	} else if (command == detectorWidthCmd.get()) {

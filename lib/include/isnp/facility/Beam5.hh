@@ -28,8 +28,11 @@ public:
 	G4bool GetCollimatorsHaveDetectors() const;
 	void SetCollimatorsHaveDetectors(G4bool v);
 
-	G4double GetAngle() const;
-	void SetAngle(G4double angle);
+	G4double GetXAngle() const;
+	void SetXAngle(G4double angle);
+
+	G4double GetYAngle() const;
+	void SetYAngle(G4double angle);
 
 	G4double GetDetectorZPosition() const;
 	void SetDetectorZPosition(G4double pos);
@@ -51,7 +54,7 @@ private:
 	std::unique_ptr<Beam5Messenger> const messenger;
 	std::unique_ptr<component::SpallationTarget> const spallationTarget;
 	G4VSensitiveDetector* detector;
-	G4double zeroPosition, worldLength, angle;
+	G4double zeroPosition, worldLength, xAngle, yAngle;
 	G4bool collimatorsHaveDetectors;
 	G4double c5Diameter;
 	G4int verboseLevel;

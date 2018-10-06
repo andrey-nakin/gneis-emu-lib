@@ -26,11 +26,11 @@ public:
 
 	G4VPhysicalVolume* Construct() override;
 
-	G4double GetHorizontalAngle() const;
-	void SetHorizontalAngle(G4double anAngle);
+	G4double GetXAngle() const;
+	void SetXAngle(G4double anAngle);
 
-	G4double GetVerticalAngle() const;
-	void SetVerticalAngle(G4double anAngle);
+	G4double GetYAngle() const;
+	void SetYAngle(G4double anAngle);
 
 	G4double GetDistance() const;
 	void SetDistance(G4double aDistance);
@@ -62,8 +62,8 @@ private:
 	G4VSensitiveDetector* detector;
 	std::unique_ptr<BasicSpallationMessenger> const messenger;
 	std::unique_ptr<component::SpallationTarget> const spallationTarget;
-	G4double worldRadius, horizontalAngle, verticalAngle, distance,
-			detectorWidth, detectorHeight, detectorLength;
+	G4double worldRadius, xAngle, yAngle, distance, detectorWidth,
+			detectorHeight, detectorLength;
 	G4int verboseLevel;
 	G4String worldMaterial;
 	G4LogicalVolume* logicWorld;

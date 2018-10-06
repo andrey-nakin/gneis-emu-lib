@@ -9,14 +9,26 @@ namespace isnp {
 
 namespace facility {
 
-TEST(Beam5Messenger, SetAngle) {
+TEST(Beam5Messenger, SetXAngle) {
 
 	Beam5 facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
 
-	EXPECT_DOUBLE_EQ(32 * deg, facility.GetAngle());
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/angle 25 deg"));
-	EXPECT_DOUBLE_EQ(25 * deg, facility.GetAngle());
+	EXPECT_DOUBLE_EQ(-2 * deg, facility.GetXAngle());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/xAngle -5 deg"));
+	EXPECT_DOUBLE_EQ(-5 * deg, facility.GetXAngle());
+
+}
+
+TEST(Beam5Messenger, SetYAngle) {
+
+	Beam5 facility;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	EXPECT_DOUBLE_EQ(-32 * deg, facility.GetYAngle());
+	EXPECT_EQ(0,
+			uiManager->ApplyCommand("/isnp/facility/beam5/yAngle -25 deg"));
+	EXPECT_DOUBLE_EQ(-25 * deg, facility.GetYAngle());
 
 }
 
