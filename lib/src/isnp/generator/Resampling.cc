@@ -62,12 +62,16 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 	++counter;
 
 	if (verboseLevel > 1) {
-		G4cout << "Spallation: generating #" << counter << " particle\n";
+		G4cout << "Resampling: generating #" << counter << " particle"
+				<< G4endl;
 		if (verboseLevel > 2) {
-			G4cout << "Spallation position: "
-					<< particleGun->GetParticlePosition() << "\n";
-			G4cout << "Spallation direction: "
-					<< particleGun->GetParticleMomentumDirection() << "\n";
+			G4cout << "Resampling: enerty row=" << energyRowNo << '('
+					<< ShootNumber(energyColumn, energyRowNo) << ')'
+					<< ", energy=" << particleGun->GetParticleEnergy() / MeV
+					<< " MeV, position="
+					<< particleGun->GetParticlePosition() / mm
+					<< " mm, direction row=" << directionRowNo << ", direction="
+					<< particleGun->GetParticleMomentumDirection() << G4endl;
 		}
 	}
 

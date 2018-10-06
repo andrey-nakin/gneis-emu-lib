@@ -23,24 +23,29 @@ TEST(Resampling, Generic) {
 	s << SampleData_txt;
 
 	Resampling resampling;
+	resampling.SetVerboseLevel(1);
 	resampling.Load(s);
 
-	Stat x, y, z, r;
+	Stat energy;
 	G4Transform3D const zeroTransform;
-	G4Event event;
 
 	for (int i = 0; i < 1000000; i++) {
+		G4Event event;
 		resampling.GeneratePrimaries(&event);
+		auto const v = event.GetPrimaryVertex(0);
+		auto const p = v->GetPrimary();
+
+		energy += p->GetKineticEnergy();
 //		x += event.
 //		y += pos.getY();
 //		z += pos.getZ();
 //		r += std::sqrt(pos.getX() * pos.getX() + pos.getY() * pos.getY());
 	}
 
-//	EXPECT_TRUE(x.Is(0.0 * cm));
-//	EXPECT_NEAR(-2 * cm, x.GetMin(), 0.001 * cm);
-//	EXPECT_NEAR(2 * cm, x.GetMax(), 0.001 * cm);
-//	EXPECT_NEAR(1.0 * cm, x.GetStd(), 0.001 * cm);
+	EXPECT_TRUE(energy.Is(64.9908 * MeV));
+	EXPECT_NEAR(0.380429 * MeV, energy.GetMin(), 0.5e-6 * MeV);
+	EXPECT_NEAR(715.122 * MeV, energy.GetMax(), 0.5e-3 * MeV);
+	EXPECT_NEAR(142.758 * MeV, energy.GetStd(), 0.5e0 * MeV);
 //
 //	EXPECT_TRUE(y.Is(0.0 * cm));
 //	EXPECT_NEAR(-2 * cm, y.GetMin(), 0.001 * cm);
