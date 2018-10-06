@@ -1,6 +1,7 @@
 #include <string>
 #include "isnp/init/UserActionMessenger.hh"
 #include "isnp/generator/Spallation.hh"
+#include "isnp/generator/Resampling.hh"
 
 namespace isnp {
 
@@ -11,20 +12,22 @@ namespace init {
 namespace userAction {
 
 static const G4String Spallation = "spallation";
+static const G4String Resampling = "resampling";
 
 }
 
 static std::unique_ptr<G4UIcmdWithAString> MakeUserAction(
 		UserActionMessenger* const inst) {
 
-	auto result = std::make_unique < G4UIcmdWithAString
-			> (DIR "gun", inst);
+	auto result = std::make_unique < G4UIcmdWithAString > (DIR "gun", inst);
 	result->SetGuidance("Use given ISNP gun: ");
-	std::string const guidance = userAction::Spallation;
+	std::string const guidance = userAction::Spallation + ", "
+			+ userAction::Resampling;
 	result->SetGuidance(guidance.c_str());
 	result->SetParameterName("name", false);
 	result->AvailableForStates(G4State_PreInit);
-	std::string const candidates = userAction::Spallation;
+	std::string const candidates = userAction::Spallation + " "
+			+ userAction::Resampling;
 	result->SetCandidates(candidates.c_str());
 
 	return result;
@@ -67,6 +70,10 @@ void UserActionMessenger::SetUserAction(G4String const& name) {
 	if (name == userAction::Spallation) {
 
 		runManager.SetUserAction(new isnp::generator::Spallation);
+
+	} else if (name == userAction::Resampling) {
+
+		runManager.SetUserAction(new isnp::generator::Resampling);
 
 	} else {
 
