@@ -1,4 +1,5 @@
 #include <cmath>
+#include <sstream>
 
 #include <G4RunManager.hh>
 #include <QGSP_INCLXX_HP.hh>
@@ -8,6 +9,7 @@
 
 #include <isnp/generator/Resampling.hh>
 #include "isnp/testutil/Stat.hh"
+#include "isnp/testutil/SampleData.hh"
 
 namespace isnp {
 
@@ -17,18 +19,23 @@ TEST(Resampling, Generic) {
 
 	using namespace isnp::testutil;
 
-	Resampling Resampling;
+	std::stringstream s;
+	s << SampleData_txt;
+
+	Resampling resampling;
+	resampling.Load(s);
+
 	Stat x, y, z, r;
 	G4Transform3D const zeroTransform;
 	G4Event event;
 
-//	for (int i = 0; i < 1000000; i++) {
-//		Resampling.GeneratePrimaries(&event);
-////		x += event.
-////		y += pos.getY();
-////		z += pos.getZ();
-////		r += std::sqrt(pos.getX() * pos.getX() + pos.getY() * pos.getY());
-//	}
+	for (int i = 0; i < 1000000; i++) {
+		resampling.GeneratePrimaries(&event);
+//		x += event.
+//		y += pos.getY();
+//		z += pos.getZ();
+//		r += std::sqrt(pos.getX() * pos.getX() + pos.getY() * pos.getY());
+	}
 
 //	EXPECT_TRUE(x.Is(0.0 * cm));
 //	EXPECT_NEAR(-2 * cm, x.GetMin(), 0.001 * cm);

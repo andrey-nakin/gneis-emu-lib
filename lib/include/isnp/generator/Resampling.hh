@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <exception>
+#include <iostream>
 
 #include <G4VUserPrimaryGeneratorAction.hh>
 #include <G4ParticleGun.hh>
@@ -49,6 +50,8 @@ public:
 	void SetVerboseLevel(G4int const aVerboseLevel) {
 		verboseLevel = aVerboseLevel;
 	}
+
+	void Load(std::istream&);
 
 private:
 

@@ -98,21 +98,7 @@ G4ThreeVector Resampling::CalculatePosition(const G4ThreeVector& direction,
 
 }
 
-void Resampling::LoadSampleFile() {
-
-	if (verboseLevel > 0) {
-		G4cout << "Resampling: loading sample from file " << sampleFileName
-				<< "\n";
-	}
-
-	if (sampleFileName.isNull()) {
-		throw NoFileException();
-	}
-
-	std::ifstream f(sampleFileName);
-	if (!f) {
-		throw NoFileException();
-	}
+void Resampling::Load(std::istream& f) {
 
 	std::set<G4String> numericColumns, categoryColumns;
 	numericColumns.insert(energyColumn);
@@ -137,6 +123,26 @@ void Resampling::LoadSampleFile() {
 	}
 
 	sampleFileLoaded = true;
+
+}
+
+void Resampling::LoadSampleFile() {
+
+	if (verboseLevel > 0) {
+		G4cout << "Resampling: loading sample from file " << sampleFileName
+				<< "\n";
+	}
+
+	if (sampleFileName.isNull()) {
+		throw NoFileException();
+	}
+
+	std::ifstream f(sampleFileName);
+	if (!f) {
+		throw NoFileException();
+	}
+
+	Load(f);
 
 }
 

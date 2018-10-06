@@ -99,12 +99,12 @@ TEST(Spallation, GeneratePositionStatistics)
 	EXPECT_TRUE(x.Is(0.0 * cm));
 	EXPECT_NEAR(-2 * cm, x.GetMin(), 0.001 * cm);
 	EXPECT_NEAR(2 * cm, x.GetMax(), 0.001 * cm);
-	EXPECT_NEAR(1.0 * cm, x.GetStd(), 0.001 * cm);
+	EXPECT_NEAR(1.0 * cm, x.GetStd(), 0.002 * cm);
 
 	EXPECT_TRUE(y.Is(0.0 * cm));
 	EXPECT_NEAR(-2 * cm, y.GetMin(), 0.001 * cm);
 	EXPECT_NEAR(2 * cm, y.GetMax(), 0.001 * cm);
-	EXPECT_NEAR(1.0 * cm, y.GetStd(), 0.001 * cm);
+	EXPECT_NEAR(1.0 * cm, y.GetStd(), 0.002 * cm);
 
 	EXPECT_DOUBLE_EQ(-200.0 * mm, z.GetMean());
 

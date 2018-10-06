@@ -21,13 +21,11 @@ static void ScatteringTest(G4double const significant, unsigned const precision,
 	EXPECT_TRUE(v.Is(significant));
 	EXPECT_TRUE(v.GetMin() >= significant - expectedRange / 2);
 	EXPECT_TRUE(v.GetMax() < significant + expectedRange / 2);
-	EXPECT_NEAR(expectedRange / std::sqrt(12), v.GetStd(),
-			expectedRange / 500);
+	EXPECT_NEAR(expectedRange / std::sqrt(12), v.GetStd(), expectedRange / 250);
 
 }
 
-TEST(RandomNumberGenerator, LocalityScattering)
-{
+TEST(RandomNumberGenerator, LocalityScattering) {
 
 	ScatteringTest(1.23456, 6, 1e-5);
 	ScatteringTest(1.23456e-5, 6, 1e-10);
