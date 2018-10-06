@@ -71,11 +71,7 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 					<< " MeV, position="
 					<< particleGun->GetParticlePosition() / mm
 					<< " mm, direction row=" << directionRowNo << ", direction="
-					<< particleGun->GetParticleMomentumDirection() << " *** "
-					<< dataFrame->FloatValue(directionXColumn, directionRowNo)
-					<< ' '
-					<< ShootVector(directionXColumn, directionYColumn,
-							directionZColumn, directionRowNo) << G4endl;
+					<< particleGun->GetParticleMomentumDirection() << G4endl;
 		}
 	}
 
