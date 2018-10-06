@@ -6,6 +6,7 @@
 #include <Randomize.hh>
 
 #include "isnp/generator/Resampling.hh"
+#include "isnp/generator/ResamplingMessenger.hh"
 #include "isnp/util/RandomNumberGenerator.hh"
 #include "isnp/util/DataFrameLoader.hh"
 
@@ -14,12 +15,12 @@ namespace isnp {
 namespace generator {
 
 Resampling::Resampling() :
-		particleGun(MakeGun()), sampleFileName(""), energyColumn(
-				"KineticEnergy"), directionXColumn("DirectionX"), directionYColumn(
-				"DirectionY"), directionZColumn("DirectionZ"), positionXColumn(
-				"PositionX"), positionYColumn("PositionY"), positionZColumn(
-				"PositionZ"), typeColumn("Type"), sampleFileLoaded(false), counter(
-				0), verboseLevel(1) {
+		messenger(std::make_unique < ResamplingMessenger > (*this)), particleGun(
+				MakeGun()), sampleFileName(""), energyColumn("KineticEnergy"), directionXColumn(
+				"DirectionX"), directionYColumn("DirectionY"), directionZColumn(
+				"DirectionZ"), positionXColumn("PositionX"), positionYColumn(
+				"PositionY"), positionZColumn("PositionZ"), typeColumn("Type"), sampleFileLoaded(
+				false), counter(0), verboseLevel(1) {
 
 }
 

@@ -52,6 +52,7 @@ public:
 
 private:
 
+	std::unique_ptr<ResamplingMessenger> const messenger;
 	std::unique_ptr<G4ParticleGun> const particleGun;
 	G4String sampleFileName, energyColumn, directionXColumn, directionYColumn,
 			directionZColumn, positionXColumn, positionYColumn, positionZColumn,
