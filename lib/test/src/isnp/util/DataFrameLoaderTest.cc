@@ -41,6 +41,13 @@ TEST(DataFrameLoader, Generic) {
 	EXPECT_EQ(0, df.CategoryColumn("E")[2]);
 	EXPECT_EQ(0, df.CategoryColumn("C")[2]);
 
+	EXPECT_EQ("a", df.CategoryValue("E", 0));
+	EXPECT_EQ("abc", df.CategoryValue("C", 0));
+	EXPECT_EQ("b", df.CategoryValue("E", 1));
+	EXPECT_EQ("cba", df.CategoryValue("C", 1));
+	EXPECT_EQ("a", df.CategoryValue("E", 2));
+	EXPECT_EQ("abc", df.CategoryValue("C", 2));
+
 	EXPECT_EQ(3, df.FloatColumn("A").size());
 	EXPECT_EQ(3, df.FloatColumn("B").size());
 
@@ -51,6 +58,12 @@ TEST(DataFrameLoader, Generic) {
 	EXPECT_EQ(1.2345e-20f, df.FloatColumn("B")[0]);
 	EXPECT_EQ(2.34567e20f, df.FloatColumn("A")[1]);
 	EXPECT_EQ(2.3456e-20f, df.FloatColumn("B")[1]);
+
+	EXPECT_EQ(1.23456e20f, df.FloatValue("A", 0));
+	EXPECT_EQ(1.2345e-20f, df.FloatValue("B", 0));
+	EXPECT_EQ(2.34567e20f, df.FloatValue("A", 1));
+	EXPECT_EQ(2.3456e-20f, df.FloatValue("B", 1));
+
 }
 
 }

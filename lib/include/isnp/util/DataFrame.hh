@@ -63,6 +63,19 @@ public:
 	FloatVector const& FloatColumn(const G4String& columnName) const;
 	unsigned Precision(const G4String& columnName) const;
 
+	G4String const& CategoryValue(const G4String& columnName,
+			const size_type i) const {
+
+		return CategoryName(columnName, CategoryColumn(columnName)[i]);
+
+	}
+
+	float FloatValue(const G4String& columnName, const size_type i) const {
+
+		return FloatColumn(columnName)[i];
+
+	}
+
 private:
 
 	friend class DataFrameLoader;
