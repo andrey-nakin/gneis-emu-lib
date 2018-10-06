@@ -24,11 +24,11 @@ class ResamplingMessenger;
 class Resampling: public G4VUserPrimaryGeneratorAction {
 public:
 
-	class NoFileException : public std::exception {
+	class NoFileException: public std::exception {
 
 	};
 
-	class EmptySampleException : public std::exception {
+	class EmptySampleException: public std::exception {
 
 	};
 
@@ -54,18 +54,21 @@ private:
 
 	std::unique_ptr<G4ParticleGun> const particleGun;
 	G4String sampleFileName, energyColumn, directionXColumn, directionYColumn,
-			directionZColumn, positionXColumn, positionYColumn, positionZColumn, typeColumn;
+			directionZColumn, positionXColumn, positionYColumn, positionZColumn,
+			typeColumn;
 	bool sampleFileLoaded;
 	unsigned counter;
 	G4int verboseLevel;
 	std::unique_ptr<util::DataFrame> dataFrame;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
-	static G4ThreeVector CalculatePosition(const G4ThreeVector& direction, const G4ThreeVector& targetPos);
+	static G4ThreeVector CalculatePosition(const G4ThreeVector& direction,
+			const G4ThreeVector& targetPos);
 	void LoadSampleFile();
-	G4double ShootNumber(const G4String& column) const;
-	G4ThreeVector ShootVector(const G4String& columnX, const G4String& columnY,
-			const G4String& columnZ) const;
+	G4double ShootNumber(G4String const& column,
+			util::DataFrame::size_type rowNo) const;
+	G4ThreeVector ShootVector(G4String const& columnX, const G4String& columnY,
+			const G4String& columnZ, util::DataFrame::size_type rowNo) const;
 
 };
 

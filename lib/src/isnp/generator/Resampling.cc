@@ -1,6 +1,8 @@
 #include <fstream>
 
 #include <G4SystemOfUnits.hh>
+#include <G4ParticleTable.hh>
+#include <G4ParticleDefinition.hh>
 #include <Randomize.hh>
 
 #include "isnp/generator/Resampling.hh"
@@ -32,15 +34,26 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 	}
 
 	// set particle properties
-	particleGun->SetParticleEnergy(ShootNumber(energyColumn) * MeV);
-	particleGun->SetParticleMomentumDirection(
-			ShootVector(directionXColumn, directionYColumn, directionZColumn));
+	auto const particleTable = G4ParticleTable::GetParticleTable();
+	auto const dataSize = dataFrame->Size();
+	auto const energyRowNo = CLHEP::RandFlat::shootInt(dataSize);
+
+	particleGun->SetParticleDefinition(
+			particleTable->FindParticle(
+					dataFrame->CategoryValue(typeColumn, energyRowNo)));
+	particleGun->SetParticleEnergy(
+			ShootNumber(energyColumn, energyRowNo) * MeV);
 	particleGun->SetParticlePosition(
 			CalculatePosition(
 					ShootVector(directionXColumn, directionYColumn,
-							directionZColumn),
+							directionZColumn, energyRowNo),
 					ShootVector(positionXColumn, positionYColumn,
-							positionZColumn) * mm));
+							positionZColumn, energyRowNo) * mm));
+
+	auto const directionRowNo = CLHEP::RandFlat::shootInt(dataSize);
+	particleGun->SetParticleMomentumDirection(
+			ShootVector(directionXColumn, directionYColumn, directionZColumn,
+					directionRowNo));
 
 	// generate particle
 	particleGun->GeneratePrimaryVertex(anEvent);
@@ -126,11 +139,10 @@ void Resampling::LoadSampleFile() {
 
 }
 
-G4double Resampling::ShootNumber(const G4String& column) const {
+G4double Resampling::ShootNumber(G4String const& column,
+		util::DataFrame::size_type const rowNo) const {
 
-	auto const dataSize = dataFrame->Size();
-	auto const rowNo = CLHEP::RandFlat::shootInt(dataSize);
-	auto const v = dataFrame->FloatColumn(column)[rowNo];
+	auto const v = dataFrame->FloatValue(column, rowNo);
 	auto const precision = dataFrame->Precision(column);
 
 	if (precision > 0) {
@@ -142,10 +154,11 @@ G4double Resampling::ShootNumber(const G4String& column) const {
 }
 
 G4ThreeVector Resampling::ShootVector(const G4String& columnX,
-		const G4String& columnY, const G4String& columnZ) const {
+		G4String const& columnY, const G4String& columnZ,
+		util::DataFrame::size_type const rowNo) const {
 
-	return G4ThreeVector(ShootNumber(columnX), ShootNumber(columnY),
-			ShootNumber(columnZ));
+	return G4ThreeVector(ShootNumber(columnX, rowNo),
+			ShootNumber(columnY, rowNo), ShootNumber(columnZ, rowNo));
 
 }
 
