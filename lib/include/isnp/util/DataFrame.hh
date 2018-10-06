@@ -55,12 +55,12 @@ public:
 
 	DataFrame(DataFrame&&);
 
-	size_type size() const;
+	size_type Size() const;
 
-	G4String const& categoryName(const G4String& columnName,
+	G4String const& CategoryName(const G4String& columnName,
 			CategoryId id) const;
-	CategoryVector const& categoryColumn(const G4String& columnName) const;
-	FloatVector const& floatColumn(const G4String& columnName) const;
+	CategoryVector const& CategoryColumn(const G4String& columnName) const;
+	FloatVector const& FloatColumn(const G4String& columnName) const;
 	unsigned Precision(const G4String& columnName) const;
 
 private:

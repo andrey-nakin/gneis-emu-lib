@@ -18,11 +18,12 @@ static std::vector<std::string> tokenize(const std::string& s, char const c) {
 	auto end = s.cend();
 	auto start = end;
 
-	std::vector < std::string > v;
+	std::vector<std::string> v;
 	for (auto it = s.cbegin(); it != end; ++it) {
 		if (*it != c) {
-			if (start == end)
+			if (start == end) {
 				start = it;
+			}
 			continue;
 		}
 		if (start != end) {
@@ -30,8 +31,11 @@ static std::vector<std::string> tokenize(const std::string& s, char const c) {
 			start = end;
 		}
 	}
-	if (start != end)
+
+	if (start != end) {
 		v.emplace_back(start, end);
+	}
+
 	return v;
 
 }
@@ -66,9 +70,9 @@ DataFrame DataFrameLoader::load(std::istream& is) {
 	unsigned lineNo = 0;
 	std::string line;
 	bool isfirst = true, precisionDetected = false;
-	std::vector < std::string > columnNames;
-	std::vector < std::size_t > floatIndices;
-	std::vector < DataFrame::FloatVectorMap::iterator > floatVectors;
+	std::vector<std::string> columnNames;
+	std::vector<std::size_t> floatIndices;
+	std::vector<DataFrame::FloatVectorMap::iterator> floatVectors;
 	auto data = std::make_unique<DataFrame::DataPack>();
 	DataFrame::FloatVector const emptyFloatVector;
 	std::size_t lastFloatIndex = 0;

@@ -15,14 +15,14 @@ DataFrame::DataFrame(std::unique_ptr<DataPack> aData) :
 
 }
 
-DataFrame::size_type DataFrame::size() const {
+DataFrame::size_type DataFrame::Size() const {
 
 	return data->floatColumns.empty() ?
 			0 : data->floatColumns.cbegin()->second.size();
 
 }
 
-G4String const& DataFrame::categoryName(const G4String& columnName,
+G4String const& DataFrame::CategoryName(const G4String& columnName,
 		CategoryId const id) const {
 
 	auto const it = data->categoryNames.find(columnName);
@@ -40,7 +40,7 @@ G4String const& DataFrame::categoryName(const G4String& columnName,
 
 }
 
-const DataFrame::CategoryVector& DataFrame::categoryColumn(
+const DataFrame::CategoryVector& DataFrame::CategoryColumn(
 		const G4String& columnName) const {
 
 	auto const it = data->categoryColumns.find(columnName);
@@ -52,7 +52,7 @@ const DataFrame::CategoryVector& DataFrame::categoryColumn(
 
 }
 
-const DataFrame::FloatVector& DataFrame::floatColumn(
+const DataFrame::FloatVector& DataFrame::FloatColumn(
 		const G4String& columnName) const {
 
 	auto const it = data->floatColumns.find(columnName);

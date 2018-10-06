@@ -114,11 +114,11 @@ void Resampling::LoadSampleFile() {
 	dataFrame = std::make_unique < util::DataFrame > (loader.load(f));
 
 	if (verboseLevel > 0) {
-		G4cout << "Resampling: " << dataFrame->size()
+		G4cout << "Resampling: " << dataFrame->Size()
 				<< " records is loaded from file " << sampleFileName << "\n";
 	}
 
-	if (dataFrame->size() == 0) {
+	if (dataFrame->Size() == 0) {
 		throw EmptySampleException();
 	}
 
@@ -128,9 +128,9 @@ void Resampling::LoadSampleFile() {
 
 G4double Resampling::ShootNumber(const G4String& column) const {
 
-	auto const dataSize = dataFrame->size();
+	auto const dataSize = dataFrame->Size();
 	auto const rowNo = CLHEP::RandFlat::shootInt(dataSize);
-	auto const v = dataFrame->floatColumn(column)[rowNo];
+	auto const v = dataFrame->FloatColumn(column)[rowNo];
 	auto const precision = dataFrame->Precision(column);
 
 	if (precision > 0) {
