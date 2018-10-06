@@ -26,7 +26,7 @@ TEST(Resampling, Generic) {
 	resampling.SetVerboseLevel(1);
 	resampling.Load(s);
 
-	Stat energy;
+	Stat energy, dirX, dirY, dirZ;
 	G4Transform3D const zeroTransform;
 
 	for (int i = 0; i < 1000000; i++) {
@@ -36,26 +36,18 @@ TEST(Resampling, Generic) {
 		auto const p = v->GetPrimary();
 
 		energy += p->GetKineticEnergy();
-//		x += event.
-//		y += pos.getY();
-//		z += pos.getZ();
-//		r += std::sqrt(pos.getX() * pos.getX() + pos.getY() * pos.getY());
+
+		dirX += p->GetMomentumDirection().getX();
+		dirY += p->GetMomentumDirection().getY();
+		dirZ += p->GetMomentumDirection().getZ();
 	}
 
 	EXPECT_TRUE(energy.Is(64.9908 * MeV));
 	EXPECT_NEAR(0.380429 * MeV, energy.GetMin(), 0.5e-6 * MeV);
 	EXPECT_NEAR(715.122 * MeV, energy.GetMax(), 0.5e-3 * MeV);
 	EXPECT_NEAR(142.758 * MeV, energy.GetStd(), 0.5e0 * MeV);
-//
-//	EXPECT_TRUE(y.Is(0.0 * cm));
-//	EXPECT_NEAR(-2 * cm, y.GetMin(), 0.001 * cm);
-//	EXPECT_NEAR(2 * cm, y.GetMax(), 0.001 * cm);
-//	EXPECT_NEAR(1.0 * cm, y.GetStd(), 0.001 * cm);
-//
-//	EXPECT_DOUBLE_EQ(-200.0 * mm, z.GetMean());
-//
-//	EXPECT_NEAR(2 * cm, r.GetMax(), 0.01 * cm);
-//	EXPECT_NEAR(0.47 * cm, r.GetStd(), 0.01 * cm);
+
+//	EXPECT_TRUE(energy.Is(1.73510E-004));
 
 }
 

@@ -64,14 +64,18 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 	if (verboseLevel > 1) {
 		G4cout << "Resampling: generating #" << counter << " particle"
 				<< G4endl;
+
 		if (verboseLevel > 2) {
-			G4cout << "Resampling: enerty row=" << energyRowNo << '('
-					<< ShootNumber(energyColumn, energyRowNo) << ')'
-					<< ", energy=" << particleGun->GetParticleEnergy() / MeV
+			G4cout << "Resampling: enerty row=" << energyRowNo << ", energy="
+					<< particleGun->GetParticleEnergy() / MeV
 					<< " MeV, position="
 					<< particleGun->GetParticlePosition() / mm
 					<< " mm, direction row=" << directionRowNo << ", direction="
-					<< particleGun->GetParticleMomentumDirection() << G4endl;
+					<< particleGun->GetParticleMomentumDirection() << " *** "
+					<< dataFrame->FloatValue(directionXColumn, directionRowNo)
+					<< ' '
+					<< ShootVector(directionXColumn, directionYColumn,
+							directionZColumn, directionRowNo) << G4endl;
 		}
 	}
 
