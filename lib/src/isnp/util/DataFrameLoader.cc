@@ -71,11 +71,14 @@ DataFrame DataFrameLoader::load(std::istream& is) {
 	std::string line;
 	bool isfirst = true, precisionDetected = false;
 	std::vector<std::string> columnNames;
-	std::vector<std::size_t> floatIndices;
+	std::vector<std::size_t> categoryIndices, floatIndices;
+	std::map<G4String, std::map<G4String, DataFrame::CategoryId>> idMap;
+	std::vector<DataFrame::CategoryVectorMap::iterator> categoryVectors;
 	std::vector<DataFrame::FloatVectorMap::iterator> floatVectors;
 	auto data = std::make_unique<DataFrame::DataPack>();
+	DataFrame::CategoryVector const emptyCategoryVector;
 	DataFrame::FloatVector const emptyFloatVector;
-	std::size_t lastFloatIndex = 0;
+	std::size_t lastCategoryIndex = 0, lastFloatIndex = 0;
 
 	while (is.good()) {
 		std::getline(is, line);
@@ -91,6 +94,19 @@ DataFrame DataFrameLoader::load(std::istream& is) {
 		if (isfirst) {
 			// read column names
 			columnNames = tokenize(line, separatorChar);
+
+			std::for_each(std::begin(categoryColumns),
+					std::end(categoryColumns),
+					[&](auto cn) {
+						std::string const sn = cn;
+						auto const pos = std::find(std::begin(columnNames), std::end(columnNames), sn);
+						if (pos == std::end(columnNames)) {
+							throw NoColumnException(cn);
+						}
+						categoryIndices.push_back(std::distance(std::begin(columnNames), pos));
+						categoryVectors.push_back(data->categoryColumns.insert(data->categoryColumns.end(), std::pair<G4String, DataFrame::CategoryVector>(cn, emptyCategoryVector)));
+					});
+			lastCategoryIndex = categoryIndices.size();
 
 			std::for_each(std::begin(floatColumns), std::end(floatColumns),
 					[&](auto cn) {
@@ -122,11 +138,39 @@ DataFrame DataFrameLoader::load(std::istream& is) {
 			precisionDetected = true;
 		}
 
+		for (std::size_t i = 0; i < lastCategoryIndex; i++) {
+			auto const idx = categoryIndices[i];
+			auto const colName = columnNames[idx];
+			if (idx >= v.size()) {
+				throw NoValueException(colName, lineNo);
+			}
+
+			auto im = idMap.find(colName);
+			if (idMap.end() == im) {
+				idMap[colName] = std::map<G4String, DataFrame::CategoryId>();
+				im = idMap.find(colName);
+				data->categoryNames[colName] = DataFrame::CategoryMap();
+			}
+
+			auto const value = v[idx];
+			auto id = im->second.find(value);
+			if (im->second.end() == id) {
+				auto const newId =
+						static_cast<DataFrame::CategoryId>(im->second.size());
+				im->second[value] = newId;
+				id = im->second.find(value);
+				data->categoryNames[colName][newId] = value;
+			}
+
+			categoryVectors[i]->second.push_back(id->second);
+		};
+
 		for (std::size_t i = 0; i < lastFloatIndex; i++) {
 			auto const idx = floatIndices[i];
 			if (idx >= v.size()) {
 				throw NoValueException(columnNames[idx], lineNo);
 			}
+
 			floatVectors[i]->second.push_back(std::stof(v[idx]));
 		};
 	}
