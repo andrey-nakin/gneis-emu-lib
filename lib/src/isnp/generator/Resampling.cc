@@ -37,8 +37,8 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 	// set particle properties
 	auto const particleTable = G4ParticleTable::GetParticleTable();
 	auto const dataSize = dataFrame->Size();
-	auto const energyRowNo = CLHEP::RandFlat::shootInt(dataSize);
 
+	auto const energyRowNo = CLHEP::RandFlat::shootInt(dataSize);
 	particleGun->SetParticleDefinition(
 			particleTable->FindParticle(
 					dataFrame->CategoryValue(typeColumn, energyRowNo)));
