@@ -44,9 +44,24 @@ static std::unique_ptr<G4UIcmdWithAString> MakeFile(
 
 }
 
+static std::unique_ptr<G4UIcmdWith3VectorAndUnit> MakePosition(
+		ResamplingMessenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWith3VectorAndUnit
+			> (DIR "position", inst);
+	result->SetGuidance("Gun position");
+	result->SetParameterName("PositionX", "PositionY", "PositionZ", false);
+	result->SetDefaultUnit("mm");
+	result->SetUnitCategory(G4UnitDefinition::GetCategory("mm"));
+
+	return result;
+
+}
+
 ResamplingMessenger::ResamplingMessenger(Resampling& aGenerator) :
 		generator(aGenerator), directory(MakeDirectory()), verboseCmd(
-				MakeVerbose(this)), fileCmd(MakeFile(this)) {
+				MakeVerbose(this)), fileCmd(MakeFile(this)), positionCmd(
+				MakePosition(this)) {
 
 }
 
@@ -62,6 +77,8 @@ G4String ResamplingMessenger::GetCurrentValue(G4UIcommand* const command) {
 		ans = verboseCmd->ConvertToString(generator.GetVerboseLevel());
 	} else if (command == fileCmd.get()) {
 		ans = generator.GetSampleFileName();
+	} else if (command == positionCmd.get()) {
+		ans = positionCmd->ConvertToStringWithBestUnit(generator.GetPosition());
 	}
 
 	return ans;
@@ -75,6 +92,8 @@ void ResamplingMessenger::SetNewValue(G4UIcommand* const command,
 		generator.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
 	} else if (command == fileCmd.get()) {
 		generator.SetSampleFileName(newValue);
+	} else if (command == positionCmd.get()) {
+		generator.SetPosition(positionCmd->GetNew3VectorValue(newValue));
 	}
 
 }
