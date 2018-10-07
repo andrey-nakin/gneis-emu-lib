@@ -30,16 +30,18 @@ SpallationTarget::SpallationTarget() :
 }
 
 void SpallationTarget::Place(G4LogicalVolume* const destination,
-		G4Transform3D const& transform) {
+		G4Transform3D const& trans) {
+
+	using namespace util;
 
 	G4bool const single = false;
 	G4int const numOfCopies = 0;
 	G4bool const checkOverlaps = true;
 	G4Transform3D const zeroTransform;
 
-	SetTransform(transform);
+	SetTransform(trans);
 
-	using namespace util;
+	G4Transform3D transform = trans * G4RotateZ3D(7. * deg);
 
 	auto const nist = G4NistManager::Instance();
 
