@@ -45,11 +45,12 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 	particleGun->SetParticleEnergy(
 			ShootNumber(energyColumn, energyRowNo) * MeV);
 	particleGun->SetParticlePosition(
-			CalculatePosition(
-					ShootVector(directionXColumn, directionYColumn,
-							directionZColumn, energyRowNo),
-					ShootVector(positionXColumn, positionYColumn,
-							positionZColumn, energyRowNo) * mm));
+			position
+					+ CalculatePosition(
+							ShootVector(directionXColumn, directionYColumn,
+									directionZColumn, energyRowNo),
+							ShootVector(positionXColumn, positionYColumn,
+									positionZColumn, energyRowNo) * mm));
 
 	auto const directionRowNo = CLHEP::RandFlat::shootInt(dataSize);
 	particleGun->SetParticleMomentumDirection(
@@ -127,6 +128,18 @@ void Resampling::Load(std::istream& f) {
 	}
 
 	sampleFileLoaded = true;
+
+}
+
+G4ThreeVector Resampling::GetPosition() const {
+
+	return position;
+
+}
+
+void Resampling::SetPosition(G4ThreeVector const v) {
+
+	position = v;
 
 }
 

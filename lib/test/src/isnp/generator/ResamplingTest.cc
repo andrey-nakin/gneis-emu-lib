@@ -76,6 +76,59 @@ TEST(Resampling, Generic) {
 	EXPECT_EQ(0. * mm, posZ.GetMax());
 }
 
+TEST(Resampling, ChangePosition) {
+
+	using namespace isnp::testutil;
+
+	static const char* const data =
+			"Type\tTotalEnergy\tKineticEnergy\tTime\tDirectionX\tDirectionY\tDirectionZ\tPositionX\tPositionY\tPositionZ\n" "neutron\t940.401\t1000.00\t2000\t0.500000\t0.250000\t0.829156\t100.000\t200.000\t300.000";
+
+	std::stringstream s;
+	s << data;
+
+	Resampling resampling;
+	resampling.SetVerboseLevel(1);
+	resampling.Load(s);
+
+	{
+		G4Event event;
+		resampling.GeneratePrimaries(&event);
+		auto const v = event.GetPrimaryVertex(0);
+		auto const p = v->GetPrimary();
+
+		EXPECT_NEAR(1000.0 * MeV, p->GetKineticEnergy(), 0.5e-2);
+
+		EXPECT_NEAR(0.500000, p->GetMomentumDirection().getX(), 0.5e-6);
+		EXPECT_NEAR(0.250000, p->GetMomentumDirection().getY(), 0.5e-6);
+		EXPECT_NEAR(0.829156, p->GetMomentumDirection().getZ(), 0.5e-6);
+
+		EXPECT_NEAR(-80.9068 * mm, v->GetPosition().getX(), 1.e-3 * mm);
+		EXPECT_NEAR(109.547 * mm, v->GetPosition().getY(), 1.e-3 * mm);
+		EXPECT_EQ(0. * mm, v->GetPosition().getZ() * mm);
+	}
+
+	resampling.SetPosition(G4ThreeVector(400., 500., 600.) * mm);
+
+	{
+		G4Event event;
+		resampling.GeneratePrimaries(&event);
+		auto const v = event.GetPrimaryVertex(0);
+		auto const p = v->GetPrimary();
+
+		EXPECT_NEAR(1000.0 * MeV, p->GetKineticEnergy(), 0.5e-2);
+
+		EXPECT_NEAR(0.500000, p->GetMomentumDirection().getX(), 0.5e-6);
+		EXPECT_NEAR(0.250000, p->GetMomentumDirection().getY(), 0.5e-6);
+		EXPECT_NEAR(0.829156, p->GetMomentumDirection().getZ(), 0.5e-6);
+
+		EXPECT_NEAR(-80.9068 * mm + 400.0 * mm, v->GetPosition().getX(),
+				1.e-3 * mm);
+		EXPECT_NEAR(109.547 * mm + 500.0 * mm, v->GetPosition().getY(),
+				1.e-3 * mm);
+		EXPECT_EQ(0. * mm + 600.0 * mm, v->GetPosition().getZ());
+	}
+}
+
 }
 
 }
