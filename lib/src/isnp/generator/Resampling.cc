@@ -20,7 +20,7 @@ Resampling::Resampling() :
 				"DirectionX"), directionYColumn("DirectionY"), directionZColumn(
 				"DirectionZ"), positionXColumn("PositionX"), positionYColumn(
 				"PositionY"), positionZColumn("PositionZ"), typeColumn("Type"), sampleFileLoaded(
-				false), counter(0), verboseLevel(1) {
+				false), counter(0), verboseLevel(1), autoTranslation(true) {
 
 }
 
@@ -45,12 +45,11 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 	particleGun->SetParticleEnergy(
 			ShootNumber(energyColumn, energyRowNo) * MeV);
 	particleGun->SetParticlePosition(
-			position
-					+ CalculatePosition(
-							ShootVector(directionXColumn, directionYColumn,
-									directionZColumn, energyRowNo),
-							ShootVector(positionXColumn, positionYColumn,
-									positionZColumn, energyRowNo) * mm));
+			CalculatePosition(
+					ShootVector(directionXColumn, directionYColumn,
+							directionZColumn, energyRowNo),
+					ShootVector(positionXColumn, positionYColumn,
+							positionZColumn, energyRowNo) * mm));
 
 	auto const directionRowNo = CLHEP::RandFlat::shootInt(dataSize);
 	particleGun->SetParticleMomentumDirection(
@@ -94,12 +93,18 @@ std::unique_ptr<G4ParticleGun> Resampling::MakeGun() {
 G4ThreeVector Resampling::CalculatePosition(const G4ThreeVector& direction,
 		const G4ThreeVector& targetPos) {
 
-	return G4ThreeVector(
+	auto result = G4ThreeVector(
 			targetPos.getX()
 					- targetPos.getZ() * direction.getX() / direction.getZ(),
 			targetPos.getY()
 					- targetPos.getZ() * direction.getY() / direction.getZ(),
 			0.0);
+
+	if (!autoTranslation) {
+		result += position;
+	}
+
+	return result;
 
 }
 
@@ -140,6 +145,7 @@ G4ThreeVector Resampling::GetPosition() const {
 void Resampling::SetPosition(G4ThreeVector const v) {
 
 	position = v;
+	autoTranslation = false;
 
 }
 

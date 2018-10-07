@@ -66,11 +66,12 @@ private:
 	bool sampleFileLoaded;
 	unsigned counter;
 	G4int verboseLevel;
+	G4bool autoTranslation;
 	G4ThreeVector position;
 	std::unique_ptr<util::DataFrame> dataFrame;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
-	static G4ThreeVector CalculatePosition(const G4ThreeVector& direction,
+	G4ThreeVector CalculatePosition(const G4ThreeVector& direction,
 			const G4ThreeVector& targetPos);
 	void LoadSampleFile();
 	G4double ShootNumber(G4String const& column,
