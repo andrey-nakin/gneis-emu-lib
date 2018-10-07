@@ -37,15 +37,15 @@ Beam5::Beam5() :
 				std::make_unique < Beam5Messenger > (*this)), spallationTarget(
 				std::make_unique<component::SpallationTarget>()), detector(
 				nullptr), zeroPosition(0.5 * m), worldLength(50.5 * m), xAngle(
-				-2. * deg), yAngle(-32.0 * deg), collimatorsHaveDetectors(false), c5Diameter(
-				100 * mm), verboseLevel(0), ntubeInnerRadius(120 * mm), ntubeOuterRadius(
-				130 * mm), ntubeFlangeThickness(1. * mm), ntube1Length(4.5 * m), ntube2Length(
-				7.7 * m), ntube4Length(5.8 * m), ntube5Length(8.6 * m), wallLength(
-				6. * m), windowThickness(2. * mm), detectorZPosition(36. * m), ntubeMaterial(
-				"DUR_AMG3"), ntubeFlangeMaterial("G4_Al"), ntubeInnerMaterial(
-				"FOREVACUUM_100"), wallMaterial("G4_CONCRETE"), worldMaterial(
-				"G4_AIR"), windowMaterial("G4_Al"), c5Material("BR05C5S5"), worldRadius(
-				190. * mm) {
+				-2. * deg), yAngle(-32.0 * deg), collimatorsHaveDetectors(
+				false), c5Diameter(100 * mm), verboseLevel(0), ntubeInnerRadius(
+				120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
+				1. * mm), ntube1Length(4.5 * m), ntube2Length(7.7 * m), ntube4Length(
+				5.8 * m), ntube5Length(8.6 * m), wallLength(6. * m), windowThickness(
+				2. * mm), detectorZPosition(36. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
+				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
+				"G4_CONCRETE"), worldMaterial("G4_AIR"), windowMaterial(
+				"G4_Al"), c5Material("BR05C5S5"), worldRadius(190. * mm) {
 }
 
 Beam5::~Beam5() {
