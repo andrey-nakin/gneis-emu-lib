@@ -13,24 +13,25 @@ namespace isnp {
 
 namespace generator {
 
-TEST(Spallation, Diameter)
-{
+TEST(Spallation, Diameter) {
 
 	Spallation spallation;
 
-	EXPECT_DOUBLE_EQ(40 * mm, spallation.GetUniformCircle().GetProps().GetDiameter());
+	EXPECT_DOUBLE_EQ(40 * mm,
+			spallation.GetUniformCircle().GetProps().GetDiameter());
 
 	spallation.GetUniformCircle().GetProps().SetDiameter(50 * mm);
-	EXPECT_DOUBLE_EQ(50 * mm, spallation.GetUniformCircle().GetProps().GetDiameter());
+	EXPECT_DOUBLE_EQ(50 * mm,
+			spallation.GetUniformCircle().GetProps().GetDiameter());
 
 }
 
-TEST(Spallation, PositionX)
-{
+TEST(Spallation, PositionX) {
 
 	using namespace isnp::testutil;
 
 	Spallation spallation;
+	spallation.SetMode(Spallation::Mode::UniformCircle);
 
 	EXPECT_DOUBLE_EQ(0 * mm, spallation.GetPositionX());
 
@@ -46,18 +47,22 @@ TEST(Spallation, PositionX)
 	}
 
 	EXPECT_TRUE(x.Is(20.0 * mm));
-	EXPECT_NEAR(x.GetMin(), -spallation.GetUniformCircle().GetProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
-	EXPECT_NEAR(x.GetMax(), spallation.GetUniformCircle().GetProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(x.GetMin(),
+			-spallation.GetUniformCircle().GetProps().GetDiameter() / 2
+					+ 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(x.GetMax(),
+			spallation.GetUniformCircle().GetProps().GetDiameter() / 2
+					+ 20.0 * mm, 1e-1 * mm);
 	EXPECT_TRUE(x.GetStd() > 0.99 * cm);
 
 }
 
-TEST(Spallation, PositionY)
-{
+TEST(Spallation, PositionY) {
 
 	using namespace isnp::testutil;
 
 	Spallation spallation;
+	spallation.SetMode(Spallation::Mode::UniformCircle);
 
 	EXPECT_DOUBLE_EQ(0 * mm, spallation.GetPositionY());
 
@@ -73,18 +78,23 @@ TEST(Spallation, PositionY)
 	}
 
 	EXPECT_TRUE(y.Is(20.0 * mm));
-	EXPECT_NEAR(y.GetMin(), -spallation.GetUniformCircle().GetProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
-	EXPECT_NEAR(y.GetMax(), spallation.GetUniformCircle().GetProps().GetDiameter() / 2 + 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(y.GetMin(),
+			-spallation.GetUniformCircle().GetProps().GetDiameter() / 2
+					+ 20.0 * mm, 1e-1 * mm);
+	EXPECT_NEAR(y.GetMax(),
+			spallation.GetUniformCircle().GetProps().GetDiameter() / 2
+					+ 20.0 * mm, 1e-1 * mm);
 	EXPECT_TRUE(y.GetStd() > 0.99 * cm);
 
 }
 
-TEST(Spallation, GeneratePositionStatistics)
-{
+TEST(Spallation, GeneratePositionStatistics) {
 
 	using namespace isnp::testutil;
 
 	Spallation spallation;
+	spallation.SetMode(Spallation::Mode::UniformCircle);
+
 	Stat x, y, z, r;
 	G4Transform3D const zeroTransform;
 
@@ -113,8 +123,7 @@ TEST(Spallation, GeneratePositionStatistics)
 
 }
 
-TEST(Spallation, GenerateDirection)
-{
+TEST(Spallation, GenerateDirection) {
 
 	Spallation spallation;
 
@@ -140,13 +149,13 @@ TEST(Spallation, GenerateDirection)
 
 }
 
-TEST(Spallation, GeneratePosition)
-{
+TEST(Spallation, GeneratePosition) {
 
 	using namespace isnp::testutil;
 
 	{
 		Spallation spallation;
+		spallation.SetMode(Spallation::Mode::UniformCircle);
 		spallation.GetUniformCircle().GetProps().SetDiameter(0.0);
 
 		G4Transform3D const zeroTransform;
@@ -160,7 +169,8 @@ TEST(Spallation, GeneratePosition)
 		Spallation spallation;
 		spallation.SetMode(Spallation::Mode::UniformCircle);
 
-		G4double const r = spallation.GetUniformCircle().GetProps().GetDiameter() / 2;
+		G4double const r =
+				spallation.GetUniformCircle().GetProps().GetDiameter() / 2;
 
 		G4double const angle = 30.0 * deg;
 		G4RotationMatrix rotm = G4RotationMatrix();
@@ -178,16 +188,20 @@ TEST(Spallation, GeneratePosition)
 		}
 
 		EXPECT_TRUE(x.Is(std::sin(angle) * -200 * mm + 1 * m));
-		EXPECT_NEAR(std::sin(angle) * -200 * mm - std::cos(angle) * r + 1 * m, x.GetMin(), 0.01 * mm);
-		EXPECT_NEAR(std::sin(angle) * -200 * mm + std::cos(angle) * r + 1 * m, x.GetMax(), 0.01 * mm);
+		EXPECT_NEAR(std::sin(angle) * -200 * mm - std::cos(angle) * r + 1 * m,
+				x.GetMin(), 0.01 * mm);
+		EXPECT_NEAR(std::sin(angle) * -200 * mm + std::cos(angle) * r + 1 * m,
+				x.GetMax(), 0.01 * mm);
 
 		EXPECT_TRUE(y.Is(2 * m));
 		EXPECT_NEAR(-2 * cm + 2 * m, y.GetMin(), 0.001 * cm);
 		EXPECT_NEAR(2 * cm + 2 * m, y.GetMax(), 0.001 * cm);
 
 		EXPECT_TRUE(z.Is(std::cos(angle) * -200 * mm + 3 * m));
-		EXPECT_NEAR(std::cos(angle) * -200 * mm - std::sin(angle) * r + 3 * m, z.GetMin(), 0.01 * mm);
-		EXPECT_NEAR(std::cos(angle) * -200 * mm + std::sin(angle) * r + 3 * m, z.GetMax(), 0.01 * mm);
+		EXPECT_NEAR(std::cos(angle) * -200 * mm - std::sin(angle) * r + 3 * m,
+				z.GetMin(), 0.01 * mm);
+		EXPECT_NEAR(std::cos(angle) * -200 * mm + std::sin(angle) * r + 3 * m,
+				z.GetMax(), 0.01 * mm);
 	}
 
 }
