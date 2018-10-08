@@ -27,18 +27,6 @@ class SpallationTarget final : private BoxComponent,
 
 public:
 
-	static G4Transform3D GetTransform() {
-		return transform;
-	}
-
-	static void SetTransform(G4Transform3D const& t) {
-		transform = t;
-	}
-
-	static void SetTransform(G4Transform3D && t) {
-		transform = t;
-	}
-
 	void Place(G4LogicalVolume* destination);
 
 	G4bool GetHasCooler() const;
@@ -61,8 +49,6 @@ private:
 	G4String const supportMaterial;
 	G4bool hasCooler;
 	G4ThreeVector rotation, position;
-
-	static G4Transform3D transform;
 
 };
 

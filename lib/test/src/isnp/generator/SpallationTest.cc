@@ -115,7 +115,7 @@ TEST(Spallation, GeneratePositionStatistics) {
 	EXPECT_NEAR(2 * cm, y.GetMax(), 0.001 * cm);
 	EXPECT_NEAR(1.0 * cm, y.GetStd(), 0.002 * cm);
 
-	EXPECT_DOUBLE_EQ(-200.0 * mm, z.GetMean());
+	EXPECT_DOUBLE_EQ(-250.0 * mm, z.GetMean());
 
 	EXPECT_NEAR(2 * cm, r.GetMax(), 0.01 * cm);
 	EXPECT_NEAR(0.47 * cm, r.GetStd(), 0.01 * cm);
@@ -161,7 +161,7 @@ TEST(Spallation, GeneratePosition) {
 		auto const pos = spallation.GeneratePosition(zeroTransform);
 		EXPECT_DOUBLE_EQ(0.0, pos.getX());
 		EXPECT_DOUBLE_EQ(0.0, pos.getY());
-		EXPECT_DOUBLE_EQ(-200 * mm, pos.getZ());
+		EXPECT_DOUBLE_EQ(-250 * mm, pos.getZ());
 	}
 
 	{
@@ -186,20 +186,20 @@ TEST(Spallation, GeneratePosition) {
 			z += pos.getZ();
 		}
 
-		EXPECT_TRUE(x.Is(std::sin(angle) * -200 * mm + 1 * m));
-		EXPECT_NEAR(std::sin(angle) * -200 * mm - std::cos(angle) * r + 1 * m,
+		EXPECT_TRUE(x.Is(std::sin(angle) * -250 * mm + 1 * m));
+		EXPECT_NEAR(std::sin(angle) * -250 * mm - std::cos(angle) * r + 1 * m,
 				x.GetMin(), 0.01 * mm);
-		EXPECT_NEAR(std::sin(angle) * -200 * mm + std::cos(angle) * r + 1 * m,
+		EXPECT_NEAR(std::sin(angle) * -250 * mm + std::cos(angle) * r + 1 * m,
 				x.GetMax(), 0.01 * mm);
 
 		EXPECT_TRUE(y.Is(2 * m));
 		EXPECT_NEAR(-2 * cm + 2 * m, y.GetMin(), 0.001 * cm);
 		EXPECT_NEAR(2 * cm + 2 * m, y.GetMax(), 0.001 * cm);
 
-		EXPECT_TRUE(z.Is(std::cos(angle) * -200 * mm + 3 * m));
-		EXPECT_NEAR(std::cos(angle) * -200 * mm - std::sin(angle) * r + 3 * m,
+		EXPECT_TRUE(z.Is(std::cos(angle) * -250 * mm + 3 * m));
+		EXPECT_NEAR(std::cos(angle) * -250 * mm - std::sin(angle) * r + 3 * m,
 				z.GetMin(), 0.01 * mm);
-		EXPECT_NEAR(std::cos(angle) * -200 * mm + std::sin(angle) * r + 3 * m,
+		EXPECT_NEAR(std::cos(angle) * -250 * mm + std::sin(angle) * r + 3 * m,
 				z.GetMax(), 0.01 * mm);
 	}
 

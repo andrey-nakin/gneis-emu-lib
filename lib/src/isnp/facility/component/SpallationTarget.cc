@@ -20,8 +20,6 @@ namespace facility {
 
 namespace component {
 
-G4Transform3D SpallationTarget::transform;
-
 SpallationTarget::SpallationTarget() :
 		util::Box(200.0 * mm, 50.0 * mm, 400.0 * mm), messenger(
 				std::make_unique < SpallationTargetMessenger > (*this)), coolerInnerRadius(
@@ -44,9 +42,7 @@ void SpallationTarget::Place(G4LogicalVolume* const destination) {
 	rotm.rotateZ(rotation.getZ());
 	G4Transform3D const trans = G4Transform3D(rotm, position);
 
-	SetTransform(trans);
-
-	G4Transform3D transform = trans * G4RotateZ3D(7. * deg);
+	G4Transform3D const transform = trans * G4RotateZ3D(7. * deg);
 
 	auto const nist = G4NistManager::Instance();
 

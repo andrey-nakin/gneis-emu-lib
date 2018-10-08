@@ -1,8 +1,12 @@
+#include <string>
+
 #include <G4Event.hh>
 #include <G4ParticleGun.hh>
 #include <G4ParticleTable.hh>
 #include <G4ParticleDefinition.hh>
 #include <G4SystemOfUnits.hh>
+#include <G4UImanager.hh>
+#include <G4UnitsTable.hh>
 
 #include "isnp/generator/Spallation.hh"
 #include "isnp/generator/SpallationMessenger.hh"
@@ -18,7 +22,8 @@ Spallation::Spallation() :
 				0), counter(0), verboseLevel(1), mode(Mode::UniformRectangle), uniformRectangle(
 				dist::UniformRectangleProps(120 * mm, 50 * mm)), uniformCircle(
 				dist::UniformCircleProps(4.0 * cm)), gaussEllipse(
-				dist::GaussEllipseProps(200 * mm, 50 * mm)) {
+				dist::GaussEllipseProps(200 * mm, 50 * mm)), targetTransformDetected(
+				false) {
 }
 
 Spallation::~Spallation() {
@@ -27,10 +32,15 @@ Spallation::~Spallation() {
 void Spallation::GeneratePrimaries(G4Event* const anEvent) {
 
 	using namespace facility::component;
-	G4Transform3D const transform = SpallationTarget::GetTransform();
 
-	particleGun->SetParticlePosition(GeneratePosition(transform));
-	particleGun->SetParticleMomentumDirection(GenerateDirection(transform));
+	if (!targetTransformDetected) {
+		targetTransform = DetectTargetTransform();
+		targetTransformDetected = true;
+	}
+
+	particleGun->SetParticlePosition(GeneratePosition(targetTransform));
+	particleGun->SetParticleMomentumDirection(
+			GenerateDirection(targetTransform));
 	particleGun->GeneratePrimaryVertex(anEvent);
 	++counter;
 
@@ -82,7 +92,7 @@ G4ThreeVector Spallation::GeneratePosition(
 
 	position.setX(position.getX() + positionX);
 	position.setY(position.getY() + positionY);
-	position.setZ(position.getZ() - 200 * mm);
+	position.setZ(position.getZ() - 250 * mm);
 	position.transform(transform.getRotation());
 	position += transform.getTranslation();
 
@@ -100,6 +110,43 @@ std::unique_ptr<G4ParticleGun> Spallation::MakeGun() {
 	gun->SetParticleEnergy(1.0 * GeV);
 
 	return gun;
+}
+
+G4Transform3D Spallation::DetectTargetTransform() const {
+
+	auto const position = GetVector(
+			"/isnp/facility/component/spTarget/position");
+	auto const rotation = GetVector(
+			"/isnp/facility/component/spTarget/rotation");
+
+	G4RotationMatrix rotm = G4RotationMatrix();
+	rotm.rotateX(rotation.getX());
+	rotm.rotateY(rotation.getY());
+	rotm.rotateZ(rotation.getZ());
+	return G4Transform3D(rotm, position);
+
+}
+
+G4ThreeVector Spallation::GetVector(const char* const cmd) const {
+
+	G4ThreeVector result;
+	auto const uiManager = G4UImanager::GetUIpointer();
+
+	G4String const x = uiManager->GetCurrentStringValue(cmd, 1);
+	G4String const y = uiManager->GetCurrentStringValue(cmd, 2);
+	G4String const z = uiManager->GetCurrentStringValue(cmd, 3);
+	G4String const units = uiManager->GetCurrentStringValue(cmd, 4);
+
+	if (!x.isNull() && !y.isNull() && !z.isNull() && !units.isNull()) {
+		auto const unitValue = G4UnitDefinition::GetValueOf(units);
+
+		result.setX(std::stof(x) * unitValue);
+		result.setY(std::stof(y) * unitValue);
+		result.setZ(std::stof(z) * unitValue);
+	}
+
+	return result;
+
 }
 
 }

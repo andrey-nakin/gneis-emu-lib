@@ -127,12 +127,17 @@ private:
 	dist::UniformRectangle uniformRectangle;
 	dist::UniformCircle uniformCircle;
 	dist::GaussEllipse gaussEllipse;
+	G4bool targetTransformDetected;
+	G4Transform3D targetTransform;
 
 	G4ThreeVector GenerateDirection(G4Transform3D const&) const;
 	const dist::AbstractDistribution& ResolveDistribution() const;
 	G4ThreeVector GeneratePosition(G4Transform3D const&) const;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
+
+	G4Transform3D DetectTargetTransform() const;
+	G4ThreeVector GetVector(const char* cmd) const;
 
 };
 
