@@ -23,10 +23,6 @@ public:
 		return returnCode;
 	}
 
-	G4String GetPlName() const {
-		return plName;
-	}
-
 	int GetArgc() const {
 		return parsedArgc;
 	}
@@ -38,7 +34,6 @@ public:
 private:
 
 	int returnCode;
-	G4String plName;
 	int parsedArgc;
 	char** parsedArgv;
 

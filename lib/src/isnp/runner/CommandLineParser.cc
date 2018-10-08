@@ -7,7 +7,7 @@
 
 isnp::runner::CommandLineParser::CommandLineParser(int argc_, char* argv_[],
 		bool const silent) :
-		returnCode(0), plName(""), parsedArgc(0), parsedArgv(nullptr) {
+		returnCode(0), parsedArgc(0), parsedArgv(nullptr) {
 	Parse(argc_, argv_, silent);
 }
 
@@ -32,19 +32,12 @@ void isnp::runner::CommandLineParser::Parse(int argc, char* argv[],
 	}
 
 	::optind = 1;	//	reset getopt
-	while ((res = ::getopt(argc, argv, "p:h?")) != -1) {
+	while ((res = ::getopt(argc, argv, "h?")) != -1) {
 		switch (res) {
-		case 'p':
-			plName = ::optarg;
-			break;
-
 		case 'h':
 		case '?':
 			if (!silent) {
-				std::cerr << "Usage: [options] <script file>\n"
-						"Options:\n"
-						"\t-r <integer>\trandom generator seed number\n"
-						"\t-s <any>\tsuffix in output files' names\n"
+				std::cerr << "Usage: <script file>\n"
 						"";
 			}
 			returnCode = 1;

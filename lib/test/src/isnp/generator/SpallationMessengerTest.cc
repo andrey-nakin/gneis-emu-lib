@@ -1,7 +1,6 @@
 #include <cmath>
 
 #include <G4RunManager.hh>
-#include <QGSP_INCLXX_HP.hh>
 #include <G4SystemOfUnits.hh>
 #include <G4UImanager.hh>
 
@@ -18,7 +17,6 @@ constexpr G4double GET_CURRENT_DOUBLE_VALUE_DELTA = 1.e-6;
 TEST(SpallationMessenger, GetDiameter) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -35,7 +33,6 @@ TEST(SpallationMessenger, GetDiameter) {
 TEST(SpallationMessenger, SetDiameter) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -51,7 +48,6 @@ TEST(SpallationMessenger, SetDiameter) {
 TEST(SpallationMessenger, GetXWidth) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -68,7 +64,6 @@ TEST(SpallationMessenger, GetXWidth) {
 TEST(SpallationMessenger, SetXWidth) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -87,7 +82,6 @@ TEST(SpallationMessenger, SetXWidth) {
 TEST(SpallationMessenger, GetYWidth) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -104,7 +98,6 @@ TEST(SpallationMessenger, GetYWidth) {
 TEST(SpallationMessenger, SetYWidth) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -123,7 +116,6 @@ TEST(SpallationMessenger, SetYWidth) {
 TEST(SpallationMessenger, GetPositionX) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -140,7 +132,6 @@ TEST(SpallationMessenger, GetPositionX) {
 TEST(SpallationMessenger, SetPositionX) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -154,7 +145,6 @@ TEST(SpallationMessenger, SetPositionX) {
 TEST(SpallationMessenger, GetPositionY) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -171,7 +161,6 @@ TEST(SpallationMessenger, GetPositionY) {
 TEST(SpallationMessenger, SetPositionY) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -185,7 +174,6 @@ TEST(SpallationMessenger, SetPositionY) {
 TEST(SpallationMessenger, GetVerboseLevel) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -198,7 +186,6 @@ TEST(SpallationMessenger, GetVerboseLevel) {
 TEST(SpallationMessenger, SetVerboseLevel) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -214,7 +201,6 @@ TEST(SpallationMessenger, SetVerboseLevel) {
 TEST(SpallationMessenger, GetMode) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 
@@ -235,7 +221,6 @@ TEST(SpallationMessenger, GetMode) {
 TEST(SpallationMessenger, SetMode) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Spallation spallation;
 

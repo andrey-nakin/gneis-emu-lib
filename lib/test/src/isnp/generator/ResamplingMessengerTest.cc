@@ -1,7 +1,6 @@
 #include <cmath>
 
 #include <G4RunManager.hh>
-#include <QGSP_INCLXX_HP.hh>
 #include <G4SystemOfUnits.hh>
 #include <G4UImanager.hh>
 
@@ -16,7 +15,6 @@ namespace generator {
 TEST(ResamplingMessenger, GetVerboseLevel) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Resampling resampling;
 
@@ -29,7 +27,6 @@ TEST(ResamplingMessenger, GetVerboseLevel) {
 TEST(ResamplingMessenger, SetVerboseLevel) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Resampling resampling;
 
@@ -45,7 +42,6 @@ TEST(ResamplingMessenger, SetVerboseLevel) {
 TEST(ResamplingMessenger, GetFile) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Resampling resampling;
 
@@ -60,7 +56,6 @@ TEST(ResamplingMessenger, GetFile) {
 TEST(ResamplingMessenger, SetFile) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Resampling resampling;
 
@@ -74,7 +69,6 @@ TEST(ResamplingMessenger, SetFile) {
 TEST(ResamplingMessenger, GetPosition) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Resampling resampling;
 
@@ -109,7 +103,6 @@ TEST(ResamplingMessenger, GetPosition) {
 TEST(ResamplingMessenger, SetPosition) {
 
 	auto const uiManager = G4UImanager::GetUIpointer();
-	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/physList QGSP_INCLXX_HP"));
 
 	Resampling resampling;
 

@@ -2,7 +2,6 @@
 #include <sstream>
 
 #include <G4RunManager.hh>
-#include <QGSP_INCLXX_HP.hh>
 #include <G4SystemOfUnits.hh>
 
 #include <gtest/gtest.h>
