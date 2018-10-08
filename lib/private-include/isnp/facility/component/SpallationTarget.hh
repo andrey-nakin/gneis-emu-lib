@@ -7,6 +7,7 @@
 #include <G4LogicalVolume.hh>
 #include "BoxComponent.hh"
 #include "isnp/util/Box.hh"
+#include "isnp/util/Singleton.hh"
 
 namespace isnp {
 
@@ -20,10 +21,11 @@ class SpallationTargetMessenger;
  * Class encapsulates an information about the lead target
  * used as source of neutrons in the spallation process.
  */
-class SpallationTarget final : private BoxComponent, public util::Box {
-public:
+class SpallationTarget final : private BoxComponent,
+		public util::Box,
+		public util::Singleton<SpallationTarget> {
 
-	SpallationTarget();
+public:
 
 	static G4Transform3D GetTransform() {
 		return transform;
@@ -37,17 +39,28 @@ public:
 		transform = t;
 	}
 
-	void Place(G4LogicalVolume* destination, G4Transform3D const& transform);
+	void Place(G4LogicalVolume* destination);
 
 	G4bool GetHasCooler() const;
 	void SetHasCooler(G4bool v);
 
+	G4ThreeVector GetRotation() const;
+	void SetRotation(G4ThreeVector v);
+
+	G4ThreeVector GetPosition() const;
+	void SetPosition(G4ThreeVector v);
+
 private:
+
+	friend class util::Singleton<SpallationTarget>;
+
+	SpallationTarget();
 
 	std::unique_ptr<SpallationTargetMessenger> const messenger;
 	G4double const coolerInnerRadius, coolerOuterRadius, coolerTorusMinRadius;
 	G4String const supportMaterial;
 	G4bool hasCooler;
+	G4ThreeVector rotation, position;
 
 	static G4Transform3D transform;
 

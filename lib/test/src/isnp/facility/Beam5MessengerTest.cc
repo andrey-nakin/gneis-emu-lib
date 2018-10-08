@@ -11,65 +11,84 @@ namespace facility {
 
 TEST(Beam5Messenger, SetXAngle) {
 
-	Beam5 facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility beam5"));
 
-	EXPECT_DOUBLE_EQ(-2 * deg, facility.GetXAngle());
+	auto const facility = Beam5::GetInstance();
+
+	EXPECT_DOUBLE_EQ(-2 * deg, facility->GetXAngle());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/xAngle -5 deg"));
-	EXPECT_DOUBLE_EQ(-5 * deg, facility.GetXAngle());
+	EXPECT_DOUBLE_EQ(-5 * deg, facility->GetXAngle());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/xAngle -2 deg"));
 
 }
 
 TEST(Beam5Messenger, SetYAngle) {
 
-	Beam5 facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility beam5"));
 
-	EXPECT_DOUBLE_EQ(-32 * deg, facility.GetYAngle());
+	auto const facility = Beam5::GetInstance();
+
+	EXPECT_DOUBLE_EQ(-32 * deg, facility->GetYAngle());
 	EXPECT_EQ(0,
 			uiManager->ApplyCommand("/isnp/facility/beam5/yAngle -25 deg"));
-	EXPECT_DOUBLE_EQ(-25 * deg, facility.GetYAngle());
+	EXPECT_DOUBLE_EQ(-25 * deg, facility->GetYAngle());
+	EXPECT_EQ(0,
+			uiManager->ApplyCommand("/isnp/facility/beam5/yAngle -32 deg"));
 
 }
 
 TEST(Beam5Messenger, SetVerbose) {
 
-	Beam5 facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility beam5"));
 
-	EXPECT_EQ(0, facility.GetVerboseLevel());
+	auto const facility = Beam5::GetInstance();
+
+	EXPECT_EQ(0, facility->GetVerboseLevel());
 	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/verbose 1"));
-	EXPECT_EQ(1, facility.GetVerboseLevel());
+	EXPECT_EQ(1, facility->GetVerboseLevel());
 	EXPECT_EQ(0x18f,
 			uiManager->ApplyCommand("/isnp/facility/beam5/verbose -1"));
 	EXPECT_EQ(0x18f, uiManager->ApplyCommand("/isnp/facility/beam5/verbose 4"));
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/verbose 0"));
 
 }
 
 TEST(Beam5Messenger, SetC5Diameter) {
 
-	Beam5 facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility beam5"));
 
-	EXPECT_DOUBLE_EQ(100 * mm, facility.GetC5Diameter());
+	auto const facility = Beam5::GetInstance();
+
+	EXPECT_DOUBLE_EQ(100 * mm, facility->GetC5Diameter());
 	EXPECT_EQ(0,
 			uiManager->ApplyCommand("/isnp/facility/beam5/c5/diameter 50 mm"));
-	EXPECT_DOUBLE_EQ(50 * mm, facility.GetC5Diameter());
+	EXPECT_DOUBLE_EQ(50 * mm, facility->GetC5Diameter());
 	EXPECT_EQ(0x18f,
 			uiManager->ApplyCommand("/isnp/facility/beam5/c5/diameter 0 mm"));
+	EXPECT_EQ(0,
+			uiManager->ApplyCommand("/isnp/facility/beam5/c5/diameter 100 mm"));
 
 }
 
 TEST(Beam5Messenger, SetC5Material) {
 
-	Beam5 facility;
 	auto const uiManager = G4UImanager::GetUIpointer();
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility beam5"));
 
-	EXPECT_EQ("BR05C5S5", facility.GetC5Material());
+	auto const facility = Beam5::GetInstance();
+
+	EXPECT_EQ("BR05C5S5", facility->GetC5Material());
 	EXPECT_EQ(0,
 			uiManager->ApplyCommand(
 					"/isnp/facility/beam5/c5/material G4_BRASS"));
-	EXPECT_EQ("G4_BRASS", facility.GetC5Material());
+	EXPECT_EQ("G4_BRASS", facility->GetC5Material());
+	EXPECT_EQ(0,
+			uiManager->ApplyCommand(
+					"/isnp/facility/beam5/c5/material BR05C5S5"));
 
 }
 

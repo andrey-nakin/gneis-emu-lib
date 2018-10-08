@@ -4,24 +4,18 @@
 #include <memory>
 #include <G4VUserDetectorConstruction.hh>
 #include <G4LogicalVolume.hh>
+#include "isnp/util/Singleton.hh"
 
 namespace isnp {
 
 namespace facility {
 
-namespace component {
-
-class SpallationTarget;
-
-}
-
 class Beam5Messenger;
 
-class Beam5: public G4VUserDetectorConstruction {
+class Beam5: public G4VUserDetectorConstruction, public util::Singleton<Beam5> {
 public:
 
-	Beam5();
-	virtual ~Beam5();
+	~Beam5() override;
 
 	virtual G4VPhysicalVolume* Construct();
 
@@ -51,8 +45,10 @@ public:
 
 private:
 
+	friend class util::Singleton<Beam5>;
+	Beam5();
+
 	std::unique_ptr<Beam5Messenger> const messenger;
-	std::unique_ptr<component::SpallationTarget> const spallationTarget;
 	G4VSensitiveDetector* detector;
 	G4double zeroPosition, worldLength, xAngle, yAngle;
 	G4bool collimatorsHaveDetectors;

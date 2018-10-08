@@ -5,23 +5,18 @@
 
 #include <G4VUserDetectorConstruction.hh>
 #include <G4LogicalVolume.hh>
+#include "isnp/util/Singleton.hh"
 
 namespace isnp {
 
 namespace facility {
 
-namespace component {
-
-class SpallationTarget;
-
-}
-
 class BasicSpallationMessenger;
 
-class BasicSpallation: public G4VUserDetectorConstruction {
+class BasicSpallation: public G4VUserDetectorConstruction,
+		public util::Singleton<BasicSpallation> {
 public:
 
-	BasicSpallation();
 	~BasicSpallation() override;
 
 	G4VPhysicalVolume* Construct() override;
@@ -55,13 +50,14 @@ public:
 	G4VSensitiveDetector* GetDetector() const;
 	void SetDetector(G4VSensitiveDetector* aDetector);
 
-	std::unique_ptr<component::SpallationTarget> const& GetSpallationTarget();
-
 private:
+
+	friend class util::Singleton<BasicSpallation>;
+
+	BasicSpallation();
 
 	G4VSensitiveDetector* detector;
 	std::unique_ptr<BasicSpallationMessenger> const messenger;
-	std::unique_ptr<component::SpallationTarget> const spallationTarget;
 	G4double worldRadius, xAngle, yAngle, distance, detectorWidth,
 			detectorHeight, detectorLength;
 	G4int verboseLevel;

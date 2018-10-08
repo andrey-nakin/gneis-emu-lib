@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
 	EXPECT_EQ(0, uiManager->ApplyCommand("/random/setSeeds 12345 12345"));
 
 	isnp::init::InitMessengers initMessengers(runManager);
-	G4cout << "ttt main" << G4endl;
 
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

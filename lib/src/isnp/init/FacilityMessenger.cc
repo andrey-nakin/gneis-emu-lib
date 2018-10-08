@@ -36,7 +36,8 @@ static std::unique_ptr<G4UIcmdWithAString> MakeFacility(
 }
 
 FacilityMessenger::FacilityMessenger(G4RunManager& aRunManager) :
-		runManager(aRunManager), facilityCmd(MakeFacility(this)), facility("") {
+		runManager(aRunManager), facilityCmd(MakeFacility(this)), facility(
+				nullptr), facilityName("") {
 
 }
 
@@ -49,7 +50,7 @@ G4String FacilityMessenger::GetCurrentValue(G4UIcommand* const command) {
 	G4String ans;
 
 	if (command == facilityCmd.get()) {
-		ans = facility;
+		ans = facilityName;
 	}
 
 	return ans;
@@ -67,22 +68,35 @@ void FacilityMessenger::SetNewValue(G4UIcommand* const command,
 
 void FacilityMessenger::SetFacility(G4String const& name) {
 
-	if (name == facility::Beam5) {
+	if (facilityName != name) {
 
-		runManager.SetUserInitialization(new isnp::facility::Beam5);
+		if (name == facility::Beam5) {
 
-	} else if (name == facility::BasicSpallation) {
+			if (facility) {
+				delete facility;
+			}
 
-		runManager.SetUserInitialization(new isnp::facility::BasicSpallation);
+			runManager.SetUserInitialization(
+					isnp::facility::Beam5::GetInstance());
 
-	} else {
+		} else if (name == facility::BasicSpallation) {
 
-		G4cerr << "Unknown ISNP facility name: " << name << G4endl;
-		return;
+			if (facility) {
+				delete facility;
+			}
 
+			runManager.SetUserInitialization(
+					isnp::facility::BasicSpallation::GetInstance());
+
+		} else {
+
+			G4cerr << "Unknown ISNP facility name: " << name << G4endl;
+			return;
+
+		}
+
+		facilityName = name;
 	}
-
-	facility = name;
 
 }
 

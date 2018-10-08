@@ -24,7 +24,8 @@ private:
 
 	G4RunManager& runManager;
 	std::unique_ptr<G4UIcmdWithAString> const facilityCmd;
-	G4String facility;
+	G4VUserDetectorConstruction* facility;
+	G4String facilityName;
 
 	void SetFacility(G4String const& name);
 

@@ -12,7 +12,6 @@
 #include "isnp/facility/BasicSpallation.hh"
 #include "isnp/facility/BasicSpallationMessenger.hh"
 #include "isnp/facility/component/SpallationTarget.hh"
-#include "isnp/facility/component/SpallationTargetMessenger.hh"
 #include "isnp/detector/Basic.hh"
 
 namespace isnp {
@@ -27,8 +26,7 @@ static G4double Square(G4double const x) {
 
 BasicSpallation::BasicSpallation() :
 		detector(nullptr), messenger(
-				std::make_unique < BasicSpallationMessenger > (*this)), spallationTarget(
-				std::make_unique<component::SpallationTarget>()), worldRadius(
+				std::make_unique < BasicSpallationMessenger > (*this)), worldRadius(
 				0.0), xAngle(-2.0 * deg), yAngle(-32.0 * deg), distance(
 				1.0 * m), detectorWidth(10 * cm), detectorHeight(10 * cm), detectorLength(
 				1.0 * cm), verboseLevel(0), worldMaterial(
@@ -80,13 +78,12 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 	{
 		// Neutron source
-		G4RotationMatrix rotm = G4RotationMatrix();
-		rotm.rotateX(-GetXAngle());
-		rotm.rotateY(-GetYAngle());
-		G4Transform3D const transform = G4Transform3D(rotm,
-				G4ThreeVector(0, 0, 0));
-
-		spallationTarget->Place(logicWorld, transform);
+		auto const spallationTarget =
+				component::SpallationTarget::GetInstance();
+		spallationTarget->SetRotation(
+				G4ThreeVector(-GetXAngle(), -GetYAngle(), 0.));
+		spallationTarget->SetPosition(G4ThreeVector());
+		spallationTarget->Place(logicWorld);
 	}
 
 	if (!detector) {
@@ -208,12 +205,6 @@ G4VSensitiveDetector* BasicSpallation::GetDetector() const {
 void BasicSpallation::SetDetector(G4VSensitiveDetector* const aDetector) {
 
 	detector = aDetector;
-
-}
-
-std::unique_ptr<component::SpallationTarget> const& BasicSpallation::GetSpallationTarget() {
-
-	return spallationTarget;
 
 }
 

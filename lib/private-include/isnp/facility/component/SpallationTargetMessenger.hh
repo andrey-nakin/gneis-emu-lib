@@ -6,6 +6,7 @@
 #include <G4UImessenger.hh>
 #include <G4UIdirectory.hh>
 #include <G4UIcmdWithABool.hh>
+#include <G4UIcmdWith3VectorAndUnit.hh>
 #include "isnp/facility/component/SpallationTarget.hh"
 
 namespace isnp {
@@ -28,6 +29,7 @@ private:
 	SpallationTarget& component;
 	std::unique_ptr<G4UIdirectory> const directory;
 	std::unique_ptr<G4UIcmdWithABool> const hasCoolerCmd;
+	std::unique_ptr<G4UIcmdWith3VectorAndUnit> const rotationCmd, positionCmd;
 
 };
 

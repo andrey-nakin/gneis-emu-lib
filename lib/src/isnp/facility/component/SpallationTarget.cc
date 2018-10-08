@@ -29,8 +29,7 @@ SpallationTarget::SpallationTarget() :
 				60. * mm), supportMaterial("DUR_AMG3"), hasCooler(true) {
 }
 
-void SpallationTarget::Place(G4LogicalVolume* const destination,
-		G4Transform3D const& trans) {
+void SpallationTarget::Place(G4LogicalVolume* const destination) {
 
 	using namespace util;
 
@@ -38,6 +37,12 @@ void SpallationTarget::Place(G4LogicalVolume* const destination,
 	G4int const numOfCopies = 0;
 	G4bool const checkOverlaps = true;
 	G4Transform3D const zeroTransform;
+
+	G4RotationMatrix rotm = G4RotationMatrix();
+	rotm.rotateX(rotation.getX());
+	rotm.rotateY(rotation.getY());
+	rotm.rotateZ(rotation.getZ());
+	G4Transform3D const trans = G4Transform3D(rotm, position);
 
 	SetTransform(trans);
 
@@ -203,6 +208,30 @@ G4bool SpallationTarget::GetHasCooler() const {
 void SpallationTarget::SetHasCooler(G4bool const v) {
 
 	hasCooler = v;
+
+}
+
+G4ThreeVector SpallationTarget::GetRotation() const {
+
+	return rotation;
+
+}
+
+void SpallationTarget::SetRotation(G4ThreeVector const v) {
+
+	rotation = v;
+
+}
+
+G4ThreeVector SpallationTarget::GetPosition() const {
+
+	return position;
+
+}
+
+void SpallationTarget::SetPosition(G4ThreeVector const v) {
+
+	position = v;
 
 }
 
