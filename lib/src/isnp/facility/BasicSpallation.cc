@@ -12,6 +12,7 @@
 #include "isnp/facility/BasicSpallation.hh"
 #include "isnp/facility/BasicSpallationMessenger.hh"
 #include "isnp/facility/component/SpallationTarget.hh"
+#include "isnp/facility/component/BeamPointer.hh"
 #include "isnp/detector/Basic.hh"
 
 namespace isnp {
@@ -78,12 +79,19 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 	{
 		// Neutron source
+		auto const pos = G4ThreeVector();
+
 		auto const spallationTarget =
 				component::SpallationTarget::GetInstance();
 		spallationTarget->SetRotation(
 				G4ThreeVector(-GetXAngle(), -GetYAngle(), 0.));
-		spallationTarget->SetPosition(G4ThreeVector());
+		spallationTarget->SetPosition(pos);
 		spallationTarget->Place(logicWorld);
+
+		auto const bp = component::BeamPointer::GetInstance();
+		bp->SetRotation(G4ThreeVector());
+		bp->SetPosition(pos);
+
 	}
 
 	if (!detector) {

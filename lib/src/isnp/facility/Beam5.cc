@@ -23,6 +23,7 @@
 #include "isnp/facility/component/CollimatorC3.hh"
 #include "isnp/facility/component/CollimatorC4.hh"
 #include "isnp/facility/component/CollimatorC5.hh"
+#include "isnp/facility/component/BeamPointer.hh"
 #include "isnp/detector/Basic.hh"
 #include "isnp/util/NameBuilder.hh"
 #include "isnp/repository/Colours.hh"
@@ -72,12 +73,19 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 	{
 		// Neutron source
+		auto const pos = G4ThreeVector(0, 0,
+				0.5 * (zeroPosition - worldLength));
+
 		auto const spallationTarget =
 				component::SpallationTarget::GetInstance();
 		spallationTarget->SetRotation(G4ThreeVector(-xAngle, -yAngle, 0.));
-		spallationTarget->SetPosition(
-				G4ThreeVector(0, 0, 0.5 * (zeroPosition - worldLength)));
+		spallationTarget->SetPosition(pos);
 		spallationTarget->Place(logicWorld);
+
+		// Beam position
+		auto const bp = component::BeamPointer::GetInstance();
+		bp->SetRotation(G4ThreeVector());
+		bp->SetPosition(pos);
 	}
 
 	G4double zPos = 5.4 * m;
