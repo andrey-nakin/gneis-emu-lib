@@ -1,3 +1,5 @@
+#include <G4SystemOfUnits.hh>
+
 #include "isnp/facility/component/BeamPointer.hh"
 #include "isnp/facility/component/BeamPointerMessenger.hh"
 
@@ -19,6 +21,7 @@ G4ThreeVector BeamPointer::GetRotation() const {
 
 void BeamPointer::SetRotation(G4ThreeVector const v) {
 
+	std::cerr << "ttt SetRotation " << v / deg << "\n";
 	rotation = v;
 
 }
