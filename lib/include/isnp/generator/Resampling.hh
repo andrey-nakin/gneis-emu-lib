@@ -54,9 +54,6 @@ public:
 
 	void Load(std::istream&);
 
-	G4ThreeVector GetPosition() const;
-	void SetPosition(G4ThreeVector v);
-
 private:
 
 	std::unique_ptr<ResamplingMessenger> const messenger;
@@ -67,7 +64,6 @@ private:
 	bool sampleFileLoaded;
 	unsigned counter;
 	G4int verboseLevel;
-	G4ThreeVector position;
 	std::unique_ptr<util::DataFrame> dataFrame;
 	G4bool beamTransformDetected;
 	G4Transform3D beamTransform;

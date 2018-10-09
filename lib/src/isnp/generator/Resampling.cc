@@ -108,7 +108,6 @@ G4ThreeVector Resampling::CalculatePosition(const G4ThreeVector& direction,
 					- targetPos.getZ() * direction.getY() / direction.getZ(),
 			0.0);
 
-	result += position;
 	result.transform(beamTransform.getRotation());
 	result += beamTransform.getTranslation();
 
@@ -148,18 +147,6 @@ void Resampling::Load(std::istream& f) {
 	}
 
 	sampleFileLoaded = true;
-
-}
-
-G4ThreeVector Resampling::GetPosition() const {
-
-	return position;
-
-}
-
-void Resampling::SetPosition(G4ThreeVector const v) {
-
-	position = v;
 
 }
 

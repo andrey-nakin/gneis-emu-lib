@@ -8,7 +8,6 @@
 #include <G4UIcommand.hh>
 #include <G4UIcmdWithAString.hh>
 #include <G4UIcmdWithAnInteger.hh>
-#include <G4UIcmdWith3VectorAndUnit.hh>
 
 #include "isnp/generator/Resampling.hh"
 
@@ -31,7 +30,6 @@ private:
 	std::unique_ptr<G4UIdirectory> const directory;
 	std::unique_ptr<G4UIcmdWithAnInteger> const verboseCmd;
 	std::unique_ptr<G4UIcmdWithAString> const fileCmd;
-	std::unique_ptr<G4UIcmdWith3VectorAndUnit> const positionCmd;
 
 };
 
