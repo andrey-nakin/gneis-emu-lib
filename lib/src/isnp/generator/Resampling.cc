@@ -9,6 +9,7 @@
 #include "isnp/generator/ResamplingMessenger.hh"
 #include "isnp/util/RandomNumberGenerator.hh"
 #include "isnp/util/DataFrameLoader.hh"
+#include "isnp/util/Convert.hh"
 
 namespace isnp {
 
@@ -20,7 +21,8 @@ Resampling::Resampling() :
 				"DirectionX"), directionYColumn("DirectionY"), directionZColumn(
 				"DirectionZ"), positionXColumn("PositionX"), positionYColumn(
 				"PositionY"), positionZColumn("PositionZ"), typeColumn("Type"), sampleFileLoaded(
-				false), counter(0), verboseLevel(1), autoTranslation(true) {
+				false), counter(0), verboseLevel(1), beamTransformDetected(
+				false) {
 
 }
 
@@ -29,6 +31,11 @@ Resampling::~Resampling() {
 }
 
 void Resampling::GeneratePrimaries(G4Event* const anEvent) {
+
+	if (!beamTransformDetected) {
+		beamTransform = DetectBeamTransform();
+		beamTransformDetected = true;
+	}
 
 	if (!sampleFileLoaded) {
 		LoadSampleFile();
@@ -53,8 +60,9 @@ void Resampling::GeneratePrimaries(G4Event* const anEvent) {
 
 	auto const directionRowNo = CLHEP::RandFlat::shootInt(dataSize);
 	particleGun->SetParticleMomentumDirection(
-			ShootVector(directionXColumn, directionYColumn, directionZColumn,
-					directionRowNo));
+			CalculateDirection(
+					ShootVector(directionXColumn, directionYColumn,
+							directionZColumn, directionRowNo)));
 
 	// generate particle
 	particleGun->GeneratePrimaryVertex(anEvent);
@@ -100,11 +108,18 @@ G4ThreeVector Resampling::CalculatePosition(const G4ThreeVector& direction,
 					- targetPos.getZ() * direction.getY() / direction.getZ(),
 			0.0);
 
-	if (!autoTranslation) {
-		result += position;
-	}
+	result += position;
+	result.transform(beamTransform.getRotation());
+	result += beamTransform.getTranslation();
 
 	return result;
+
+}
+
+G4ThreeVector Resampling::CalculateDirection(G4ThreeVector dir) {
+
+	dir.transform(beamTransform.getRotation());
+	return dir;
 
 }
 
@@ -145,7 +160,6 @@ G4ThreeVector Resampling::GetPosition() const {
 void Resampling::SetPosition(G4ThreeVector const v) {
 
 	position = v;
-	autoTranslation = false;
 
 }
 
@@ -189,6 +203,16 @@ G4ThreeVector Resampling::ShootVector(G4String const & columnX,
 
 	return G4ThreeVector(ShootNumber(columnX, rowNo),
 			ShootNumber(columnY, rowNo), ShootNumber(columnZ, rowNo));
+
+}
+
+G4Transform3D Resampling::DetectBeamTransform() const {
+
+	return util::Convert::VectorsToTransform(
+			util::Convert::CommandToVector(
+					"/isnp/facility/component/beamPointer/rotation"),
+			util::Convert::CommandToVector(
+					"/isnp/facility/component/beamPointer/position"));
 
 }
 

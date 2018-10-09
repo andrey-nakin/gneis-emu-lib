@@ -8,6 +8,7 @@
 #include <G4VUserPrimaryGeneratorAction.hh>
 #include <G4ParticleGun.hh>
 #include <G4String.hh>
+#include <G4Transform3D.hh>
 
 #include <gtest/gtest_prod.h>
 
@@ -66,18 +67,21 @@ private:
 	bool sampleFileLoaded;
 	unsigned counter;
 	G4int verboseLevel;
-	G4bool autoTranslation;
 	G4ThreeVector position;
 	std::unique_ptr<util::DataFrame> dataFrame;
+	G4bool beamTransformDetected;
+	G4Transform3D beamTransform;
 
 	static std::unique_ptr<G4ParticleGun> MakeGun();
 	G4ThreeVector CalculatePosition(const G4ThreeVector& direction,
 			const G4ThreeVector& targetPos);
+	G4ThreeVector CalculateDirection(G4ThreeVector dir);
 	void LoadSampleFile();
 	G4double ShootNumber(G4String const& column,
 			util::DataFrame::size_type rowNo) const;
 	G4ThreeVector ShootVector(G4String const& columnX, G4String const & columnY,
 			G4String const & columnZ, util::DataFrame::size_type rowNo) const;
+	G4Transform3D DetectBeamTransform() const;
 
 };
 
