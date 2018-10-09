@@ -21,7 +21,6 @@ G4ThreeVector BeamPointer::GetRotation() const {
 
 void BeamPointer::SetRotation(G4ThreeVector const v) {
 
-	std::cerr << "ttt SetRotation " << v / deg << "\n";
 	rotation = v;
 
 }

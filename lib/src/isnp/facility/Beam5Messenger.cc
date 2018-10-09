@@ -95,11 +95,26 @@ static std::unique_ptr<G4UIcmdWithAString> MakeC5Material(
 
 }
 
+static std::unique_ptr<G4UIcmdWithABool> MakeHasTarget(
+		Beam5Messenger* const inst) {
+
+	auto result = std::make_unique < G4UIcmdWithABool
+			> (DIR "hasSpTarget", inst);
+	result->SetGuidance("If facility includes spallation target.");
+	result->SetGuidance("Choice : true, 1, false, 0");
+	result->SetParameterName("value", true);
+	result->SetDefaultValue("true");
+	result->AvailableForStates(G4State_PreInit);
+
+	return result;
+
+}
+
 Beam5Messenger::Beam5Messenger(Beam5& facility_) :
 		facility(facility_), directory(MakeDirectory()), c5DiameterCmd(
 				MakeC5Diameter(this)), xAngleCmd(MakeXAngle(this)), yAngleCmd(
 				MakeYAngle(this)), verboseCmd(MakeVerboseLevel(this)), c5MaterialCmd(
-				MakeC5Material(this)) {
+				MakeC5Material(this)), hasTargetCmd(MakeHasTarget(this)) {
 
 }
 
@@ -121,6 +136,8 @@ G4String Beam5Messenger::GetCurrentValue(G4UIcommand* const command) {
 		ans = verboseCmd->ConvertToString(facility.GetVerboseLevel());
 	} else if (command == c5MaterialCmd.get()) {
 		ans = facility.GetC5Material();
+	} else if (command == hasTargetCmd.get()) {
+		ans = hasTargetCmd->ConvertToString(facility.GetHasSpallationTarget());
 	}
 
 	return ans;
@@ -140,6 +157,9 @@ void Beam5Messenger::SetNewValue(G4UIcommand* const command,
 		facility.SetVerboseLevel(verboseCmd->GetNewIntValue(newValue));
 	} else if (command == c5MaterialCmd.get()) {
 		facility.SetC5Material(newValue);
+	} else if (command == hasTargetCmd.get()) {
+		facility.SetHasSpallationTarget(
+				hasTargetCmd->GetNewBoolValue(newValue));
 	}
 
 }

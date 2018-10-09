@@ -92,6 +92,20 @@ TEST(Beam5Messenger, SetC5Material) {
 
 }
 
+TEST(Beam5Messenger, SetHasSpallationTarget) {
+
+	auto const uiManager = G4UImanager::GetUIpointer();
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility beam5"));
+
+	auto const facility = Beam5::GetInstance();
+
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/hasSpTarget 0"));
+	EXPECT_FALSE(facility->GetHasSpallationTarget());
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility/beam5/hasSpTarget 1"));
+	EXPECT_TRUE(facility->GetHasSpallationTarget());
+
+}
+
 }
 
 }
