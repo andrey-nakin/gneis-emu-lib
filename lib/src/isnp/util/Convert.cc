@@ -1,5 +1,6 @@
 #include <G4UnitsTable.hh>
 #include <G4UImanager.hh>
+#include <G4RotationMatrix.hh>
 
 #include "isnp/util/Convert.hh"
 
@@ -35,6 +36,17 @@ G4ThreeVector Convert::CommandToVector(const char* const cmd) {
 			uiManager->GetCurrentStringValue(cmd, 2),
 			uiManager->GetCurrentStringValue(cmd, 3),
 			uiManager->GetCurrentStringValue(cmd, 4));
+
+}
+
+G4Transform3D Convert::VectorsToTransform(G4ThreeVector const rotation,
+		G4ThreeVector const translation) {
+
+	G4RotationMatrix rotm = G4RotationMatrix();
+	rotm.rotateX(rotation.getX());
+	rotm.rotateY(rotation.getY());
+	rotm.rotateZ(rotation.getZ());
+	return G4Transform3D(rotm, translation);
 
 }
 

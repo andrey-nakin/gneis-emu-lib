@@ -115,16 +115,11 @@ std::unique_ptr<G4ParticleGun> Spallation::MakeGun() {
 
 G4Transform3D Spallation::DetectTargetTransform() const {
 
-	auto const position = util::Convert::CommandToVector(
-			"/isnp/facility/component/spTarget/position");
-	auto const rotation = util::Convert::CommandToVector(
-			"/isnp/facility/component/spTarget/rotation");
-
-	G4RotationMatrix rotm = G4RotationMatrix();
-	rotm.rotateX(rotation.getX());
-	rotm.rotateY(rotation.getY());
-	rotm.rotateZ(rotation.getZ());
-	return G4Transform3D(rotm, position);
+	return util::Convert::VectorsToTransform(
+			util::Convert::CommandToVector(
+					"/isnp/facility/component/spTarget/rotation"),
+			util::Convert::CommandToVector(
+					"/isnp/facility/component/spTarget/position"));
 
 }
 

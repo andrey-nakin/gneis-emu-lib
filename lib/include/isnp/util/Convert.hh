@@ -3,6 +3,7 @@
 
 #include <G4String.hh>
 #include <G4ThreeVector.hh>
+#include <G4Transform3D.hh>
 
 namespace isnp {
 
@@ -15,6 +16,9 @@ public:
 			G4String const &z, G4String const &units);
 
 	static G4ThreeVector CommandToVector(const char* cmd);
+
+	static G4Transform3D VectorsToTransform(G4ThreeVector rotation,
+			G4ThreeVector translation);
 
 private:
 
