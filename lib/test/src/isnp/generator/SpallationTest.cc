@@ -1,11 +1,13 @@
 #include <cmath>
 
-#include <G4RunManager.hh>
-#include <G4SystemOfUnits.hh>
-
 #include <gtest/gtest.h>
 
+#include <G4RunManager.hh>
+#include <G4SystemOfUnits.hh>
+#include <G4UImanager.hh>
+
 #include <isnp/generator/Spallation.hh>
+#include "isnp/facility/component/SpallationTarget.hh"
 #include "isnp/testutil/Stat.hh"
 
 namespace isnp {
@@ -202,6 +204,92 @@ TEST(Spallation, GeneratePosition) {
 		EXPECT_NEAR(std::cos(angle) * -250 * mm + std::sin(angle) * r + 3 * m,
 				z.GetMax(), 0.01 * mm);
 	}
+
+}
+
+TEST(Spallation, DetectTargetTransform) {
+
+	auto const uiManager = G4UImanager::GetUIpointer();
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility basicSpallation"));
+
+	auto const facility = facility::component::SpallationTarget::GetInstance();
+	EXPECT_TRUE(facility != nullptr);
+
+	auto const saveRotation = facility->GetRotation(), savePosition =
+			facility->GetPosition();
+
+	{
+		facility->SetRotation(G4ThreeVector(0., 0., 0.) * deg);
+		facility->SetPosition(G4ThreeVector(10., 20., 30.) * m);
+
+		Spallation spallation;
+		spallation.SetMode(Spallation::Mode::UniformCircle);
+		spallation.GetUniformCircle().GetProps().SetDiameter(0.0);
+
+		G4Event event;
+		spallation.GeneratePrimaries(&event);
+		auto const v = event.GetPrimaryVertex(0);
+		auto const p = v->GetPrimary();
+
+		EXPECT_EQ(0., p->GetMomentumDirection().getX());
+		EXPECT_EQ(0., p->GetMomentumDirection().getY());
+		EXPECT_EQ(1., p->GetMomentumDirection().getZ());
+
+		EXPECT_EQ(10. * m, v->GetPosition().getX());
+		EXPECT_EQ(20. * m, v->GetPosition().getY());
+		EXPECT_EQ(30. * m - 250. * mm, v->GetPosition().getZ());
+	}
+
+	{
+		facility->SetRotation(G4ThreeVector(-45., 0., 0.) * deg);
+		facility->SetPosition(G4ThreeVector(10., 20., 30.) * m);
+
+		Spallation spallation;
+		spallation.SetMode(Spallation::Mode::UniformCircle);
+		spallation.GetUniformCircle().GetProps().SetDiameter(0.0);
+
+		G4Event event;
+		spallation.GeneratePrimaries(&event);
+		auto const v = event.GetPrimaryVertex(0);
+		auto const p = v->GetPrimary();
+
+		EXPECT_EQ(0., p->GetMomentumDirection().getX());
+		EXPECT_NEAR(1. / std::sqrt(2.), p->GetMomentumDirection().getY(),
+				1.e-6);
+		EXPECT_NEAR(1. / std::sqrt(2.), p->GetMomentumDirection().getZ(),
+				1.e-6);
+
+		EXPECT_EQ(10. * m, v->GetPosition().getX());
+		EXPECT_EQ(20. * m - 250. * mm * sin(45 * deg), v->GetPosition().getY());
+		EXPECT_EQ(30. * m - 250. * mm * sin(45 * deg), v->GetPosition().getZ());
+	}
+
+	{
+		facility->SetRotation(G4ThreeVector(0., -45., 0.) * deg);
+		facility->SetPosition(G4ThreeVector(10., 20., 30.) * m);
+
+		Spallation spallation;
+		spallation.SetMode(Spallation::Mode::UniformCircle);
+		spallation.GetUniformCircle().GetProps().SetDiameter(0.0);
+
+		G4Event event;
+		spallation.GeneratePrimaries(&event);
+		auto const v = event.GetPrimaryVertex(0);
+		auto const p = v->GetPrimary();
+
+		EXPECT_NEAR(-1. / std::sqrt(2.), p->GetMomentumDirection().getX(),
+				1.e-6);
+		EXPECT_EQ(0., p->GetMomentumDirection().getY());
+		EXPECT_NEAR(1. / std::sqrt(2.), p->GetMomentumDirection().getZ(),
+				1.e-6);
+
+		EXPECT_EQ(10. * m + 250. * mm * sin(45 * deg), v->GetPosition().getX());
+		EXPECT_EQ(20. * m, v->GetPosition().getY());
+		EXPECT_EQ(30. * m - 250. * mm * sin(45 * deg), v->GetPosition().getZ());
+	}
+
+	facility->SetRotation(saveRotation);
+	facility->SetPosition(savePosition);
 
 }
 
