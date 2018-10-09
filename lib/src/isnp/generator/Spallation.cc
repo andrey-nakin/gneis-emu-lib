@@ -11,6 +11,7 @@
 #include "isnp/generator/Spallation.hh"
 #include "isnp/generator/SpallationMessenger.hh"
 #include "isnp/facility/component/SpallationTarget.hh"
+#include "isnp/util/Convert.hh"
 
 namespace isnp {
 
@@ -114,9 +115,9 @@ std::unique_ptr<G4ParticleGun> Spallation::MakeGun() {
 
 G4Transform3D Spallation::DetectTargetTransform() const {
 
-	auto const position = GetVector(
+	auto const position = util::Convert::CommandToVector(
 			"/isnp/facility/component/spTarget/position");
-	auto const rotation = GetVector(
+	auto const rotation = util::Convert::CommandToVector(
 			"/isnp/facility/component/spTarget/rotation");
 
 	G4RotationMatrix rotm = G4RotationMatrix();
@@ -124,28 +125,6 @@ G4Transform3D Spallation::DetectTargetTransform() const {
 	rotm.rotateY(rotation.getY());
 	rotm.rotateZ(rotation.getZ());
 	return G4Transform3D(rotm, position);
-
-}
-
-G4ThreeVector Spallation::GetVector(const char* const cmd) const {
-
-	G4ThreeVector result;
-	auto const uiManager = G4UImanager::GetUIpointer();
-
-	G4String const x = uiManager->GetCurrentStringValue(cmd, 1);
-	G4String const y = uiManager->GetCurrentStringValue(cmd, 2);
-	G4String const z = uiManager->GetCurrentStringValue(cmd, 3);
-	G4String const units = uiManager->GetCurrentStringValue(cmd, 4);
-
-	if (!x.isNull() && !y.isNull() && !z.isNull() && !units.isNull()) {
-		auto const unitValue = G4UnitDefinition::GetValueOf(units);
-
-		result.setX(std::stof(x) * unitValue);
-		result.setY(std::stof(y) * unitValue);
-		result.setZ(std::stof(z) * unitValue);
-	}
-
-	return result;
 
 }
 
