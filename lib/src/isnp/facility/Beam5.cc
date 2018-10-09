@@ -36,15 +36,14 @@ Beam5::Beam5() :
 		G4VUserDetectorConstruction(), messenger(
 				std::make_unique < Beam5Messenger > (*this)), detector(nullptr), zeroPosition(
 				0.5 * m), worldLength(50.5 * m), xAngle(-2. * deg), yAngle(
-				-32.0 * deg), collimatorsHaveDetectors(false), c5Diameter(
-				100 * mm), verboseLevel(0), ntubeInnerRadius(120 * mm), ntubeOuterRadius(
-				130 * mm), ntubeFlangeThickness(1. * mm), ntube1Length(4.5 * m), ntube2Length(
-				7.7 * m), ntube4Length(5.8 * m), ntube5Length(8.6 * m), wallLength(
-				6. * m), windowThickness(2. * mm), detectorZPosition(36. * m), ntubeMaterial(
-				"DUR_AMG3"), ntubeFlangeMaterial("G4_Al"), ntubeInnerMaterial(
-				"FOREVACUUM_100"), wallMaterial("G4_CONCRETE"), worldMaterial(
-				"G4_AIR"), windowMaterial("G4_Al"), c5Material("BR05C5S5"), worldRadius(
-				190. * mm) {
+				-32.0 * deg), hasSpallationTarget(true), c5Diameter(100 * mm), verboseLevel(
+				0), ntubeInnerRadius(120 * mm), ntubeOuterRadius(130 * mm), ntubeFlangeThickness(
+				1. * mm), ntube1Length(4.5 * m), ntube2Length(7.7 * m), ntube4Length(
+				5.8 * m), ntube5Length(8.6 * m), wallLength(6. * m), windowThickness(
+				2. * mm), detectorZPosition(36. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
+				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
+				"G4_CONCRETE"), worldMaterial("G4_AIR"), windowMaterial(
+				"G4_Al"), c5Material("BR05C5S5"), worldRadius(190. * mm) {
 }
 
 Beam5::~Beam5() {
@@ -76,11 +75,13 @@ G4VPhysicalVolume* Beam5::Construct() {
 		auto const pos = G4ThreeVector(0, 0,
 				0.5 * (zeroPosition - worldLength));
 
-		auto const spallationTarget =
-				component::SpallationTarget::GetInstance();
-		spallationTarget->SetRotation(G4ThreeVector(-xAngle, -yAngle, 0.));
-		spallationTarget->SetPosition(pos);
-		spallationTarget->Place(logicWorld);
+		if (hasSpallationTarget) {
+			auto const spallationTarget =
+					component::SpallationTarget::GetInstance();
+			spallationTarget->SetRotation(G4ThreeVector(-xAngle, -yAngle, 0.));
+			spallationTarget->SetPosition(pos);
+			spallationTarget->Place(logicWorld);
+		}
 
 		// Beam position
 		auto const bp = component::BeamPointer::GetInstance();
@@ -413,15 +414,15 @@ G4VPhysicalVolume* Beam5::Construct() {
 
 }
 
-G4bool Beam5::GetCollimatorsHaveDetectors() const {
+G4bool Beam5::GetHasSpallationTarget() const {
 
-	return collimatorsHaveDetectors;
+	return hasSpallationTarget;
 
 }
 
-void Beam5::SetCollimatorsHaveDetectors(G4bool const v) {
+void Beam5::SetHasSpallationTarget(G4bool const v) {
 
-	this->collimatorsHaveDetectors = v;
+	hasSpallationTarget = v;
 
 }
 
@@ -524,14 +525,6 @@ void Beam5::PlaceComponent(G4LogicalVolume* const world,
 void Beam5::PlaceCollimator(G4LogicalVolume* const world,
 		G4LogicalVolume* const collimator, G4double const position,
 		G4double const collimatorLength) {
-
-	if (collimatorsHaveDetectors) {
-		const auto sdMan = G4SDManager::GetSDMpointer();
-		const auto det = new isnp::detector::Basic(
-				util::NameBuilder::Make(collimator->GetName(), "Detector"));
-		sdMan->AddNewDetector(det);
-		collimator->SetSensitiveDetector(det);
-	}
 
 	PlaceComponent(world, collimator, position, collimatorLength);
 

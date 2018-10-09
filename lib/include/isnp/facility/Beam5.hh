@@ -19,8 +19,8 @@ public:
 
 	virtual G4VPhysicalVolume* Construct();
 
-	G4bool GetCollimatorsHaveDetectors() const;
-	void SetCollimatorsHaveDetectors(G4bool v);
+	G4bool GetHasSpallationTarget() const;
+	void SetHasSpallationTarget(G4bool v);
 
 	G4double GetXAngle() const;
 	void SetXAngle(G4double angle);
@@ -51,7 +51,7 @@ private:
 	std::unique_ptr<Beam5Messenger> const messenger;
 	G4VSensitiveDetector* detector;
 	G4double zeroPosition, worldLength, xAngle, yAngle;
-	G4bool collimatorsHaveDetectors;
+	G4bool hasSpallationTarget;
 	G4double c5Diameter;
 	G4int verboseLevel;
 	G4double ntubeInnerRadius, ntubeOuterRadius, ntubeFlangeThickness,
