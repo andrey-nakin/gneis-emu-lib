@@ -1,18 +1,24 @@
 #include <cmath>
 #include <sstream>
 
+#include <G4UImanager.hh>
 #include <G4RunManager.hh>
 #include <G4SystemOfUnits.hh>
+#include <G4RotationMatrix.hh>
 
 #include <gtest/gtest.h>
 
 #include <isnp/generator/Resampling.hh>
 #include "isnp/testutil/Stat.hh"
 #include "isnp/testutil/SampleData.hh"
+#include "isnp/facility/component/BeamPointer.hh"
 
 namespace isnp {
 
 namespace generator {
+
+static const char* const data =
+		"Type\tTotalEnergy\tKineticEnergy\tTime\tDirectionX\tDirectionY\tDirectionZ\tPositionX\tPositionY\tPositionZ\n" "neutron\t940.401\t1000.00\t2000\t0.500000\t0.250000\t0.829156\t100.000\t200.000\t300.000";
 
 TEST(Resampling, Generic) {
 
@@ -79,9 +85,6 @@ TEST(Resampling, ChangePosition) {
 
 	using namespace isnp::testutil;
 
-	static const char* const data =
-			"Type\tTotalEnergy\tKineticEnergy\tTime\tDirectionX\tDirectionY\tDirectionZ\tPositionX\tPositionY\tPositionZ\n" "neutron\t940.401\t1000.00\t2000\t0.500000\t0.250000\t0.829156\t100.000\t200.000\t300.000";
-
 	std::stringstream s;
 	s << data;
 
@@ -126,6 +129,63 @@ TEST(Resampling, ChangePosition) {
 				1.e-3 * mm);
 		EXPECT_EQ(0. * mm + 600.0 * mm, v->GetPosition().getZ());
 	}
+}
+
+TEST(Resampling, DetectBeamTransform) {
+
+	using namespace isnp::testutil;
+
+	auto const uiManager = G4UImanager::GetUIpointer();
+	EXPECT_EQ(0, uiManager->ApplyCommand("/isnp/facility basicSpallation"));
+
+	Resampling resampling;
+	resampling.SetVerboseLevel(1);
+
+	{
+		std::stringstream s;
+		s << data;
+		resampling.Load(s);
+	}
+
+	auto const facility = facility::component::BeamPointer::GetInstance();
+	EXPECT_TRUE(facility != nullptr);
+
+	auto const savedRotation = facility->GetRotation();
+	auto const savedPosition = facility->GetPosition();
+
+	{
+		EXPECT_EQ(0,
+				uiManager->ApplyCommand(
+						"/isnp/facility/component/beamPointer/rotation 0 45 0 deg"));
+		EXPECT_EQ(0,
+				uiManager->ApplyCommand(
+						"/isnp/facility/component/beamPointer/position 400 500 600 mm"));
+
+		G4Event event;
+		resampling.GeneratePrimaries(&event);
+		auto const v = event.GetPrimaryVertex(0);
+		auto const p = v->GetPrimary();
+
+		G4ThreeVector dir(0.500000, 0.250000, 0.829156);
+		G4RotationMatrix rotm = G4RotationMatrix();
+		rotm.rotateY(45 * deg);
+		dir.transform(rotm);
+
+		EXPECT_NEAR(dir.getX(), p->GetMomentumDirection().getX(), 0.5e-6);
+		EXPECT_NEAR(dir.getY(), p->GetMomentumDirection().getY(), 0.5e-6);
+		EXPECT_NEAR(dir.getZ(), p->GetMomentumDirection().getZ(), 0.5e-6);
+
+		EXPECT_NEAR(-80.9068 * mm * sin(45. * deg) + 400.0 * mm,
+				v->GetPosition().getX(), 1.e-3 * mm);
+		EXPECT_NEAR(109.547 * mm + 500.0 * mm, v->GetPosition().getY(),
+				1.e-3 * mm);
+		EXPECT_NEAR(80.9068 * mm * sin(45. * deg) + 600.0 * mm,
+				v->GetPosition().getZ(), 1.e-3 * mm);
+	}
+
+	facility->SetPosition(savedPosition);
+	facility->SetRotation(savedRotation);
+
 }
 
 }
