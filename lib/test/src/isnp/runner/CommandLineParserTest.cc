@@ -43,6 +43,7 @@ TEST(CommandLineParser, Nothing) {
 	CommandLineParser const parser = Helper::Instance("");
 	EXPECT_EQ(0, parser.GetReturnCode());
 	EXPECT_EQ(1, parser.GetArgc());
+	EXPECT_FALSE(parser.GetVisualMode());
 	EXPECT_STREQ("/path/to/executable", parser.GetArgv()[0]);
 }
 
@@ -50,6 +51,7 @@ TEST(CommandLineParser, NoOptions) {
 	CommandLineParser const parser = Helper::Instance("filename1 filename2");
 	EXPECT_EQ(0, parser.GetReturnCode());
 	EXPECT_EQ(3, parser.GetArgc());
+	EXPECT_FALSE(parser.GetVisualMode());
 	EXPECT_STREQ("/path/to/executable", parser.GetArgv()[0]);
 	EXPECT_STREQ("filename1", parser.GetArgv()[1]);
 	EXPECT_STREQ("filename2", parser.GetArgv()[2]);
@@ -68,10 +70,35 @@ TEST(CommandLineParser, Help) {
 	}
 }
 
+#ifdef G4MULTITHREADED
+
+TEST(CommandLineParser, NumOfThreads) {
+	{
+		CommandLineParser const parser = Helper::Instance("filename1 filename2");
+		EXPECT_EQ(0, parser.GetReturnCode());
+		EXPECT_EQ(3, parser.GetArgc());
+		EXPECT_EQ(0, parser.GetNumOfThreads());
+		EXPECT_STREQ("filename1", parser.GetArgv()[1]);
+		EXPECT_STREQ("filename2", parser.GetArgv()[2]);
+	}
+
+	{
+		CommandLineParser const parser = Helper::Instance("-t 4 filename1 filename2");
+		EXPECT_EQ(0, parser.GetReturnCode());
+		EXPECT_EQ(3, parser.GetArgc());
+		EXPECT_EQ(4, parser.GetNumOfThreads());
+		EXPECT_STREQ("filename1", parser.GetArgv()[1]);
+		EXPECT_STREQ("filename2", parser.GetArgv()[2]);
+	}
+}
+
+#endif
+
 TEST(CommandLineParser, AllOptions) {
-	CommandLineParser const parser = Helper::Instance("filename1 filename2");
+	CommandLineParser const parser = Helper::Instance("-v filename1 filename2");
 	EXPECT_EQ(0, parser.GetReturnCode());
 	EXPECT_EQ(3, parser.GetArgc());
+	EXPECT_TRUE(parser.GetVisualMode());
 	EXPECT_STREQ("filename1", parser.GetArgv()[1]);
 	EXPECT_STREQ("filename2", parser.GetArgv()[2]);
 }

@@ -31,11 +31,25 @@ public:
 		return parsedArgv;
 	}
 
+	int GetNumOfThreads() const {
+
+		return numOfThreads;
+
+	}
+
+	bool GetVisualMode() const {
+
+		return visualMode;
+
+	}
+
 private:
 
 	int returnCode;
 	int parsedArgc;
 	char** parsedArgv;
+	int numOfThreads;
+	bool visualMode;
 
 	void Parse(int argc, char* argv[], bool silent);
 	char** Dup(int argc, char** argv);

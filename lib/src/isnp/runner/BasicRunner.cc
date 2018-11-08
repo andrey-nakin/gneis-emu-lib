@@ -29,12 +29,20 @@ int BasicRunner::Run(std::function<void(G4RunManager&)> closure) {
 		return parser->GetReturnCode();
 	}
 
+#ifdef G4MULTITHREADED
+	G4MTRunManager runManager;
+	if (parser->GetNumOfThreads() != 0) {
+		runManager.SetNumberOfThreads(parser->GetNumOfThreads());
+	}
+#else
 	G4RunManager runManager;
+#endif
+
 	init::InitMessengers initMessengers(runManager);
 
 	auto uiManager = G4UImanager::GetUIpointer();
 
-	if (parser->GetArgc() > 1) {
+	if (parser->GetArgc() > 1 && !parser->GetVisualMode()) {
 		closure(runManager);
 
 		// first argument is a script file name

@@ -7,14 +7,16 @@
 
 isnp::runner::CommandLineParser::CommandLineParser(int argc_, char* argv_[],
 		bool const silent) :
-		returnCode(0), parsedArgc(0), parsedArgv(nullptr) {
+		returnCode(0), parsedArgc(0), parsedArgv(nullptr), numOfThreads(0), visualMode(
+				false) {
 	Parse(argc_, argv_, silent);
 }
 
 isnp::runner::CommandLineParser::CommandLineParser(
 		CommandLineParser const & src) :
 		returnCode(src.returnCode), parsedArgc(src.parsedArgc), parsedArgv(
-				Dup(src.parsedArgc, src.parsedArgv)) {
+				Dup(src.parsedArgc, src.parsedArgv)), numOfThreads(
+				src.numOfThreads), visualMode(src.visualMode) {
 
 }
 
@@ -26,14 +28,25 @@ void isnp::runner::CommandLineParser::Parse(int argc, char* argv[],
 		bool const silent) {
 
 	int res;
-
-	if (silent) {
+	char const * const options = "h?v"
+#ifdef G4MULTITHREADED
+			"t:"
+#endif
+;	if (silent) {
 		::opterr = 0;
 	}
 
 	::optind = 1;	//	reset getopt
-	while ((res = ::getopt(argc, argv, "h?")) != -1) {
+	while ((res = ::getopt(argc, argv, options)) != -1) {
 		switch (res) {
+		case 'v':
+			visualMode = true;
+			break;
+#ifdef G4MULTITHREADED
+			case 't':
+			numOfThreads = atoi(optarg);
+			break;
+#endif
 		case 'h':
 		case '?':
 			if (!silent) {

@@ -3,7 +3,12 @@
 
 #include <memory>
 #include <functional>
-#include <G4RunManager.hh>
+
+#ifdef G4MULTITHREADED
+#include "G4MTRunManager.hh"
+#else
+#include "G4RunManager.hh"
+#endif
 
 namespace isnp {
 
