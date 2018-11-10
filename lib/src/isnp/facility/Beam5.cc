@@ -71,15 +71,18 @@ G4VPhysicalVolume* Beam5::Construct() {
 			logicWorld, nameWorld, nullptr, single, numOfCopies, checkOverlaps);
 
 	{
-		// Neutron source
 		auto const pos = G4ThreeVector(0, 0,
 				0.5 * (zeroPosition - worldLength));
 
+		// Neutron source
 		if (hasSpallationTarget) {
 			auto const spallationTarget =
 					component::SpallationTarget::GetInstance();
-			spallationTarget->SetRotation(G4ThreeVector(-xAngle, -yAngle, 0.));
-			spallationTarget->SetPosition(pos);
+			spallationTarget->SetRotation(
+					spallationTarget->GetRotation()
+							+ G4ThreeVector(-xAngle, -yAngle, 0.));
+			spallationTarget->SetPosition(
+					spallationTarget->GetPosition() + pos);
 			spallationTarget->Place(logicWorld);
 		}
 

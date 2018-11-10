@@ -79,18 +79,16 @@ G4VPhysicalVolume* BasicSpallation::Construct() {
 
 	{
 		// Neutron source
-		auto const pos = G4ThreeVector();
-
 		auto const spallationTarget =
 				component::SpallationTarget::GetInstance();
 		spallationTarget->SetRotation(
-				G4ThreeVector(-GetXAngle(), -GetYAngle(), 0.));
-		spallationTarget->SetPosition(pos);
+				spallationTarget->GetRotation()
+						+ G4ThreeVector(-GetXAngle(), -GetYAngle(), 0.));
 		spallationTarget->Place(logicWorld);
 
 		auto const bp = component::BeamPointer::GetInstance();
 		bp->SetRotation(G4ThreeVector());
-		bp->SetPosition(pos);
+		bp->SetPosition(G4ThreeVector());
 
 	}
 
