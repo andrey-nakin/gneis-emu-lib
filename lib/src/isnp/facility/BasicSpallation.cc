@@ -33,6 +33,7 @@ BasicSpallation::BasicSpallation() :
 				1.0 * cm), verboseLevel(0), worldMaterial(
 				DEFAULT_WORLD_MATERIAL), logicWorld(nullptr) {
 
+	component::SpallationTarget::GetInstance();
 }
 
 BasicSpallation::~BasicSpallation() {
