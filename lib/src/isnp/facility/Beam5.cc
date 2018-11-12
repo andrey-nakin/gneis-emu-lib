@@ -44,6 +44,9 @@ Beam5::Beam5() :
 				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
 				"G4_CONCRETE"), worldMaterial("G4_AIR"), windowMaterial(
 				"G4_Al"), c5Material("BR05C5S5"), worldRadius(190. * mm) {
+
+	component::SpallationTarget::GetInstance();
+
 }
 
 Beam5::~Beam5() {
