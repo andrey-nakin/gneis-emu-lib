@@ -43,7 +43,7 @@ Beam5::Beam5() :
 				2. * mm), detectorZPosition(36. * m), ntubeMaterial("DUR_AMG3"), ntubeFlangeMaterial(
 				"G4_Al"), ntubeInnerMaterial("FOREVACUUM_100"), wallMaterial(
 				"G4_CONCRETE"), worldMaterial("G4_AIR"), windowMaterial(
-				"G4_Al"), c5Material("BR05C5S5"), worldRadius(190. * mm) {
+				"G4_Al"), c5Material("BR05C5S5"), worldRadius(200. * mm) {
 
 	component::SpallationTarget::GetInstance();
 
