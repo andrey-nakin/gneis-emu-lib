@@ -13,7 +13,7 @@ An [GNEIS](http://accelconf.web.cern.ch/AccelConf/rupac2016/talks/wezmh01_talk.p
 
 ## Content
 
-* `lib` - library itself.
+* `gneis-geant4` - library itself.
 * `basic` - a very basic executable that invokes library.
 * `examples` - macro files with GNEIS-related examples.
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(IsnpEmuLibTest LANGUAGES CXX)
+project(GneisGeant4LibTest LANGUAGES CXX)
 
 include(FindGTest)
 find_package(GTest REQUIRED)
@@ -12,11 +12,11 @@ file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.hh)
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cc)
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME isnpemutest)
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME gneis-geant4-test)
 
 target_link_libraries(${PROJECT_NAME} GTest::GTest GTest::Main)
 target_link_libraries(${PROJECT_NAME} ${Geant4_LIBRARIES})
-target_link_libraries(${PROJECT_NAME} IsnpEmuLib)
+target_link_libraries(${PROJECT_NAME} GneisGeant4Lib)
 
 add_test(
   NAME ${PROJECT_NAME}
