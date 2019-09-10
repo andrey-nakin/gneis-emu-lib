@@ -1,8 +1,8 @@
-# isnp-emu-lib
+# gneis-geant4
 
-[![Project Stats](https://www.openhub.net/p/isnp-emu-lib/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/isnp-emu-lib)
+[![Project Stats](https://www.openhub.net/p/gneis-geant4/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/gneis-geant4)
 
-An [ISNP](https://www.researchgate.net/publication/303380880_ISNPGNEIS_Facility_in_Gatchina_for_Neutron_Testing_with_Atmospheric-Like_Spectrum) facility modeling library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
+An [GNEIS](http://accelconf.web.cern.ch/AccelConf/rupac2016/talks/wezmh01_talk.pdf) facility modeling library based on [Geant4](http://geant4.web.cern.ch/) toolkit.
 
 ## Requirements
 
@@ -15,7 +15,7 @@ An [ISNP](https://www.researchgate.net/publication/303380880_ISNPGNEIS_Facility_
 
 * `lib` - library itself.
 * `basic` - a very basic executable that invokes library.
-* `examples` - macro files with ISNP-related examples.
+* `examples` - macro files with GNEIS-related examples.
 
 ## Prerequisites
 
@@ -25,24 +25,24 @@ An [ISNP](https://www.researchgate.net/publication/303380880_ISNPGNEIS_Facility_
 
 1. Go to your working directory, for example `~/workspace` (all directory names are arbitrary).
 
-2. Create `isnp-emu-lib` subdirectory within the working directory.
+2. Create `gneis-geant4` subdirectory within the working directory.
 
-3. Download content of `isnp-emu-lib` repository into `~/workspace/isnp-emu-lib`.
+3. Download content of `gneis-geant4` repository into `~/workspace/gneis-geant4`.
 
-4. Create `isnp-emu-lib-build` subdirectory within the working directory.
+4. Create `gneis-geant4-build` subdirectory within the working directory.
 
-5. Enter `~/workspace/isnp-emu-lib-build` directory.
+5. Enter `~/workspace/gneis-geant4-build` directory.
 
 6. Run `cmake`:
 
 ```bash
-cmake ~/workspace/isnp-emu-lib
+cmake ~/workspace/gneis-geant4
 ```
 
 6.1. If you need to install the library into your profile-specific directory rather than system directory, then set `CMAKE_INSTALL_PREFIX` system property for `cmake` as follows:
 
 ```bash
-cmake -DCMAKE_INSTALL_PREFIX=~ ~/workspace/isnp-emu-lib
+cmake -DCMAKE_INSTALL_PREFIX=~ ~/workspace/gneis-geant4
 ```
 
 7. Build and install library and executables:
@@ -54,7 +54,7 @@ make && make install
 8. Run example
 
 ```bash
-cd ~/workspace/isnp-emu-lib
-isnp-basic examples/basic.mac
+cd ~/workspace/gneis-geant4
+gg-basic examples/basic.mac
 ```
 
